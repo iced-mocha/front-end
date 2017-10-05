@@ -1,24 +1,34 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import HelloWorld from './components/HelloWorld';
+import Login from './components/login/Login.js';
+import PrivacyPolicy from './components/privacy-policy/PrivacyPolicy.js'
 import express from 'express';
 
 let app = express();
 
-// Set the view engine to ejs
 app.set('view engine', 'ejs');
 
-// Serve static files from the 'public' folder
 app.use(express.static('public'));
 
-// GET /
 app.get('/', function (req, res) {
+    res.render('layout', {
+        // TODO: Replace this with actual web app
+        content: ReactDOMServer.renderToString(<Login />)
+    });
+});
+
+app.get('/login', function (req, res) {
+    res.render('layout', {
+        content: ReactDOMServer.renderToString(<Login />)
+    });
+});
+
+app.get('/privacy-policy', function (req, res) {
   res.render('layout', {
-    content: ReactDOMServer.renderToString(<HelloWorld />)
+    content: ReactDOMServer.renderToString(<PrivacyPolicy />)
   });
 });
 
-// Start server
 let server = app.listen(8080, function () {
   let host = server.address().address;
   let port = server.address().port;
@@ -27,5 +37,5 @@ let server = app.listen(8080, function () {
     host = 'localhost';
   }
 
-  console.log('Example app listening at http://%s:%s', host, port);
+  console.log('App listening at http://%s:%s', host, port);
 });
