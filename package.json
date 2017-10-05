@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "npm run build && node src/server-es5.js",
-    "build": "NODE_ENV=production webpack -p --profile --display-modules --optimize-minimize"
+    "build": "NODE_ENV=production webpack -p --profile --optimize-minimize"
   },
   "author": "Luciano Mammino",
   "license": "MIT",
