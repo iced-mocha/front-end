@@ -10,6 +10,7 @@ export default class SimpleCounter extends React.Component {
     }
 
     incrementCount() {
+        console.log("Incrimenting")
         this.setState({ count: this.state.count + 1 });
     }
 

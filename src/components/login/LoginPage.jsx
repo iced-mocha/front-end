@@ -1,5 +1,5 @@
 import React from 'react';
-import FacebookLogin from './FacebookLogin.js';
+import FacebookLogin from './FacebookLogin.jsx';
 
 export default class Login extends React.Component {
   render() {

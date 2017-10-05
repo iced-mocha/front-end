@@ -1,27 +1,33 @@
 {
-  "name": "universal-react",
+  "name": "front-end",
   "version": "1.0.0",
-  "description": "Universal React.js starter with the minimum possible code",
-  "main": "lib/server.js",
+  "description": "Your home on the Internet",
+  "main": "index.js",
   "scripts": {
-    "build": "./node_modules/babel-cli/bin/babel.js src --out-dir lib --plugins transform-react-jsx --presets es2015",
-    "bundle": "./node_modules/browserify/bin/cmd.js lib/client.js -o public/js/bundle.js",
-    "start": "npm run build && npm run bundle && node lib/server.js"
+    "dev": "webpack -d --watch",
+    "build": "webpack -p",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Vance Lucas",
-  "license": "BSD",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iced-mocha/front-end.git"
+  },
+  "author": "",
   "dependencies": {
-    "ejs": "^2.3.4",
-    "express": "^4.13.3",
-    "react": "^0.14.2",
-    "react-dom": "^0.14.2",
-    "react-facebook-login": "^3.6.2",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "ejs": "^2.5.7",
+    "express": "^4.16.1",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
     "react-router": "^4.2.0"
   },
   "devDependencies": {
-    "browserify": "^12.0.1",
-    "babel-cli": "^6.1.2",
-    "babel-plugin-transform-react-jsx": "^6.0.18",
-    "babel-preset-es2015": "^6.1.2"
+    "babel-loader": "^7.1.2",
+    "html-webpack-plugin": "^2.30.1",
+    "http-server": "^0.10.0",
+    "webpack": "^3.6.0"
   }
 }
