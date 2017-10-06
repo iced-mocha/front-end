@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ListGroupItem } from 'react-bootstrap';
 
 export const Post = props => (
-    <div className="post-wrapper">
+	<ListGroupItem href="/">
 		<img src="/img/medal.png" alt="Medal icon" />
 	    <span className="name">{props.name}</span>
-    </div>
+	</ListGroupItem>
 );
 
 export default Post;

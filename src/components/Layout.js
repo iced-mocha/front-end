@@ -1,20 +1,27 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Navbar, NavItem, Nav } from 'react-bootstrap';
 
 export const Layout = props => (
   <div className="app-container">
-    <header>
-      <Link to="/">
-        <img className="logo" src="/img/logo-judo-heroes.png" alt="Judo Heroes logo" />
-      </Link>
-    </header>
+	<Navbar>
+
+		  <Navbar.Header>
+		    <Navbar.Brand>
+			  <a href="#">Iced-Mocha</a>
+		    </Navbar.Brand>
+		  </Navbar.Header>
+
+		  <Navbar.Collapse>
+		    <Nav pullRight>
+			  <NavItem href="/login">Login</NavItem>
+		    </Nav>
+		  </Navbar.Collapse>
+
+	</Navbar>
+
     <div className="app-content">{props.children}</div>
-    <footer>
-      <p>
-        This is a demo app to showcase <strong>universal Javascript</strong>
-        with <strong>React</strong> and <strong>Express</strong>.
-      </p>
-    </footer>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"></link>
   </div>
 );
 
