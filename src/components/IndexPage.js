@@ -1,11 +1,11 @@
 import React from 'react';
-import { AthleteCard } from './AthleteCard';
+import { Post } from './Post';
 
-export const IndexPage = ({ athletes }) => (
+export const IndexPage = ({ posts }) => (
   <div className="home">
-    <div className="athletes-selector">
-      {athletes.map(
-        athleteData => <AthleteCard key={athleteData.id} {...athleteData} />,
+    <div className="change-this">
+      {posts.map(
+        postData => <Post key={postData.id} {...postData} />,
       )}
     </div>
   </div>

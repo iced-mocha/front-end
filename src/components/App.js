@@ -5,9 +5,9 @@ import { IndexPage } from './IndexPage';
 import { AthletePage } from './AthletePage';
 import LoginPage from './login/LoginPage';
 import { NotFoundPage } from './NotFoundPage';
-import athletes from '../data/athletes';
+import posts from '../data/posts';
 
-const renderIndex = () => <IndexPage athletes={athletes} />;
+const renderIndex = () => <IndexPage posts={posts} />;
 const renderAthlete = ({ match, staticContext }) => {
   const id = match.params.id;
   const athlete = athletes.find(current => current.id === id);
@@ -23,7 +23,7 @@ export const App = () => (
     <Switch>
       <Route exact path="/" render={renderIndex} />
       <Route exact path="/login" render={LoginPage} />
-      <Route exact path="/athlete/:id" render={renderAthlete} />
+      <Route exact path="/posts/:id" render={renderAthlete} />
       <Route component={NotFoundPage} />
     </Switch>
   </Layout>
