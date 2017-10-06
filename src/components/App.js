@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import { Layout } from './Layout';
 import { IndexPage } from './IndexPage';
 import { AthletePage } from './AthletePage';
+import LoginPage from './login/LoginPage';
 import { NotFoundPage } from './NotFoundPage';
 import athletes from '../data/athletes';
 
@@ -21,6 +22,7 @@ export const App = () => (
   <Layout>
     <Switch>
       <Route exact path="/" render={renderIndex} />
+      <Route exact path="/login" render={LoginPage} />
       <Route exact path="/athlete/:id" render={renderAthlete} />
       <Route component={NotFoundPage} />
     </Switch>
