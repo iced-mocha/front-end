@@ -2,12 +2,13 @@ import React from 'react';
 import FacebookProvider, { Login } from 'react-facebook';
 
 class FacebookSection extends React.Component {
-  responseFacebook(response) {
+  handleResponse(response) {
+    console.log("user info is:")
     console.log(response)
   }
 
-  componentClicked() {
-
+  handleError(error) {
+    console.log(error)
   }
 
   render() {
