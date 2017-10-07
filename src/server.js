@@ -1,4 +1,5 @@
 import path from 'path';
+import request from 'request-promise';
 import { Server } from 'http';
 import Express from 'express';
 import React from 'react';
@@ -13,33 +14,50 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(Express.static(path.join(__dirname, 'static')));
 
+app.get('/facebook-feed', (req, res) => {
+  var options = {
+    url: 'https://graph.facebook.com/' + req.query.id + '/feed',
+    headers: {
+      'Authorization': 'Bearer ' + req.query.token
+    }
+  }
+  request(options)
+    .then(response => {
+      console.log(response);
+      res.setHeader('Content-Type', 'application/json');
+      res.send(JSON.stringify(response));
+    }).catch(err => {
+      res.send(err);
+    });
+});
+
 app.get('*', (req, res) => {
-    let markup = '';
-    let status = 200;
+  let markup = '';
+  let status = 200;
 
-    const context = {};
-    markup = renderToString(
-        <Router location={req.url} context={context}>
-            <App />
-        </Router>,
-    );
+  const context = {};
+  markup = renderToString(
+    <Router location={req.url} context={context}>
+      <App />
+    </Router>,
+  );
 
-    if (context.url) {
-        return res.redirect(302, context.url);
-    }
+  if (context.url) {
+    return res.redirect(302, context.url);
+  }
 
-    if (context.is404) {
-        status = 404;
-    }
+  if (context.is404) {
+    status = 404;
+  }
 
-    return res.status(status).render('index', { markup });
+  return res.status(status).render('index', { markup });
 });
 
 const port = process.env.PORT || 8080;
 const env = process.env.NODE_ENV || 'production';
 server.listen(port, (err) => {
-    if (err) {
-        return console.error(err);
-    }
-    return console.info('\nServer running on port ' + port);
+  if (err) {
+    return console.error(err);
+  }
+  return console.info('\nServer running on port ' + port);
 });
