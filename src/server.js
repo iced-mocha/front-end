@@ -16,9 +16,10 @@ app.use(Express.static(path.join(__dirname, 'static')));
 
 app.get('/posts', (req, res) => {
   var options = {
-    url: 'https://graph.facebook.com/' + req.query.fb_id + '/feed',
-    headers: {
-      'Authorization': 'Bearer ' + req.query.fb_token
+    url: 'http://core:3000/v1/posts',
+    qs:  {
+      fb_id: req.query.fb_id,
+      fb_token: req.query.fb_token
     }
   }
   request(options)
