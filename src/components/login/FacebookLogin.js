@@ -1,6 +1,6 @@
 import React from 'react';
 
-export class FacebookLogin extends React.Component {
+class FacebookLogin extends React.Component {
   render() {
     return (
       <div className="facebook-login">

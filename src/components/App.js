@@ -22,7 +22,7 @@ export const App = () => (
   <Layout>
     <Switch>
       <Route exact path="/" render={renderIndex} />
-      <Route exact path="/login" render={LoginPage} />
+      <Route exact path="/login" component={LoginPage} />
       <Route exact path="/posts/:id" render={renderAthlete} />
       <Route component={NotFoundPage} />
     </Switch>
