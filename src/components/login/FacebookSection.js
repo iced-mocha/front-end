@@ -5,6 +5,8 @@ class FacebookSection extends React.Component {
   handleResponse(response) {
     console.log("user info is:")
     console.log(response)
+    console.log("user ID is " + response.profile.id)
+    console.log("access token is " + response.tokenDetail.accessToken)
   }
 
   handleError(error) {
@@ -17,7 +19,7 @@ class FacebookSection extends React.Component {
         <h1>Facebook Login</h1>
 				<FacebookProvider appId="107162943325268">
 					<Login
-						scope="email"
+						scope="public_profile,user_friends,user_likes,user_posts,user_events"
 						onResponse={this.handleResponse}
 						onError={this.handleError}>
 						<span>Login via Facebook</span>
