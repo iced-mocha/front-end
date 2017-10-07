@@ -14,16 +14,15 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(Express.static(path.join(__dirname, 'static')));
 
-app.get('/facebook-feed', (req, res) => {
+app.get('/posts', (req, res) => {
   var options = {
-    url: 'https://graph.facebook.com/' + req.query.id + '/feed',
+    url: 'https://graph.facebook.com/' + req.query.fb_id + '/feed',
     headers: {
-      'Authorization': 'Bearer ' + req.query.token
+      'Authorization': 'Bearer ' + req.query.fb_token
     }
   }
   request(options)
     .then(response => {
-      console.log(response);
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(response));
     }).catch(err => {

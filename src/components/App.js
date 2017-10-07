@@ -4,6 +4,7 @@ import { Layout } from './Layout';
 import { IndexPage } from './IndexPage';
 import { AthletePage } from './AthletePage';
 import LoginPage from './login/LoginPage';
+import HomePage from './home/HomePage';
 import { NotFoundPage } from './NotFoundPage';
 import posts from '../data/posts';
 
@@ -22,6 +23,7 @@ export const App = () => (
   <Layout>
     <Switch>
       <Route exact path="/" render={renderIndex} />
+      <Route exact path="/home" component={HomePage} />
       <Route exact path="/login" component={LoginPage} />
       <Route exact path="/posts/:id" render={renderAthlete} />
       <Route component={NotFoundPage} />
