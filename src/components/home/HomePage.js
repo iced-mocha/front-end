@@ -50,7 +50,7 @@ class HomePage extends React.Component {
         <h1>Home Page</h1>
 				<FacebookProvider appId="107162943325268">
 					<Login
-						scope="public_profile,user_friends,user_likes,user_posts,user_events"
+						scope="public_profile,user_birthday,user_friends,user_likes,user_photos,user_posts,user_events,user_videos,instagram_basic"
 						onResponse={this.handleResponse}
 						onError={this.handleError}>
 						<span>Login via Facebook</span>
