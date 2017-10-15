@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import FacebookProvider, { Login } from 'react-facebook';
+import { Post } from '../Post';
+import { ListGroup } from 'react-bootstrap';
+import { ListGroupItem } from 'react-bootstrap';
 
 class HomePage extends React.Component {
   constructor(props, context) {
@@ -11,10 +14,6 @@ class HomePage extends React.Component {
   }
 
   handleResponse(response) {
-    console.log("user info is:");
-    console.log(response);
-    console.log("user ID is " + response.profile.id);
-    console.log("access token is " + response.tokenDetail.accessToken);
     axios.get("http://localhost:8080/posts?fb_id="+response.profile.id+"&fb_token="+response.tokenDetail.accessToken)
       .then(response => {
         console.log(response);
@@ -32,9 +31,8 @@ class HomePage extends React.Component {
     console.log("getting posts")
     axios.get("http://localhost:8080/posts")
       .then(response => {
-        console.log(response.data);
         this.setState({
-          posts: JSON.stringify(response.data)
+          posts: JSON.parse(response.data)
         });
       })
       .catch(err => {
@@ -43,24 +41,29 @@ class HomePage extends React.Component {
   }
 
   render() {
-    console.log("redner");
-    console.log(this.state);
+	console.log("Render")
+	var listItems
+
+	if(this.state.posts){
+		/*
+		var imgUrl
+		if (this.state.posts.Platform === "hacker-news") {
+			imgUrl = "/img/hacker-news-icon.ico"
+		} else if (this.state.posts.Platform === "reddit") {
+			imgUrl = "/img/reddit-icon.png"
+		}
+	*/
+
+		listItems = this.state.posts.map(postData => <Post key={postData.id} {...postData} />)
+	}
     return (
       <div className="home-page">
-        <h1>Home Page</h1>
-				<FacebookProvider appId="107162943325268">
-					<Login
-						scope="public_profile,user_birthday,user_friends,user_likes,user_photos,user_posts,user_events,user_videos,instagram_basic"
-						onResponse={this.handleResponse}
-						onError={this.handleError}>
-						<span>Login via Facebook</span>
-					</Login>
-				</FacebookProvider>
-        <h1>Data</h1>
-        {this.state.posts}
-        <button onClick={this.getPosts}>
-          Click me
-        </button>
+			<ListGroup>
+				{ listItems }
+			</ListGroup> 
+			<button onClick={this.getPosts}>
+          		Click me
+        	</button>
       </div>
     );
   }

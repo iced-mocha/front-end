@@ -16,7 +16,7 @@ app.use(Express.static(path.join(__dirname, 'static')));
 
 app.get('/posts', (req, res) => {
   var options = {
-    url: 'http://core:3000/v1/posts',
+    url: 'http://localhost:3000/v1/posts',
     qs:  {
       fb_id: req.query.fb_id,
       fb_token: req.query.fb_token
