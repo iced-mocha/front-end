@@ -10,17 +10,11 @@ class FacebookSection extends React.Component {
   }
 
   handleResponse(response) {
-    console.log("user info is:");
-    console.log(response);
-    console.log("user ID is " + response.profile.id);
-    console.log("access token is " + response.tokenDetail.accessToken);
-    axios.get("http://localhost:8080/facebook-feed?id="+response.profile.id+"&token="+response.tokenDetail.accessToken)
-      .then(response => {
-        console.log(response);
-        this.setState({
-          facebookData: JSON.stringify(response)
-        });
-      });
+    let id = response.profile.id;
+    let token = response.tokenDetail.accessToken;
+    if (this.props.onLogin) {
+      this.props.onLogin(id, token)
+    }
   }
   
   handleError(error) {
@@ -40,8 +34,6 @@ class FacebookSection extends React.Component {
 						<span>Login via Facebook</span>
 					</Login>
 				</FacebookProvider>
-        <h1>Data</h1>
-          {this.state.facebookData}
       </div>
     );
   }

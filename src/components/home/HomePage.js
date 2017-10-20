@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import FacebookProvider, { Login } from 'react-facebook';
+import FacebookSection from '../login/FacebookSection';
 import { Post } from '../Post';
 import { ListGroup } from 'react-bootstrap';
 import { ListGroupItem } from 'react-bootstrap';
@@ -8,28 +8,24 @@ import { ListGroupItem } from 'react-bootstrap';
 class HomePage extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {};
+    this.state = {
+      fbId: "",
+      fbToken: ""
+    };
     this.getPosts = this.getPosts.bind(this);
-    this.handleResponse = this.handleResponse.bind(this);
+    this.onFacebookLogin = this.onFacebookLogin.bind(this);
   }
 
-  handleResponse(response) {
-    axios.get("http://localhost:8080/posts?fb_id="+response.profile.id+"&fb_token="+response.tokenDetail.accessToken)
-      .then(response => {
-        console.log(response);
-        this.setState({
-          posts: JSON.stringify(response)
-        });
-      });
-  }
-  
-  handleError(error) {
-    console.log(error);
+  onFacebookLogin(id, token) {
+    this.setState({
+      fbId: id,
+      fbToken: token
+    });
   }
 
   getPosts() {
     console.log("getting posts")
-    axios.get("http://localhost:8080/posts")
+    axios.get("http://localhost:8080/posts?fb_id="+this.state.fbId+"&fb_token="+this.state.fbToken)
       .then(response => {
         this.setState({
           posts: JSON.parse(response.data)
@@ -61,6 +57,7 @@ class HomePage extends React.Component {
 			<ListGroup>
 				{ listItems }
 			</ListGroup> 
+      <FacebookSection onLogin={this.onFacebookLogin} />
 			<button onClick={this.getPosts}>
           		Click me
         	</button>
