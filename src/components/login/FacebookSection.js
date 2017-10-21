@@ -12,6 +12,10 @@ class FacebookSection extends React.Component {
   handleResponse(response) {
     let id = response.profile.id;
     let token = response.tokenDetail.accessToken;
+    console.log("id:");
+    console.log(id);
+    console.log("token:");
+    console.log(token);
     if (this.props.onLogin) {
       this.props.onLogin(id, token)
     }
