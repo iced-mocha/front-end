@@ -7,7 +7,6 @@ class RedditSection extends React.Component {
   }
 
   render() {
-    console.log("In reddit render: " +  this.state)
     return (
       <div className="service-login reddit-login">
         <a href="http://localhost:3001/v1/userID/authorize">Reddit Login</a>

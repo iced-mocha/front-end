@@ -6,7 +6,7 @@ import { ListGroupItem } from 'react-bootstrap';
 export const Post = props => (
 	<ListGroupItem href="/">
 		<div className="post-container">
-			<img className="post-img what-the-frick" src="/img/reddit-icon.png" alt="Reddit icon" />
+			<img className="post-img what-the-frick" src={props.imgUrl} alt="Reddit icon" />
 			<div className="post-info">
 				<div className="post-title">{props.Title}</div>
 				<div className="post-date">{props.created}</div> <div className="post-author">Author: {props.Author}</div>

@@ -22,7 +22,6 @@ class FacebookSection extends React.Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       <div className="facebook-login">
         <h1>Facebook Login</h1>
