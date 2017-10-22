@@ -56,9 +56,11 @@ class HomePage extends React.Component {
 	}
     return (
       <div className="home-page">
-			<ListGroup>
-				{ listItems }
-			</ListGroup> 
+      <div className="post-list">
+        <ListGroup>
+          { listItems }
+        </ListGroup> 
+      </div>
       <FacebookSection onLogin={this.onFacebookLogin} />
 			<button onClick={this.getPosts}>
           		Click me
