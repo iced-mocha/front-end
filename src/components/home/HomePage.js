@@ -42,15 +42,14 @@ class HomePage extends React.Component {
 	if(this.state.posts){
 		listItems = this.state.posts.map(
 				function(postData) {
-					
 					if (postData.Platform === "hacker-news") {
-						  postData.imgUrl = "/img/hacker-news-icon.ico"
+						  postData.imgUrl = "/img/hacker-news-icon.ico";
 					} else if (postData.Platform === "reddit") {
-						  postData.imgUrl = "/img/reddit-icon.png"
+						  postData.imgUrl = "/img/reddit-icon.png";
 					} else if (postData.Platform == "facebook") {
-						  postData.imgUrl = "/img/facebook-icon.png"
+						  postData.imgUrl = "/img/facebook-icon.png";
 					}	else if (postData.Platform == "google-news") {
-              postData.imgURL = "/img/google-news-icon.png"
+              postData.imgUrl = "/img/google-news-icon.png";
           }
 
 					return <Post key={postData.id} url={postData.Platform} {...postData} />
