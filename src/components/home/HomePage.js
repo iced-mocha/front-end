@@ -49,7 +49,9 @@ class HomePage extends React.Component {
 						  postData.imgUrl = "/img/reddit-icon.png"
 					} else if (postData.Platform == "facebook") {
 						  postData.imgUrl = "/img/facebook-icon.png"
-					}	
+					}	else if (postData.Platform == "google-news") {
+              postData.imgURL = "/img/google-news-icon.png"
+          }
 
 					return <Post key={postData.id} url={postData.Platform} {...postData} />
 				});
@@ -65,6 +67,9 @@ class HomePage extends React.Component {
 			<button onClick={this.getPosts}>
           		Click me
         	</button>
+      <p>
+        Add google news attribution
+      </p>
       </div>
     );
   }
