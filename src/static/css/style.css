@@ -45,12 +45,12 @@ footer p {
 
 .post-container {
   width: 100%;
-  padding: 8px;
   color: #444444;
 }
 
 .post-title {
   font-weight: bold;
+  flex: 1;
 }
 
 .not-found {
@@ -90,6 +90,10 @@ footer p {
   margin: auto;
 }
 
+.list-group-item {
+    padding: 16px !important;
+}
+
 .list-group-item:hover {
   background-color: #F0F0F0;
 }
@@ -100,4 +104,20 @@ footer p {
 
 .app-container {
   background-color: #F0F0F0;
+}
+
+.post-img {
+  width: 16px;
+  height: 16px;
+  margin-left: 16px;
+  margin-right: 0;
+  opacity: 0.5;
+}
+
+.post-info {
+  width: 100%;
+}
+
+.post-header {
+  display: flex;
 }

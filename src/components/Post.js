@@ -13,9 +13,11 @@ export const Post = props => {
         </div>
       }
         <div className="post-description">
-          <img className="post-img what-the-frick" src={props.imgUrl} alt="Reddit icon" />
           <div className="post-info">
-            <div className="post-title">{props.Title}</div>
+            <div className="post-header">
+              <div className="post-title">{props.Title}</div>
+              <img className="post-img what-the-frick" src={props.imgUrl} alt="Reddit icon" />
+            </div>
             <div className="post-date">{props.created}</div> <div className="post-author">Author: {props.Author}</div>
           </div>
         </div>
