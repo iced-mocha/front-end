@@ -40,7 +40,7 @@ export class SignupButton extends React.Component {
 
   render() {
     return (
-	  <button onClick={this.signup}>Signup</button>
+	  <Button onClick={this.signup}>Signup</Button>
     );
   }
 }

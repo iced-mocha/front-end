@@ -33,6 +33,11 @@ footer p {
   margin: 0 0 1em 0;
 }
 
+.login-page, .signup-page {
+  max-width: 35%;
+  margin: auto;
+}
+
 .post-img {
   max-height: 32px !important;
   max-width: 32px !important;
