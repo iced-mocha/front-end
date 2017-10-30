@@ -8,7 +8,7 @@ export const Layout = props => (
 
 		  <Navbar.Header>
 		    <Navbar.Brand>
-			  <a href="#">Iced-Mocha</a>
+			  <a href="/">Iced-Mocha</a>
 		    </Navbar.Brand>
 		  </Navbar.Header>
 
