@@ -24,23 +24,10 @@ export class SignupButton extends React.Component {
     super(props);
     this.state = {};
   }
-
-  signup(e) {
-
-	console.log("About to signup user")
-
-	// When this clicks we must show a text box and allow them to enter a user name
-	var xhr = new XMLHttpRequest();
-	xhr.open('POST', 'http://localhost:3000/v1/users', true);
-	xhr.setRequestHeader('Content-Type', 'application/json');
-	xhr.send(JSON.stringify({
-		    username: "userID"
-	}));
-  }
-
+  
   render() {
     return (
-	  <Button onClick={this.signup}>Signup</Button>
+	  <Button><a className="signup-link" href="/signup">Signup</a></Button>
     );
   }
 }

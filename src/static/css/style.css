@@ -38,6 +38,15 @@ footer p {
   margin: auto;
 }
 
+.signup-link {
+	color: #333;
+}
+
+.signup-link:hover {
+	color: #333;
+	text-decoration: none;
+}
+
 .post-img {
   max-height: 32px !important;
   max-width: 32px !important;
