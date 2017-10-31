@@ -52,7 +52,7 @@ class HomePage extends React.Component {
               postData.imgUrl = "/img/google-news-icon.png";
           }
 
-					return <Post key={postData.id} url={postData.Platform} {...postData} />
+					return <Post key={postData.id} {...postData} />
 				});
 	}
     return (

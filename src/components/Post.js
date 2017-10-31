@@ -5,7 +5,7 @@ import { ListGroupItem } from 'react-bootstrap';
 // To do use right icon for each kind of post
 export const Post = props => {
   return (
-    <ListGroupItem href="/">
+    <ListGroupItem href={props.PostLink}>
       <div className="post-container">
       { props.HeroImg != "" && 
         <div className="hero-img-container">
