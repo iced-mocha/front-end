@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import FacebookSection from '../login/FacebookSection';
-import { Post } from '../Post';
+import Post from '../Post';
 import { ListGroup } from 'react-bootstrap';
 import { ListGroupItem } from 'react-bootstrap';
 
@@ -37,24 +37,24 @@ class HomePage extends React.Component {
   }
 
   render() {
-	var listItems
+    var listItems
 
-	if(this.state.posts){
-		listItems = this.state.posts.map(
-				function(postData) {
-					if (postData.Platform === "hacker-news") {
-						  postData.imgUrl = "/img/hacker-news-icon.ico";
-					} else if (postData.Platform === "reddit") {
-						  postData.imgUrl = "/img/reddit-icon.png";
-					} else if (postData.Platform == "facebook") {
-						  postData.imgUrl = "/img/facebook-icon.png";
-					}	else if (postData.Platform == "google-news") {
-              postData.imgUrl = "/img/google-news-icon.png";
-          }
+    if(this.state.posts){
+      listItems = this.state.posts.map(
+          function(postData) {
+            if (postData.Platform === "hacker-news") {
+                postData.imgUrl = "/img/hacker-news-icon.ico";
+            } else if (postData.Platform === "reddit") {
+                postData.imgUrl = "/img/reddit-icon.png";
+            } else if (postData.Platform == "facebook") {
+                postData.imgUrl = "/img/facebook-icon.png";
+            }	else if (postData.Platform == "google-news") {
+                postData.imgUrl = "/img/google-news-icon.png";
+            }
 
-					return <Post key={postData.id} {...postData} />
-				});
-	}
+            return <Post key={postData.id} {...postData} />
+          });
+    }
     return (
       <div className="home-page">
       <div className="post-list">

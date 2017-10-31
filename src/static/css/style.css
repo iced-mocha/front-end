@@ -6,7 +6,10 @@ html {
 
 a {
   color: #1f4ba0;
-  text-decoration: underline;
+}
+
+a:hover {
+  text-decoration: none !important;
 }
 
 header {
@@ -39,12 +42,11 @@ footer p {
 }
 
 .signup-link {
-	color: #333;
+  color: #333;
 }
 
 .signup-link:hover {
-	color: #333;
-	text-decoration: none;
+  color: #333;
 }
 
 .post-img {
@@ -60,6 +62,14 @@ footer p {
 .post-container {
   width: 100%;
   color: #444444;
+  padding-top: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+  background-color: #FFFFFF;
+}
+
+.post-container:hover {
+  background-color: #F0F0F0;
 }
 
 .post-title {
@@ -105,11 +115,7 @@ footer p {
 }
 
 .list-group-item {
-    padding: 16px !important;
-}
-
-.list-group-item:hover {
-  background-color: #F0F0F0;
+  padding: 0 !important;
 }
 
 .home-page {
@@ -130,8 +136,44 @@ footer p {
 
 .post-info {
   width: 100%;
+  text-decoration: none;
 }
 
 .post-header {
   display: flex;
+}
+
+.toggle-comments {
+  display: block;
+  width: 100%;
+  height: 20px;
+  border-style: none;
+  outline: none;
+}
+
+.expand-comments {
+  background-color: #FFFFFF;
+}
+
+.expand-comments:hover {
+  background-color: #F0F0F0;
+}
+
+.collapse-comments {
+  background-color: #F0F0F0;
+}
+
+.collapsed-comments:hover {
+  background-color: #FFFFFF;
+}
+
+.comments-section {
+  width: 100%;
+  height: 150px;
+  background-color: #F0F0F0;
+}
+
+.expand-icon {
+  width: 16px;
+  height: 16px;
 }
