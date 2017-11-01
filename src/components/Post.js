@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroupItem } from 'react-bootstrap';
+import FacebookProvider, { Comments } from 'react-facebook';
 
 // To do use right icon for each kind of post
 class Post extends React.Component {
@@ -49,7 +50,13 @@ class Post extends React.Component {
         )}
         { this.state.expandComments && 
           <div className="comments-section">
-          </div> }
+          { this.props.Platform == "facebook" &&
+            <FacebookProvider appId="107162943325268">
+              <Comments href="https://www.facebook.com/zuck/posts/10102735452532991?comment_id=1070233703036185" />
+            </FacebookProvider>
+          }
+          </div>
+        }
       </ListGroupItem>
     );
   }
