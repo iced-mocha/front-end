@@ -39,20 +39,22 @@ class Post extends React.Component {
             </div>
           </div>
         </a>
-        { this.state.expandComments ? (
-          <button className="toggle-comments collapse-comments" onClick={this.toggleComments}>
-            <img className="expand-icon" src="/img/collapse-icon.png" />
-          </button>
-        ) : (
-          <button className="toggle-comments expand-comments" onClick={this.toggleComments}>
-            <img className="expand-icon" src="/img/expand-icon.png" />
-          </button>
-        )}
-        { this.state.expandComments && 
+        { (this.props.Platform == "facebook" || this.props.Platform == "hacker-news") &&
+          (this.state.expandComments ? (
+            <button className="toggle-comments collapse-comments" onClick={this.toggleComments}>
+              <img className="expand-icon" src="/img/collapse-icon.png" />
+            </button>
+          ) : (
+            <button className="toggle-comments expand-comments" onClick={this.toggleComments}>
+              <img className="expand-icon" src="/img/expand-icon.png" />
+            </button>
+          ))
+        }
+        { this.state.expandComments &&
           <div className="comments-section">
           { this.props.Platform == "facebook" &&
             <FacebookProvider appId="107162943325268">
-              <Comments href="https://www.facebook.com/zuck/posts/10102735452532991?comment_id=1070233703036185" />
+              <Comments href="https://www.facebook.com/humansofnewyork/posts/1994162040657886?comment_id=176978742855014" />
             </FacebookProvider>
           }
           </div>

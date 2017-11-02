@@ -62,9 +62,7 @@ footer p {
 .post-container {
   width: 100%;
   color: #444444;
-  padding-top: 16px;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding: 16px;
   background-color: #FFFFFF;
 }
 
@@ -170,6 +168,9 @@ footer p {
 .comments-section {
   width: 100%;
   height: 100%;
+  padding-bottom: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
   background-color: #F0F0F0;
 }
 
