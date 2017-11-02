@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroupItem } from 'react-bootstrap';
 import FacebookProvider, { Comments } from 'react-facebook';
+import HackerNewsComments from './HackerNewsComments'
 
 // To do use right icon for each kind of post
 class Post extends React.Component {
@@ -56,6 +57,9 @@ class Post extends React.Component {
             <FacebookProvider appId="107162943325268">
               <Comments href="https://www.facebook.com/humansofnewyork/posts/1994162040657886?comment_id=176978742855014" />
             </FacebookProvider>
+          }
+          { this.props.Platform == "hacker-news" &&
+              <HackerNewsComments postID={this.props.ID} />
           }
           </div>
         }
