@@ -26,8 +26,9 @@ class HackerNewsComments extends React.Component {
   render() {
     return (
       <div>
-        { this.state.comments.map(commentID => <HackerNewsComment commentID={commentID} />)
+        { this.state.comments.slice(0, 5).map(commentID => <HackerNewsComment commentID={commentID} />)
         }
+        <button> More comments (link to actual hn post)</button>
       </div>
     );
   }

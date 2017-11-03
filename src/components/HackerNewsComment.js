@@ -10,7 +10,8 @@ class HackerNewsComment extends React.Component {
     super(props, context);
     this.state = {
       comments: [],
-      content: ""
+      content: "",
+      expandComments: false
     };
     axios.get("https://hacker-news.firebaseio.com/v0/item/"+this.props.commentID+".json")
       .then(response => {
@@ -26,9 +27,13 @@ class HackerNewsComment extends React.Component {
 
   render() {
     return (
-      <div key={this.props.commentID}>
-        <p>{this.state.content}</p>
-        <div>{JSON.stringify(this.state.comments)}</div>
+      <div className="comment" key={this.props.commentID}>
+      { this.state.comments.length > 0 && <button onClick={() => {this.setState({expandComments:!this.state.expandComments})}}> expand comments </button> }
+        <div className="inner-comments" dangerouslySetInnerHTML={{ __html: this.state.content}} />
+        { this.state.expandComments && this.state.comments.map(
+            id => <HackerNewsComment commentID={id} />
+          )
+        }
       </div>
     );
   }
