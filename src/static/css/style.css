@@ -178,3 +178,11 @@ footer p {
   width: 16px;
   height: 16px;
 }
+
+.comment {
+    margin: 16px;
+}
+
+.inner-comments {
+    padding-left: 16px;
+}
