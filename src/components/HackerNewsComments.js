@@ -28,7 +28,7 @@ class HackerNewsComments extends React.Component {
       <div>
         { this.state.comments.slice(0, 3).map(commentID => <HackerNewsComment commentID={commentID} depth={0} />)
         }
-        <button> More comments (link to actual hn post)</button>
+        <a className="more-comments-link" href={"https://news.ycombinator.com/item?id=" + this.props.postID}>more</a>
       </div>
     );
   }
