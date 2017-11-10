@@ -12,23 +12,12 @@ class HackerNewsComments extends React.Component {
     this.state = {
       comments: []
     };
-    axios.get("https://graph.facebook.com/" + this.props.fbId + "/" + this.props.postId + "/comments")
-      .then(response => {
-        this.setState({
-          comments: response.data.kids
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
   }
 
   render() {
     return (
       <div>
-        { this.state.comments.slice(0, 3).map(commentID => <HackerNewsComment commentID={commentID} depth={0} />)
-        }
-        <a className="more-comments-link" href={"https://news.ycombinator.com/item?id=" + this.props.postID}>more</a>
+        Facebook comment: token, id: {this.props.fbId} token: {this.props.fbToken}
       </div>
     );
   }
