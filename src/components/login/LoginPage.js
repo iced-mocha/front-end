@@ -33,10 +33,10 @@ class LoginForm extends React.Component {
 	  // Post to backend
 	  $.ajax({
 		  type: "POST",
-		  url: "http://localhost:3000/v1/login",
+		  url: "http://0.0.0.0:3000/v1/login",
 		  data: JSON.stringify(self.prepareData(valueMap)),
 		  xhrFields: {
-			withCredentials: false
+			withCredentials: true
 		  },
 	      success: function(json) {
 		    // Probably want to do something different
