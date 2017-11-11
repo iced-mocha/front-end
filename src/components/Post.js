@@ -54,11 +54,9 @@ class Post extends React.Component {
         }
         { this.state.expandComments &&
           <div className="comments-section">
-            /*
           { this.props.Platform == "facebook" &&
-            <FacebookComments fbId={this.props.fbId} fbToken={this.props.fbToken} />
+            <FacebookComments fbId={this.props.fbId} fbToken={this.props.fbToken} objectId={this.props.ID} postLink={this.props.PostLink} />
           }
-          */
           { this.props.Platform == "hacker-news" &&
             <HackerNewsComments postID={this.props.ID} />
           }

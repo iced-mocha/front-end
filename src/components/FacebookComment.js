@@ -5,48 +5,52 @@ import { ListGroupItem } from 'react-bootstrap';
 import FacebookProvider, { Comments } from 'react-facebook';
 
 // To do use right icon for each kind of post
-class HackerNewsComment extends React.Component {
+class FacebookComment extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      content: "",
-      expandComments: (props.depth != 2 && props.depth != 5),
+      visibleChildren: 10,
       children: []
     };
-    axios.get("https://hacker-news.firebaseio.com/v0/item/"+this.props.commentID+".json")
+
+    let requestURL = "https://graph.facebook.com/"+props.id+"/comments";
+    let requestData = {"headers": {"Authorization": "Bearer " + props.fbToken}};
+    axios.get(requestURL, requestData)
       .then(response => {
         this.setState({
-          author: response.data.by,
-          content: response.data.text,
-          children: response.data.kids ? response.data.kids.map(
-                id => <HackerNewsComment key={id} commentID={id} depth={props.depth + 1} />
-              ) : []
+          children: response.data.data
         });
       })
       .catch(err => {
         console.log(err);
       });
   }
-
   render() {
-    if (this.state.content == "") {
-      return <div/>
-    }
     return (
       <div className="comment" key={this.props.commentID}>
-        <button className="transparent-button" onClick={() => {this.setState({expandComments:!this.state.expandComments})}}>
-          <div className="comment-header">
-            <img className="expand-icon" src={this.state.expandComments ? "/img/collapse-icon.png" : "/img/expand-icon.png"} />
-            <h4 className="comment-author">{this.state.author}</h4>
+        <div className="comment-header">
+          <h4 className="comment-author">{this.props.author}</h4>
+        </div>
+        <div className="inner-comments">{this.props.message}</div>
+        { this.state.children.splice(0, this.state.visibleChildren).map(child => {
+          <div className="comment" key={child.id}>
+            <div className="comment-header">
+              <h4 className="comment-author">{child.author}</h4>
+            </div>
+            <div className="inner-comments">{child.message}</div>
           </div>
-        </button>
-        { this.state.expandComments &&
-          <div className="inner-comments" dangerouslySetInnerHTML={{ __html: this.state.content}} />
+        })}
+        { this.state.children.length > this.state.visibleChildren &&
+          <button className="transparent-button" onClick={() => this.setState({visibleChildren: this.state.visibleChildren + 10})}>
+            <div className="comment-header">
+              <img className="expand-icon" src="/img/expand-icon.png"/>
+              <h4 className="more-comments">more</h4>
+            </div>
+          </button>
         }
-      { this.state.expandComments && this.state.children }
       </div>
     );
   }
 }
 
-export default HackerNewsComment
+export default FacebookComment

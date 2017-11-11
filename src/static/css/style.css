@@ -178,6 +178,8 @@ footer p {
 .expand-icon {
   width: 16px;
   height: 16px;
+  margin-left: 8px;
+  margin-right: 8px;
 }
 
 .transparent-button {
@@ -197,15 +199,18 @@ footer p {
     margin-left: 16px;
 }
 
-.inner-comments {
-    padding-left: 8px;
-}
-
 .comment-author {
   font-size: 14px;
   margin: 0;
-  margin-left: 8px;
   display: inline-block;
+  font-weight: bold;
+}
+
+.more-comments {
+  font-size: 14px;
+  margin: 0;
+  display: inline-block;
+  font-weight: bold;
 }
 
 .more-comments-link {

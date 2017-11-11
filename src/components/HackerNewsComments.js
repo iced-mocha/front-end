@@ -12,7 +12,7 @@ class HackerNewsComments extends React.Component {
     this.state = {
       comments: []
     };
-    axios.get("https://graph.facebook.com/" + this.props.fbId + "/" + this.props.postId + "/comments")
+    axios.get("https://hacker-news.firebaseio.com/v0/item/"+this.props.postID+".json")
       .then(response => {
         this.setState({
           comments: response.data.kids
