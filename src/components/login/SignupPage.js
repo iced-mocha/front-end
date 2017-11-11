@@ -1,5 +1,6 @@
 import React from 'react';
 import { LoginButton, SignupButton } from './Login'
+import { Redirect } from 'react-router';
 import $ from "jquery";
 import { Form, FormGroup, FormControl, Button } from 'react-bootstrap'
 
@@ -9,6 +10,7 @@ class SignupForm extends React.Component {
 	  super(props);
 	  this.prepareData = this.prepareData.bind(this);
 	  this.handleSubmit = this.handleSubmit.bind(this);
+	  this.state = { signupRedirect: false };
 	}
 
 	// Converts the array data from serializeArray() into usable JSON
@@ -41,7 +43,7 @@ class SignupForm extends React.Component {
 		  },
 	      success: function(json) {
 		    // Probably want to do something different
-		    console.log("success", json);
+			self.setState({signupRedirect: true});
 	      },
           error: function (xhr) {
 		    console.log("error");
@@ -51,6 +53,10 @@ class SignupForm extends React.Component {
 	
 	
 	render() {
+	  if (this.state.signupRedirect) {
+	    return <Redirect push to="/login" />;
+	  }
+
 	  return (
 		<div className="sign-form">
 		  <Form id="signupForm" onSubmit={this.handleSubmit} method="post">
