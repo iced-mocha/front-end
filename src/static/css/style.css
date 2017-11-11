@@ -178,8 +178,6 @@ footer p {
 .expand-icon {
   width: 16px;
   height: 16px;
-  margin-left: 8px;
-  margin-right: 8px;
 }
 
 .transparent-button {
@@ -214,5 +212,9 @@ footer p {
 }
 
 .more-comments-link {
+    margin-left: 16px;
+}
+
+.shift-right {
     margin-left: 16px;
 }

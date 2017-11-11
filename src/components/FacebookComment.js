@@ -9,7 +9,7 @@ class FacebookComment extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      visibleChildren: 10,
+      visibleChildren: 3,
       children: []
     };
 
@@ -32,16 +32,16 @@ class FacebookComment extends React.Component {
           <h4 className="comment-author">{this.props.author}</h4>
         </div>
         <div className="inner-comments">{this.props.message}</div>
-        { this.state.children.splice(0, this.state.visibleChildren).map(child => {
-          <div className="comment" key={child.id}>
+        { this.state.children.slice(0, this.state.visibleChildren).map(comment =>
+          <div className="comment" key={comment.id}>
             <div className="comment-header">
-              <h4 className="comment-author">{child.author}</h4>
+              <h4 className="comment-author">{comment.from.name}</h4>
             </div>
-            <div className="inner-comments">{child.message}</div>
+            <div className="inner-comments">{comment.message}</div>
           </div>
-        })}
+        )}
         { this.state.children.length > this.state.visibleChildren &&
-          <button className="transparent-button" onClick={() => this.setState({visibleChildren: this.state.visibleChildren + 10})}>
+          <button className="transparent-button shift-right" onClick={() => this.setState({visibleChildren: this.state.visibleChildren + 10})}>
             <div className="comment-header">
               <img className="expand-icon" src="/img/expand-icon.png"/>
               <h4 className="more-comments">more</h4>

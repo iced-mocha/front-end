@@ -9,7 +9,6 @@ class HackerNewsComment extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      content: "",
       expandComments: (props.depth != 2 && props.depth != 5),
       children: []
     };
@@ -29,7 +28,7 @@ class HackerNewsComment extends React.Component {
   }
 
   render() {
-    if (this.state.content == "") {
+    if (!this.state.content || !this.state.author) {
       return <div/>
     }
     return (

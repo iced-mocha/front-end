@@ -28,7 +28,7 @@ class FacebookComments extends React.Component {
   render() {
     return (
       <div>
-        { this.state.comments.slice(0, 6).map(comment => <FacebookComment author={comment.from.name} message={comment.message} id={comment.id} depth={0} />)
+        { this.state.comments.slice(0, 6).map(comment => <FacebookComment key={comment.id} author={comment.from.name} message={comment.message} id={comment.id} depth={0} fbToken={this.props.fbToken} />)
         }
         <a className="more-comments-link" href={this.props.postLink}>more</a>
       </div>
