@@ -22,6 +22,26 @@ class Post extends React.Component {
   }
 
   render() {
+    let dateMessage = "";
+    let postDate = new Date(this.props.Date)
+    if (!isNaN(postDate)) {
+      let diff = new Date() - postDate;
+      let minutes = Math.round(diff / (1000 * 60));
+      let hours = Math.round(diff / (1000 * 60 * 60));
+      let days = Math.round(diff / (1000 * 60 * 60 * 24));
+
+      if (minutes === 1) {
+        dateMessage = "1 minute ago";
+      } else if (hours < 1) {
+        dateMessage = minutes + " minutes ago";
+      } else if (hours === 1) {
+        dateMessage = "1 hour ago";
+      } else if (days < 2) {
+        dateMessage = hours + " hours ago";
+      } else if (days < 10000) {
+        dateMessage = days + " days ago";
+      }
+    }
     return (
       <ListGroupItem>
         <a href={this.props.PostLink}>
@@ -36,7 +56,8 @@ class Post extends React.Component {
                   <div className="post-title">{this.props.Title}</div>
                   <img className="post-img what-the-frick" src={this.props.imgUrl} alt="Reddit icon" />
                 </div>
-                <div className="post-date">{this.props.created}</div> <div className="post-author">Author: {this.props.Author}</div>
+                <div className="post-date">{dateMessage}</div>
+                <div className="post-author">{this.props.Author}</div>
               </div>
             </div>
           </div>
