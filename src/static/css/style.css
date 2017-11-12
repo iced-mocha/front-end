@@ -212,9 +212,13 @@ footer p {
 }
 
 .more-comments-link {
-    margin-left: 16px;
+  margin-left: 16px;
 }
 
 .shift-right {
-    margin-left: 16px;
+  margin-left: 16px;
+}
+
+.hidden {
+  display: None;
 }

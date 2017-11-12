@@ -30,7 +30,7 @@ class FacebookComments extends React.Component {
       <div>
         { this.state.comments.slice(0, 6).map(comment => <FacebookComment key={comment.id} author={comment.from.name} message={comment.message} id={comment.id} depth={0} fbToken={this.props.fbToken} />)
         }
-        <a className="more-comments-link" href={this.props.postLink}>more</a>
+        <a className="more-comments-link" href={this.props.postLink}>Full Post</a>
       </div>
     );
   }

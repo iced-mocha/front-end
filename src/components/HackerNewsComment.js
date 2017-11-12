@@ -9,7 +9,7 @@ class HackerNewsComment extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      expandComments: (props.depth != 2 && props.depth != 5),
+      expandComments: (props.depth != 3 && props.depth != 6),
       children: []
     };
     axios.get("https://hacker-news.firebaseio.com/v0/item/"+this.props.commentID+".json")
@@ -39,10 +39,10 @@ class HackerNewsComment extends React.Component {
             <h4 className="comment-author">{this.state.author}</h4>
           </div>
         </button>
-        { this.state.expandComments &&
+        <div className={!this.state.expandComments ? "hidden" : ""}>
           <div className="inner-comments" dangerouslySetInnerHTML={{ __html: this.state.content}} />
-        }
-      { this.state.expandComments && this.state.children }
+        { this.state.children }
+        </div>
       </div>
     );
   }
