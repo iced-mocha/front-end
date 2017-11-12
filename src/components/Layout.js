@@ -10,14 +10,10 @@ class Layout extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-	console.log("Received new props " + nextProps)
-    console.log(nextProps)
 	this.setState({ loggedIn: nextProps.loggedIn });  
   }
 
   render() {
-	console.log("In layour renderer")
-	console.log(this.state.loggedIn)
    return (	
      <div className="app-container">
 		<SiteHeader loggedIn={this.state.loggedIn}/>

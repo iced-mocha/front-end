@@ -42,9 +42,6 @@ class LoginForm extends React.Component {
 		  },
 	      success: function(json) {
 			// Cause a rerender of our global components
-			console.log("Successfully loggedin");
-			//debugger;
-			console.log("About to update parent loggedin state")
 			self.props.updateLoginStatus(true);
 			self.setState({loginRedirect: true});
 	      },

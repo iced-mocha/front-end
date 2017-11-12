@@ -46978,8 +46978,6 @@ var App = exports.App = function (_React$Component) {
 	function App(props) {
 		_classCallCheck(this, App);
 
-		console.log("App constructor called");
-
 		var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
 		_this.updateLoginStatus = _this.updateLoginStatus.bind(_this);
@@ -46998,14 +46996,6 @@ var App = exports.App = function (_React$Component) {
 			});
 		}
 	}, {
-		key: 'componentWillMount',
-		value: function componentWillMount() {
-			var self = this;
-			this.isLoggedIn(function (data) {
-				self.state.loggedIn = data;
-			});
-		}
-	}, {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			var self = this;
@@ -47016,8 +47006,6 @@ var App = exports.App = function (_React$Component) {
 	}, {
 		key: 'updateLoginStatus',
 		value: function updateLoginStatus(loggedInStatus) {
-			console.log("App.js: updating state.loggedIn to " + loggedInStatus);
-			loggedInGlobal = loggedInStatus;
 			this.setState({ loggedIn: loggedInStatus });
 		}
 	}, {
@@ -47025,8 +47013,6 @@ var App = exports.App = function (_React$Component) {
 		value: function render() {
 			var _this2 = this;
 
-			console.log(loggedInGlobal);
-			console.log("rendering: " + this.state.loggedIn);
 			return _react2.default.createElement(
 				_Layout2.default,
 				{ loggedIn: this.state.loggedIn },
@@ -47096,15 +47082,11 @@ var Layout = function (_React$Component) {
   _createClass(Layout, [{
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
-      console.log("Received new props " + nextProps);
-      console.log(nextProps);
       this.setState({ loggedIn: nextProps.loggedIn });
     }
   }, {
     key: 'render',
     value: function render() {
-      console.log("In layour renderer");
-      console.log(this.state.loggedIn);
       return _react2.default.createElement(
         'div',
         { className: 'app-container' },
@@ -58047,13 +58029,12 @@ var SignOutButton = function (_React$Component) {
 	_createClass(SignOutButton, [{
 		key: 'signout',
 		value: function signout() {
-			// Update local storage to match that were signed out
-			localStorage.setItem('logged-in', false);
 			(0, _axios2.default)({
 				method: 'post',
 				url: 'http://0.0.0.0:3000/v1/logout',
 				withCredentials: true
 			});
+			// TODO this should call App level state change
 			this.props.stateUpdate();
 		}
 	}, {
@@ -58078,17 +58059,15 @@ var AccountAction = function (_React$Component2) {
 
 		var _this2 = _possibleConstructorReturn(this, (AccountAction.__proto__ || Object.getPrototypeOf(AccountAction)).call(this, props));
 
-		_this2.loggedIn = _this2.isLoggedIn.bind(_this2);
 		_this2.signoutStateUpdate = _this2.signoutStateUpdate.bind(_this2);
-		_this2.state = { loggedIn: false };
+		_this2.state = {};
+		//this.state = { loggedIn: false }
 		return _this2;
 	}
 
 	_createClass(AccountAction, [{
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			console.log("Account action received new props: " + nextProps.loggedIn);
-			console.log(nextProps);
 			this.setState({ loggedIn: nextProps.loggedIn });
 		}
 	}, {
@@ -58097,30 +58076,11 @@ var AccountAction = function (_React$Component2) {
 			this.setState({ loggedIn: false });
 		}
 	}, {
-		key: 'isLoggedIn',
-		value: function isLoggedIn() {
-			var _this3 = this;
-
-			_axios2.default.get('http://0.0.0.0:3000/v1/loggedin', { withCredentials: true }).then(function (response) {
-				if (response.status === 200) {
-					// This is the source of truth for our logged in status.. 
-					// but we will rely on our session data until this request completes
-					_this3.setState({
-						loggedIn: response.data['logged-in']
-					});
-					console.log("Setting state to: " + response.data['logged-in']);
-
-					console.log(response.data);
-					console.log(_this3.state.loggedIn);
-				}
-			}).catch(function (err) {
-				console.log(err);
-			});
-		}
-	}, {
 		key: 'render',
 		value: function render() {
-			if (this.state.loggedIn) {
+			if (this.state.loggedIn == undefined) {
+				return _react2.default.createElement(_reactBootstrap.NavItem, { href: '/login' });
+			} else if (this.state.loggedIn) {
 				return _react2.default.createElement(SignOutButton, { stateUpdate: this.signoutStateUpdate });
 			}
 			return _react2.default.createElement(
@@ -58140,10 +58100,10 @@ var SiteHeader = function (_React$Component3) {
 	function SiteHeader(props) {
 		_classCallCheck(this, SiteHeader);
 
-		var _this4 = _possibleConstructorReturn(this, (SiteHeader.__proto__ || Object.getPrototypeOf(SiteHeader)).call(this, props));
+		var _this3 = _possibleConstructorReturn(this, (SiteHeader.__proto__ || Object.getPrototypeOf(SiteHeader)).call(this, props));
 
-		_this4.state = { loggedIn: props.loggedIn };
-		return _this4;
+		_this3.state = { loggedIn: props.loggedIn };
+		return _this3;
 	}
 
 	_createClass(SiteHeader, [{
@@ -63358,9 +63318,6 @@ var LoginForm = function (_React$Component) {
 								},
 								success: function success(json) {
 										// Cause a rerender of our global components
-										console.log("Successfully loggedin");
-										//debugger;
-										console.log("About to update parent loggedin state");
 										self.props.updateLoginStatus(true);
 										self.setState({ loginRedirect: true });
 								},

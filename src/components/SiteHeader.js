@@ -10,13 +10,12 @@ class SignOutButton extends React.Component {
   }
 
   signout() {
-	// Update local storage to match that were signed out
-	localStorage.setItem('logged-in', false)
 	axios({
 	  method: 'post',
 	  url: 'http://0.0.0.0:3000/v1/logout',
 	  withCredentials: true
 	});
+	// TODO this should call App level state change
     this.props.stateUpdate();
   }
 
@@ -31,14 +30,12 @@ class SignOutButton extends React.Component {
 class AccountAction extends React.Component {
   constructor(props) {
     super(props);
-	this.loggedIn = this.isLoggedIn.bind(this);
 	this.signoutStateUpdate = this.signoutStateUpdate.bind(this);
-    this.state = { loggedIn: false }
+	this.state = {};
+    //this.state = { loggedIn: false }
   }
   
   componentWillReceiveProps(nextProps) {
-	console.log("Account action received new props: " + nextProps.loggedIn)
-	console.log(nextProps)
 	this.setState({ loggedIn: nextProps.loggedIn });  
   }
 
@@ -46,28 +43,11 @@ class AccountAction extends React.Component {
 	this.setState({ loggedIn: false})
   }
 
-  isLoggedIn() {
-    axios.get('http://0.0.0.0:3000/v1/loggedin', {withCredentials: true})
-      .then(response => {
-		if (response.status === 200) {
-			// This is the source of truth for our logged in status.. 
-			// but we will rely on our session data until this request completes
-			this.setState({
-			  loggedIn: response.data['logged-in']
-			});
-			console.log("Setting state to: " + response.data['logged-in'])
-
-			console.log(response.data)
-			console.log(this.state.loggedIn)
-		}
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
   render() { 
-	if (this.state.loggedIn) {
+	if (this.state.loggedIn == undefined) {
+		return <NavItem href="/login"></NavItem>
+	}
+	else if (this.state.loggedIn) {
 		return ( <SignOutButton stateUpdate={this.signoutStateUpdate}/> );
     }
 	return(
