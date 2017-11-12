@@ -41,9 +41,11 @@ class LoginForm extends React.Component {
 			withCredentials: true
 		  },
 	      success: function(json) {
-			// Set session storage for better rendering 
-			localStorage.setItem('logged-in', true)
-
+			// Cause a rerender of our global components
+			console.log("Successfully loggedin");
+			//debugger;
+			console.log("About to update parent loggedin state")
+			self.props.updateLoginStatus(true);
 			self.setState({loginRedirect: true});
 	      },
           error: function (xhr) {
@@ -52,7 +54,6 @@ class LoginForm extends React.Component {
 	      }
 	   });
 	}
-
 
 	render() {
 	  if (this.state.loginRedirect) {
@@ -82,11 +83,15 @@ class LoginForm extends React.Component {
 }
 
 class LoginPage extends React.Component {
+  constructor (props){
+    super(props);
+  }
+
   render() {
     return (
       <div className="login-page">
         <h1>Login</h1>
-		<LoginForm />
+		<LoginForm updateLoginStatus={this.props.updateLoginStatus} test={"hello"}/>
         <FacebookSection />
         <RedditSection />
       </div>
