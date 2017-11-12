@@ -3,6 +3,7 @@ import $ from "jquery";
 import FacebookSection from './FacebookSection'
 import RedditSection from './RedditSection'
 import { LoginButton, SignupButton } from './Login'
+import { Redirect } from 'react-router';
 import { Form, FormGroup, FormControl, Button } from 'react-bootstrap'
 
 class LoginForm extends React.Component {
@@ -10,6 +11,7 @@ class LoginForm extends React.Component {
 	  super(props);
 	  this.prepareData = this.prepareData.bind(this);
 	  this.handleSubmit = this.handleSubmit.bind(this);
+      this.state = { loginRedirect: false };
 	}
 
 	// Converts the array data from serializeArray() into usable JSON
@@ -39,17 +41,25 @@ class LoginForm extends React.Component {
 			withCredentials: true
 		  },
 	      success: function(json) {
-		    // Probably want to do something different
-		    console.log("success: ", json);
+			// Set session storage for better rendering 
+			localStorage.setItem('logged-in', true)
+
+			self.setState({loginRedirect: true});
 	      },
           error: function (xhr) {
-		    console.log("error");
+		    // TODO: report log in errors
+			 console.log("error");
 	      }
 	   });
 	}
 
 
 	render() {
+	  if (this.state.loginRedirect) {
+	    return <Redirect push to="/" />;
+	  }
+
+
 	  return (
 		<div className="login-form">
 		  <Form id="loginForm" onSubmit={this.handleSubmit} method="post">
