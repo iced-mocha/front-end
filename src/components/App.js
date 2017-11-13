@@ -5,6 +5,7 @@ import { IndexPage } from './IndexPage';
 import LoginPage from './login/LoginPage';
 import SignupPage from './login/SignupPage';
 import HomePage from './home/HomePage';
+import SettingsPage from './settings/SettingsPage';
 import { NotFoundPage } from './NotFoundPage';
 import posts from '../data/posts';
 import axios from 'axios';
@@ -46,6 +47,7 @@ export class App extends React.Component {
 			<Switch>
 			  <Route exact path="/" component={HomePage} />
 			  <Route exact path="/home" component={HomePage} />
+			  <Route exact path="/settings" component={SettingsPage} />
 		      <Route exact path='/login' render={(props) => (
                 <LoginPage {...props} updateLoginStatus={this.updateLoginStatus} />
               )}/>
