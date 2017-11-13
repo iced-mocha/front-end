@@ -41,7 +41,7 @@ class LoggedInAsMenuItem extends React.Component {
 		this.state.username = "";
     }
 	
-    return (<MenuItem>Signed in as <br/>{this.state.username}</MenuItem>);
+    return (<MenuItem header className='menu-header'>Signed in as <br/><div className='menu-header menu-header-value'>{this.state.username}</div></MenuItem>);
   }
 }
 

@@ -12,6 +12,15 @@ a:hover {
   text-decoration: none !important;
 }
 
+li.menu-header,
+div.menu-header {
+  font-size: 14px;
+}
+
+.menu-header-value {
+  color: #333;
+}
+
 header {
   padding: 2em;
 }
