@@ -57987,7 +57987,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 Object.defineProperty(exports, "__esModule", {
-	value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -58015,135 +58015,156 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var SignOutButton = function (_React$Component) {
-	_inherits(SignOutButton, _React$Component);
+  _inherits(SignOutButton, _React$Component);
 
-	function SignOutButton(props) {
-		_classCallCheck(this, SignOutButton);
+  function SignOutButton(props) {
+    _classCallCheck(this, SignOutButton);
 
-		var _this = _possibleConstructorReturn(this, (SignOutButton.__proto__ || Object.getPrototypeOf(SignOutButton)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (SignOutButton.__proto__ || Object.getPrototypeOf(SignOutButton)).call(this, props));
 
-		_this.signout = _this.signout.bind(_this);
-		return _this;
-	}
+    _this.signout = _this.signout.bind(_this);
+    return _this;
+  }
 
-	_createClass(SignOutButton, [{
-		key: 'signout',
-		value: function signout() {
-			(0, _axios2.default)({
-				method: 'post',
-				url: 'http://0.0.0.0:3000/v1/logout',
-				withCredentials: true
-			});
-			// TODO this should call App level state change
-			this.props.stateUpdate();
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				_reactBootstrap.NavItem,
-				{ onClick: this.signout },
-				'Signout'
-			);
-		}
-	}]);
+  _createClass(SignOutButton, [{
+    key: 'signout',
+    value: function signout() {
+      console.log("Test signout function");
+      /*axios({
+      method: 'post',
+      url: 'http://0.0.0.0:3000/v1/logout',
+      withCredentials: true
+      });*/
+      // TODO this should call App level state change
+      //this.props.stateUpdate();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _reactBootstrap.MenuItem,
+        { onSelect: this.signout },
+        'Logout'
+      );
+    }
+  }]);
 
-	return SignOutButton;
+  return SignOutButton;
 }(_react2.default.Component);
 
 var AccountAction = function (_React$Component2) {
-	_inherits(AccountAction, _React$Component2);
+  _inherits(AccountAction, _React$Component2);
 
-	function AccountAction(props) {
-		_classCallCheck(this, AccountAction);
+  function AccountAction(props) {
+    _classCallCheck(this, AccountAction);
 
-		var _this2 = _possibleConstructorReturn(this, (AccountAction.__proto__ || Object.getPrototypeOf(AccountAction)).call(this, props));
+    var _this2 = _possibleConstructorReturn(this, (AccountAction.__proto__ || Object.getPrototypeOf(AccountAction)).call(this, props));
 
-		_this2.signoutStateUpdate = _this2.signoutStateUpdate.bind(_this2);
-		_this2.state = {};
-		//this.state = { loggedIn: false }
-		return _this2;
-	}
+    _this2.signoutStateUpdate = _this2.signoutStateUpdate.bind(_this2);
+    _this2.state = {};
+    //this.state = { loggedIn: false }
+    return _this2;
+  }
 
-	_createClass(AccountAction, [{
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(nextProps) {
-			this.setState({ loggedIn: nextProps.loggedIn });
-		}
-	}, {
-		key: 'signoutStateUpdate',
-		value: function signoutStateUpdate() {
-			this.setState({ loggedIn: false });
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			if (this.state.loggedIn == undefined) {
-				return _react2.default.createElement(_reactBootstrap.NavItem, { href: '/login' });
-			} else if (this.state.loggedIn) {
-				return _react2.default.createElement(SignOutButton, { stateUpdate: this.signoutStateUpdate });
-			}
-			return _react2.default.createElement(
-				_reactBootstrap.NavItem,
-				{ href: '/login' },
-				'Login'
-			);
-		}
-	}]);
+  _createClass(AccountAction, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.setState({ loggedIn: nextProps.loggedIn });
+    }
+  }, {
+    key: 'signoutStateUpdate',
+    value: function signoutStateUpdate() {
+      this.setState({ loggedIn: false });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      if (this.state.loggedIn == undefined) {
+        return _react2.default.createElement(_reactBootstrap.NavItem, { href: '/login' });
+      } else if (!this.state.loggedIn) {
+        return _react2.default.createElement(
+          _reactBootstrap.NavItem,
+          { href: '/login' },
+          'Login'
+        );
+      }
+      return _react2.default.createElement(
+        NavDropdown,
+        { eventKey: '4', title: 'Dropdown', id: 'nav-dropdown' },
+        _react2.default.createElement(
+          _reactBootstrap.MenuItem,
+          { eventKey: '4.1' },
+          'Action'
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.MenuItem,
+          { eventKey: '4.2' },
+          'Another action'
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.MenuItem,
+          { eventKey: '4.3' },
+          'Something else here'
+        ),
+        _react2.default.createElement(_reactBootstrap.MenuItem, { divider: true }),
+        _react2.default.createElement(SignOutMenuItem, { stateUpdate: this.signoutStateUpdate })
+      );
+    }
+  }]);
 
-	return AccountAction;
+  return AccountAction;
 }(_react2.default.Component);
 
 var SiteHeader = function (_React$Component3) {
-	_inherits(SiteHeader, _React$Component3);
+  _inherits(SiteHeader, _React$Component3);
 
-	function SiteHeader(props) {
-		_classCallCheck(this, SiteHeader);
+  function SiteHeader(props) {
+    _classCallCheck(this, SiteHeader);
 
-		var _this3 = _possibleConstructorReturn(this, (SiteHeader.__proto__ || Object.getPrototypeOf(SiteHeader)).call(this, props));
+    var _this3 = _possibleConstructorReturn(this, (SiteHeader.__proto__ || Object.getPrototypeOf(SiteHeader)).call(this, props));
 
-		_this3.state = { loggedIn: props.loggedIn };
-		return _this3;
-	}
+    _this3.state = { loggedIn: props.loggedIn };
+    return _this3;
+  }
 
-	_createClass(SiteHeader, [{
-		key: 'componentWillReceiveProps',
-		value: function componentWillReceiveProps(nextProps) {
-			this.setState({ loggedIn: nextProps.loggedIn });
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			return _react2.default.createElement(
-				_reactBootstrap.Navbar,
-				null,
-				_react2.default.createElement(
-					_reactBootstrap.Navbar.Header,
-					null,
-					_react2.default.createElement(
-						_reactBootstrap.Navbar.Brand,
-						null,
-						_react2.default.createElement(
-							'a',
-							{ href: '/' },
-							'Iced-Mocha'
-						)
-					)
-				),
-				_react2.default.createElement(
-					_reactBootstrap.Navbar.Collapse,
-					null,
-					_react2.default.createElement(
-						_reactBootstrap.Nav,
-						{ pullRight: true },
-						_react2.default.createElement(AccountAction, { loggedIn: this.state.loggedIn })
-					)
-				)
-			);
-		}
-	}]);
+  _createClass(SiteHeader, [{
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      this.setState({ loggedIn: nextProps.loggedIn });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        _reactBootstrap.Navbar,
+        null,
+        _react2.default.createElement(
+          _reactBootstrap.Navbar.Header,
+          null,
+          _react2.default.createElement(
+            _reactBootstrap.Navbar.Brand,
+            null,
+            _react2.default.createElement(
+              'a',
+              { href: '/' },
+              'Iced-Mocha'
+            )
+          )
+        ),
+        _react2.default.createElement(
+          _reactBootstrap.Navbar.Collapse,
+          null,
+          _react2.default.createElement(
+            _reactBootstrap.Nav,
+            { pullRight: true },
+            _react2.default.createElement(AccountAction, { loggedIn: this.state.loggedIn })
+          )
+        )
+      );
+    }
+  }]);
 
-	return SiteHeader;
+  return SiteHeader;
 }(_react2.default.Component);
 
 exports.default = SiteHeader;
@@ -62895,7 +62916,7 @@ var HackerNewsComments = function (_React$Component) {
         _react2.default.createElement(
           'a',
           { className: 'more-comments-link', href: "https://news.ycombinator.com/item?id=" + this.props.postID },
-          'more'
+          'Full Post'
         )
       );
     }
@@ -62953,7 +62974,7 @@ var HackerNewsComment = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (HackerNewsComment.__proto__ || Object.getPrototypeOf(HackerNewsComment)).call(this, props, context));
 
     _this.state = {
-      expandComments: props.depth != 2 && props.depth != 5,
+      expandComments: props.depth != 3 && props.depth != 6,
       children: []
     };
     _axios2.default.get("https://hacker-news.firebaseio.com/v0/item/" + _this.props.commentID + ".json").then(function (response) {
@@ -62997,8 +63018,12 @@ var HackerNewsComment = function (_React$Component) {
             )
           )
         ),
-        this.state.expandComments && _react2.default.createElement('div', { className: 'inner-comments', dangerouslySetInnerHTML: { __html: this.state.content } }),
-        this.state.expandComments && this.state.children
+        _react2.default.createElement(
+          'div',
+          { className: !this.state.expandComments ? "hidden" : "" },
+          _react2.default.createElement('div', { className: 'inner-comments', dangerouslySetInnerHTML: { __html: this.state.content } }),
+          this.state.children
+        )
       );
     }
   }]);
@@ -63087,7 +63112,7 @@ var FacebookComments = function (_React$Component) {
         _react2.default.createElement(
           'a',
           { className: 'more-comments-link', href: this.props.postLink },
-          'more'
+          'Full Post'
         )
       );
     }
