@@ -9,10 +9,12 @@ class HomePage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+      posts: [],
       fbId: "",
-      fbToken: ""
+      fbToken: "",
+      pageToken: ""
     };
-    this.getPosts = this.getPosts.bind(this);
+    this.getMorePosts = this.getMorePosts.bind(this);
     this.onFacebookLogin = this.onFacebookLogin.bind(this);
   }
 
@@ -23,12 +25,21 @@ class HomePage extends React.Component {
     });
   }
 
-  getPosts() {
-    console.log("getting posts")
-    axios.get("http://localhost:8080/posts?fb_id="+this.state.fbId+"&fb_token="+this.state.fbToken)
+  // TODO: This function shouldn't depend on state
+  getMorePosts() {
+    // TODO: We need to detect when there are no more pages to load
+    var url
+    if (this.state.pageToken !== "") {
+      url = "http://localhost:8080/posts?page_token=" + this.state.pageToken;
+    } else {
+      url = "http://localhost:8080/posts?fb_id="+this.state.fbId+"&fb_token="+this.state.fbToken
+    }
+    axios.get(url)
       .then(response => {
+        var data = JSON.parse(response.data) // TODO: Shouldn't need to call JSON.parse
         this.setState({
-          posts: JSON.parse(response.data)
+          posts: this.state.posts.concat(data.posts),
+          pageToken: data.page_token
         });
       })
       .catch(err => {
@@ -65,7 +76,7 @@ class HomePage extends React.Component {
         </ListGroup> 
       </div>
       <FacebookSection onLogin={this.onFacebookLogin} />
-			<button onClick={this.getPosts}>
+			<button onClick={this.getMorePosts}>
           		Click me
         	</button>
       <p>

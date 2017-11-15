@@ -15,12 +15,14 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(Express.static(path.join(__dirname, 'static')));
 
 app.get('/posts', (req, res) => {
+  var queryParams = {
+    fb_id: req.query.fb_id,
+    fb_token: req.query.fb_token,
+    page_token: req.query.page_token
+  };
   var options = {
     url: 'http://core:3000/v1/posts',
-    qs:  {
-      fb_id: req.query.fb_id,
-      fb_token: req.query.fb_token
-    }
+    qs: queryParams
   }
   request(options)
     .then(response => {
