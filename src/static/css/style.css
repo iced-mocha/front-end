@@ -21,6 +21,23 @@ div.menu-header {
   color: #333;
 }
 
+.unlinked-msg {
+  font-size: 15px;
+}
+
+.settings-header {
+  font-weight: bold;
+  font-size: 26px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.settings-page {
+  width: 60%;
+  margin: auto;
+  font-size: 14px;
+}
+
 header {
   padding: 2em;
 }
@@ -56,6 +73,12 @@ footer p {
 
 .signup-link:hover {
   color: #333;
+}
+
+.account-img {
+  max-height: 22px !important;
+  max-width: 22px !important;
+  margin-right: 8px;
 }
 
 .post-img {

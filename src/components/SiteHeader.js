@@ -49,29 +49,15 @@ class AccountAction extends React.Component {
   constructor(props) {
     super(props);
 	this.signoutStateUpdate = this.signoutStateUpdate.bind(this);
-	this.updateUserInfo = this.updateUserInfo.bind(this);
 	this.state = { user: {}};
   }
   
   componentWillReceiveProps(nextProps) {
-	this.setState({ loggedIn: nextProps.loggedIn });  
-    this.updateUserInfo(nextProps.loggedIn)
+	this.setState({ loggedIn: nextProps.loggedIn, user: nextProps.user });  
   }
 
   signoutStateUpdate() {
 	this.setState({ loggedIn: false})
-  }
-
-  updateUserInfo(loggedIn) {
-	if (!loggedIn) return;
-	// TODO: right now we are ignoring errors not sure what else to do with it
-	axios.get('http://0.0.0.0:3000/v1/users', {withCredentials: true})
-	  .then(response => {
-		console.log("response: ")
-			console.log(response)
-			console.log(response.data)
-		this.setState({ user: response.data})
-	   });
   }
 
   render() { 
@@ -82,7 +68,7 @@ class AccountAction extends React.Component {
     }
 	return(
         <NavDropdown eventKey="4" title="Profile" id="nav-dropdown">
-		  <LoggedInAsMenuItem username={this.state.user.username}/>
+		  <LoggedInAsMenuItem username={this.state.user['username']}/>
           <MenuItem divider />
           <MenuItem eventKey="4.1">Settings</MenuItem>
           <MenuItem divider />
@@ -95,11 +81,11 @@ class AccountAction extends React.Component {
 class SiteHeader extends React.Component {
   constructor(props) {
     super(props);
-	this.state = { loggedIn: props.loggedIn }
+	this.state = { loggedIn: props.loggedIn, user: props.user }
   }
   
   componentWillReceiveProps(nextProps) {
-	this.setState({ loggedIn: nextProps.loggedIn });  
+	this.setState({ loggedIn: nextProps.loggedIn, user: nextProps.user });  
   }
 
   render() {
@@ -114,7 +100,7 @@ class SiteHeader extends React.Component {
 
 			  <Navbar.Collapse>
 				<Nav pullRight>
-				  <AccountAction loggedIn={this.state.loggedIn}/>
+				  <AccountAction loggedIn={this.state.loggedIn} user={this.state.user}/>
 				</Nav>
 			  </Navbar.Collapse>
 

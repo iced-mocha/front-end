@@ -19,22 +19,38 @@ export class App extends React.Component {
 	  super(props);
 	  this.updateLoginStatus = this.updateLoginStatus.bind(this);
 	  this.isLoggedIn = this.isLoggedIn.bind(this);
-      this.state = { loggedIn: false };
+	  this.updateUser = this.updateUser.bind(this);
+      this.state = { loggedIn: false, user: {} };
 	}
 	  
-    isLoggedIn(f) {
+    isLoggedIn() {
+	  var self = this;
 	  axios.get('http://0.0.0.0:3000/v1/loggedin', {withCredentials: true})
 	    .then(response => {
-			f(response.data['logged-in'])
+			self.setState({loggedIn: response.data['logged-in']})
 	     })
 	     .catch(err => {
-		  console.log(err);
+		    self.setState({ loggedIn: false })
 	     });
      }
 
+	updateUser() {
+	    var self = this;
+		axios.get('http://0.0.0.0:3000/v1/users', {withCredentials: true})
+	      .then(response => {
+			console.log("trying to set state")
+			self.setState({user: response.data})
+	      })
+	      .catch(err => {
+		    self.setState({user: {}})
+	      });
+
+	}	
+
     componentDidMount() {
 		var self = this;
-		this.isLoggedIn(function(data) { self.setState({loggedIn: data }); })
+		this.isLoggedIn()
+		this.updateUser()
     }
 
     updateLoginStatus(loggedInStatus) {
@@ -43,11 +59,13 @@ export class App extends React.Component {
 
     render() { 
 	 return (
-		  <Layout loggedIn={this.state.loggedIn}>
+		  <Layout loggedIn={this.state.loggedIn} user={this.state.user}>
 			<Switch>
 			  <Route exact path="/" component={HomePage} />
 			  <Route exact path="/home" component={HomePage} />
-			  <Route exact path="/settings" component={SettingsPage} />
+			  <Route exact path="/settings" render={(props) => (
+				<SettingsPage {...props} user={this.state.user} />
+			  )}/>
 		      <Route exact path='/login' render={(props) => (
                 <LoginPage {...props} updateLoginStatus={this.updateLoginStatus} />
               )}/>
