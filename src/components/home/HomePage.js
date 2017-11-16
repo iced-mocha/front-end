@@ -1,7 +1,9 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import axios from 'axios';
 import FacebookSection from '../login/FacebookSection';
 import Post from '../Post';
+import util from 'util';
 import { ListGroup } from 'react-bootstrap';
 import { ListGroupItem } from 'react-bootstrap';
 
@@ -12,10 +14,12 @@ class HomePage extends React.Component {
       posts: [],
       fbId: "",
       fbToken: "",
-      pageToken: ""
+      pageToken: "",
+      loadingMorePosts: false
     };
     this.getMorePosts = this.getMorePosts.bind(this);
     this.onFacebookLogin = this.onFacebookLogin.bind(this);
+    this.onScroll = this.onScroll.bind(this);
   }
 
   onFacebookLogin(id, token) {
@@ -27,6 +31,7 @@ class HomePage extends React.Component {
 
   // TODO: This function shouldn't depend on state
   getMorePosts() {
+    this.setState({loadingMorePosts: true});
     // TODO: We need to detect when there are no more pages to load
     var url
     if (this.state.pageToken !== "") {
@@ -39,12 +44,24 @@ class HomePage extends React.Component {
         var data = JSON.parse(response.data) // TODO: Shouldn't need to call JSON.parse
         this.setState({
           posts: this.state.posts.concat(data.posts),
-          pageToken: data.page_token
+          pageToken: data.page_token,
+          loadingMorePosts: false
         });
       })
       .catch(err => {
         console.log(err);
       });
+  }
+
+  onScroll() {
+    const distToBottom = ReactDOM.findDOMNode(this.refs["post-list"]).getBoundingClientRect().bottom - window.innerHeight;
+    if (distToBottom < 1000 && !this.state.loadingMorePosts) {
+      this.getMorePosts();
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener("scroll", this.onScroll);
   }
 
   render() {
@@ -68,10 +85,11 @@ class HomePage extends React.Component {
             return <Post key={postData.id} {...postData} />
           });
     }
+
     return (
       <div className="home-page">
       <div className="post-list">
-        <ListGroup>
+        <ListGroup ref="post-list">
           { listItems }
         </ListGroup> 
       </div>
