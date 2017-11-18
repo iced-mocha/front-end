@@ -64815,8 +64815,6 @@ var LinkedAccount = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, (LinkedAccount.__proto__ || Object.getPrototypeOf(LinkedAccount)).call(this, props));
 
-		console.log("in linked account");
-		console.log(props);
 		_this.imageForType = _this.imageForType.bind(_this);
 		_this.altForType = _this.altForType.bind(_this);
 		_this.state = { type: props.type, identification: props.identification };
@@ -64979,8 +64977,6 @@ var SettingsPage = function (_React$Component3) {
 		value: function buildLinkedAccountsList() {
 			var i = 0;
 			var linkedAccounts = this.state.linkedAccounts.map(function (d) {
-				console.log("Mapping linked account");
-				console.log(d);
 				i++;return _react2.default.createElement(LinkedAccount, { type: d['type'], key: i, identification: d['identification'] });
 			});
 
