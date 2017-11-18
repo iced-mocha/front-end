@@ -11,6 +11,11 @@ class LinkedAccount extends React.Component {
 	this.state = {type: props.type, identification: props.identification}
   }
 
+  componentWillReceiveProps(nextProps) {
+	this.props = nextProps
+	this.setState({type: nextProps.type, identification: nextProps.identification})
+  }
+
   imageForType(type) {
 	if (type === "reddit") {
 		return "/img/reddit-icon.png"
@@ -94,12 +99,48 @@ class UnlinkedAccount extends React.Component {
 class SettingsPage extends React.Component {
   constructor(props) {
     super(props);
+    this.buildLinkedAccountsList = this.buildLinkedAccountsList.bind(this);
+    this.buildUnlinkedAccountsList = this.buildUnlinkedAccountsList.bind(this);
+    this.wrapInSettingsHeader = this.wrapInSettingsHeader.bind(this);
     this.state = {user: {}, linkedAccounts: [], unlinkedAccounts: []};
   }
 
   componentWillReceiveProps(nextProps) {
 	this.setState({ user: nextProps.user });  
 	this.getLinkedAccounts(nextProps.user)
+  }
+
+  wrapInSettingsHeader(title, content) {
+	 return ( 
+	  <div>
+		<div className='settings-header'>{title}</div>
+		{content}
+	  </div>
+	  );
+  }
+
+  buildLinkedAccountsList() {
+	var i = 0;
+    const linkedAccounts = this.state.linkedAccounts.map((d) => { 
+		i++; return <LinkedAccount type={d['type']} key={i} identification={d['identification']}/>;
+	});
+
+	if (i > 0) {
+		return this.wrapInSettingsHeader("Linked Accounts:", linkedAccounts)
+	}
+	return linkedAccounts;
+  }
+  
+  buildUnlinkedAccountsList() {
+	var i = 0;
+    const unlinkedAccounts = this.state.unlinkedAccounts.map((d) => { 
+		i++; return <UnlinkedAccount username={this.state.user['username']} type={d['type']} key={i}/>; 
+	} );
+
+	if (i > 0) {
+		return this.wrapInSettingsHeader("Unlinked Accounts:", unlinkedAccounts)
+	}
+	return unlinkedAccounts;
   }
 
   getLinkedAccounts(user) {
@@ -116,20 +157,13 @@ class SettingsPage extends React.Component {
   }
 
   render() {
-	var i = 0
-    const linkedAccounts = this.state.linkedAccounts.map((d) => { <LinkedAccount type={d['type']} key={i} identification={d.identification}/>; i++; } );
-    const unlinkedAccounts = this.state.unlinkedAccounts.map((d) => { 
-		i++; return <UnlinkedAccount username={this.state.user['username']} type={d['type']} key={i}/>; 
-	} );
 	return (
       // Currently conditionally render linked accounts header: TODO: put this in a function/component}
 	  <div className='settings-page'> 	
 			  <div className='settings-header'>Logged in as:</div>
 				<div className='settings-value'>{this.state.user['username']}</div>
-			  {(linkedAccounts.length === 0) ? "" : <div className='settings-header'>Linked Accounts:</div>}
-				{linkedAccounts}
-			  {(unlinkedAccounts.length === 0) ? "" : <div className='settings-header'>Unlinked Accounts:</div>}
-				{unlinkedAccounts}
+				{this.buildLinkedAccountsList()}
+				{this.buildUnlinkedAccountsList()}
 			<Button>
 			  Save
 			</Button>

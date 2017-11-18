@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import $ from "jquery";
 import { NavDropdown, Navbar, NavItem, Nav, MenuItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 class SignOutMenuItem extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class SignOutMenuItem extends React.Component {
 	  url: 'http://0.0.0.0:3000/v1/logout',
 	  withCredentials: true
 	});
-	// TODO this should call App level state change
+	// This function is passed into update state further up the tree
     this.props.stateUpdate();
   }
 
@@ -70,7 +71,9 @@ class AccountAction extends React.Component {
         <NavDropdown eventKey="4" title="Profile" id="nav-dropdown">
 		  <LoggedInAsMenuItem username={this.state.user['username']}/>
           <MenuItem divider />
-          <MenuItem eventKey="4.1">Settings</MenuItem>
+		  <LinkContainer to="/settings">
+            <MenuItem eventKey="4.1">Settings</MenuItem>
+		  </LinkContainer>
           <MenuItem divider />
 	      <SignOutMenuItem stateUpdate={this.signoutStateUpdate}/>
         </NavDropdown>
