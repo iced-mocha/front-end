@@ -19,6 +19,7 @@ class Layout extends React.Component {
 		<SiteHeader loggedIn={this.state.loggedIn} user={this.state.user}/>
 		<div className="app-content">{this.props.children}</div>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css"></link>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"></link>
 	  </div>
     );
   }

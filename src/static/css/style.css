@@ -25,6 +25,10 @@ div.menu-header {
   font-size: 15px;
 }
 
+.linked-delete-icon {
+  margin-left: 4px;
+}
+
 .settings-header {
   font-weight: bold;
   font-size: 26px;

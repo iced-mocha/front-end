@@ -2,12 +2,14 @@ import React from 'react';
 import axios from 'axios';
 import RedditSection from '../login/RedditSection'
 import { Jumbotron, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import FontAwesome from 'react-fontawesome'
 
 class LinkedAccount extends React.Component {
 	constructor(props) {
 		super(props);
 		this.imageForType = this.imageForType.bind(this);
 		this.altForType = this.altForType.bind(this);
+		this.deleteLink = this.deleteLink.bind(this);
 		this.state = {type: props.type, identification: props.identification};
 	}
 
@@ -30,11 +32,23 @@ class LinkedAccount extends React.Component {
 		return "";
 	}
 
+	deleteLink() {
+		var self = this
+		axios({
+			method: 'delete',
+		  url: 'http://0.0.0.0:3000/v1/users/accounts/' + self.state.type,
+			withCredentials: true
+		}).then(function(response) {
+				self.state.removeLinkFromParent(self.state.type)
+		});
+	}
+
   render() {
 		return(
 			<div> 
 				<img className="account-img" src={this.imageForType(this.state.type)} alt={this.altForType(this.state.type)} /> 
 				{this.state.identification}
+				<FontAwesome onClick={this.deleteLink} className="linked-delete-icon" name="times"/>
 			</div>
     );
   }
@@ -104,6 +118,16 @@ class SettingsPage extends React.Component {
     this.wrapInSettingsHeader = this.wrapInSettingsHeader.bind(this);
     this.state = {user: {}, linkedAccounts: [], unlinkedAccounts: []};
   }
+	
+	removeLinkFromParent(type) {
+		newLinks = []
+		for (i = 0; i < this.state.linkedAccounts.length; i++) {
+			if (linkedAccounts[i]['type'] !== type) {
+				newLinks.push(linkedAccounts[i])
+			}
+		}
+		this.setState({unlinkedAccounts: unlinkedAccounts.push({type: 'reddit'}), linkedAccounts: newLinks})
+	}
 
   componentWillReceiveProps(nextProps) {
 		this.setState({ user: nextProps.user });
