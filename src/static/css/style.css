@@ -21,12 +21,29 @@ div.menu-header {
   color: #333;
 }
 
+html {
+ background: #F0F0F0;
+}
+
+/* Styling for the /settings page */
+
+.account-value {
+  font-size: 16px;
+}
+
 .unlinked-msg {
   font-size: 15px;
 }
 
-.linked-delete-icon {
-  margin-left: 4px;
+.linked-delete-icon:hover {
+  color: #81b9c9;
+  cursor: pointer;
+}
+
+.settings-header-top {
+  font-weight: bold;
+  font-size: 26px;
+  margin-bottom: 4px;
 }
 
 .settings-header {
@@ -36,11 +53,27 @@ div.menu-header {
   margin-bottom: 4px;
 }
 
+.account-img {
+  max-height: 20px !important;
+  max-width: 20px !important;
+  margin-right: 8px;
+  padding-bottom: 2px;
+}
+
+.account-row {
+  height: 24px;
+}
+
 .settings-page {
-  width: 60%;
+  width: 40%;
+  padding: 10px;
+  border-radius: 4px;
   margin: auto;
   font-size: 14px;
+  background: #f8f8f8;
 }
+
+/* End of styling for the /settings page */
 
 header {
   padding: 2em;
@@ -77,12 +110,6 @@ footer p {
 
 .signup-link:hover {
   color: #333;
-}
-
-.account-img {
-  max-height: 22px !important;
-  max-width: 22px !important;
-  margin-right: 8px;
 }
 
 .post-img {

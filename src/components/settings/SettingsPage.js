@@ -2,20 +2,29 @@ import React from 'react';
 import axios from 'axios';
 import RedditSection from '../login/RedditSection'
 import { Jumbotron, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import FontAwesome from 'react-fontawesome'
 
+// This component display information about a particular account linked for the user (i.e. reddit/facebook etc.)
 class LinkedAccount extends React.Component {
 	constructor(props) {
 		super(props);
 		this.imageForType = this.imageForType.bind(this);
 		this.altForType = this.altForType.bind(this);
 		this.deleteLink = this.deleteLink.bind(this);
-		this.state = {type: props.type, identification: props.identification};
+		this.state = {
+			type: props.type, 
+			identification: props.identification, 
+			removeLinkFromParent: props.removeLinkFromParent
+		};
 	}
 
 	componentWillReceiveProps(nextProps) {
-		this.props = nextProps;
-		this.setState({type: nextProps.type, identification: nextProps.identification});
+		this.setState({
+			type: nextProps.type, 
+			identification: nextProps.identification,
+			removeLinkFromParent: nextProps.removeLinkFromParent
+		});
 	}
 
 	imageForType(type) {
@@ -33,23 +42,25 @@ class LinkedAccount extends React.Component {
 	}
 
 	deleteLink() {
-		var self = this
 		axios({
 			method: 'delete',
-		  url: 'http://0.0.0.0:3000/v1/users/accounts/' + self.state.type,
+		  url: 'http://0.0.0.0:3000/v1/users/accounts/' + this.state.type,
 			withCredentials: true
 		}).then(function(response) {
-				self.state.removeLinkFromParent(self.state.type)
+				//self.state.removeLinkFromParent(self.state.type)
 		});
+		this.state.removeLinkFromParent(this.state.type)
 	}
 
   render() {
 		return(
-			<div> 
-				<img className="account-img" src={this.imageForType(this.state.type)} alt={this.altForType(this.state.type)} /> 
-				{this.state.identification}
-				<FontAwesome onClick={this.deleteLink} className="linked-delete-icon" name="times"/>
-			</div>
+			<Row className='account-row'> 
+				<Col md={11}>
+					<img className="account-img" src={this.imageForType(this.state.type)} alt={this.altForType(this.state.type)} />
+					<span className="account-value" >{this.state.identification} </span> 
+				</Col>
+				<Col md={1}><FontAwesome onClick={this.deleteLink} className="linked-delete-icon" name="times"/></Col>
+			</Row>
     );
   }
 }
@@ -116,17 +127,21 @@ class SettingsPage extends React.Component {
     this.buildLinkedAccountsList = this.buildLinkedAccountsList.bind(this);
     this.buildUnlinkedAccountsList = this.buildUnlinkedAccountsList.bind(this);
     this.wrapInSettingsHeader = this.wrapInSettingsHeader.bind(this);
+		this.removeLinkFromParent = this.removeLinkFromParent.bind(this);
     this.state = {user: {}, linkedAccounts: [], unlinkedAccounts: []};
   }
 	
 	removeLinkFromParent(type) {
-		newLinks = []
+		var i = 0;
+		var newLinks = [];
 		for (i = 0; i < this.state.linkedAccounts.length; i++) {
-			if (linkedAccounts[i]['type'] !== type) {
-				newLinks.push(linkedAccounts[i])
+			if (this.state.linkedAccounts[i]['type'] !== type) {
+				newLinks.push(this.state.linkedAccounts[i]);
 			}
 		}
-		this.setState({unlinkedAccounts: unlinkedAccounts.push({type: 'reddit'}), linkedAccounts: newLinks})
+		
+		this.state.unlinkedAccounts.push({type: type})
+		this.setState({unlinkedAccounts: this.state.unlinkedAccounts, linkedAccounts: newLinks})
 	}
 
   componentWillReceiveProps(nextProps) {
@@ -145,8 +160,8 @@ class SettingsPage extends React.Component {
 
   buildLinkedAccountsList() {
 		var i = 0;
-			const linkedAccounts = this.state.linkedAccounts.map((d) => { 
-			i++; return <LinkedAccount type={d['type']} key={i} identification={d['identification']}/>;
+		var linkedAccounts = this.state.linkedAccounts.map((d) => { 
+			i++; return <LinkedAccount type={d['type']} key={i} identification={d['identification']} removeLinkFromParent={this.removeLinkFromParent}/>;
 		});
 
 		if (i > 0) {
@@ -184,13 +199,10 @@ class SettingsPage extends React.Component {
 		return (
 				// Currently conditionally render linked accounts header: TODO: put this in a function/component}
 				<div className='settings-page'> 	
-					<div className='settings-header'>Logged in as:</div>
+					<div className='settings-header-top'>Logged in as:</div>
 					<div className='settings-value'>{this.state.user['username']}</div>
 					{this.buildLinkedAccountsList()}
 					{this.buildUnlinkedAccountsList()}
-				<Button>
-					Save
-				</Button>
 			</div>
 		);
   }

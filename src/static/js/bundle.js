@@ -64812,6 +64812,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// This component display information about a particular account linked for the user (i.e. reddit/facebook etc.)
 var LinkedAccount = function (_React$Component) {
 	_inherits(LinkedAccount, _React$Component);
 
@@ -64823,15 +64824,22 @@ var LinkedAccount = function (_React$Component) {
 		_this.imageForType = _this.imageForType.bind(_this);
 		_this.altForType = _this.altForType.bind(_this);
 		_this.deleteLink = _this.deleteLink.bind(_this);
-		_this.state = { type: props.type, identification: props.identification };
+		_this.state = {
+			type: props.type,
+			identification: props.identification,
+			removeLinkFromParent: props.removeLinkFromParent
+		};
 		return _this;
 	}
 
 	_createClass(LinkedAccount, [{
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			this.props = nextProps;
-			this.setState({ type: nextProps.type, identification: nextProps.identification });
+			this.setState({
+				type: nextProps.type,
+				identification: nextProps.identification,
+				removeLinkFromParent: nextProps.removeLinkFromParent
+			});
 		}
 	}, {
 		key: 'imageForType',
@@ -64852,24 +64860,37 @@ var LinkedAccount = function (_React$Component) {
 	}, {
 		key: 'deleteLink',
 		value: function deleteLink() {
-			var self = this;
 			(0, _axios2.default)({
 				method: 'delete',
-				url: 'http://0.0.0.0:3000/v1/users/accounts/' + self.state.type,
+				url: 'http://0.0.0.0:3000/v1/users/accounts/' + this.state.type,
 				withCredentials: true
 			}).then(function (response) {
-				self.state.removeLinkFromParent(self.state.type);
+				//self.state.removeLinkFromParent(self.state.type)
 			});
+			this.state.removeLinkFromParent(this.state.type);
 		}
 	}, {
 		key: 'render',
 		value: function render() {
 			return _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement('img', { className: 'account-img', src: this.imageForType(this.state.type), alt: this.altForType(this.state.type) }),
-				this.state.identification,
-				_react2.default.createElement(_reactFontawesome2.default, { onClick: this.deleteLink, className: 'linked-delete-icon', name: 'times' })
+				_reactBootstrap.Row,
+				{ className: 'account-row' },
+				_react2.default.createElement(
+					_reactBootstrap.Col,
+					{ md: 11 },
+					_react2.default.createElement('img', { className: 'account-img', src: this.imageForType(this.state.type), alt: this.altForType(this.state.type) }),
+					_react2.default.createElement(
+						'span',
+						{ className: 'account-value' },
+						this.state.identification,
+						' '
+					)
+				),
+				_react2.default.createElement(
+					_reactBootstrap.Col,
+					{ md: 1 },
+					_react2.default.createElement(_reactFontawesome2.default, { onClick: this.deleteLink, className: 'linked-delete-icon', name: 'times' })
+				)
 			);
 		}
 	}]);
@@ -64967,6 +64988,7 @@ var SettingsPage = function (_React$Component3) {
 		_this3.buildLinkedAccountsList = _this3.buildLinkedAccountsList.bind(_this3);
 		_this3.buildUnlinkedAccountsList = _this3.buildUnlinkedAccountsList.bind(_this3);
 		_this3.wrapInSettingsHeader = _this3.wrapInSettingsHeader.bind(_this3);
+		_this3.removeLinkFromParent = _this3.removeLinkFromParent.bind(_this3);
 		_this3.state = { user: {}, linkedAccounts: [], unlinkedAccounts: [] };
 		return _this3;
 	}
@@ -64974,13 +64996,16 @@ var SettingsPage = function (_React$Component3) {
 	_createClass(SettingsPage, [{
 		key: 'removeLinkFromParent',
 		value: function removeLinkFromParent(type) {
-			newLinks = [];
+			var i = 0;
+			var newLinks = [];
 			for (i = 0; i < this.state.linkedAccounts.length; i++) {
-				if (linkedAccounts[i]['type'] !== type) {
-					newLinks.push(linkedAccounts[i]);
+				if (this.state.linkedAccounts[i]['type'] !== type) {
+					newLinks.push(this.state.linkedAccounts[i]);
 				}
 			}
-			this.setState({ unlinkedAccounts: unlinkedAccounts.push({ type: 'reddit' }), linkedAccounts: newLinks });
+
+			this.state.unlinkedAccounts.push({ type: type });
+			this.setState({ unlinkedAccounts: this.state.unlinkedAccounts, linkedAccounts: newLinks });
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -65005,9 +65030,11 @@ var SettingsPage = function (_React$Component3) {
 	}, {
 		key: 'buildLinkedAccountsList',
 		value: function buildLinkedAccountsList() {
+			var _this4 = this;
+
 			var i = 0;
 			var linkedAccounts = this.state.linkedAccounts.map(function (d) {
-				i++;return _react2.default.createElement(LinkedAccount, { type: d['type'], key: i, identification: d['identification'] });
+				i++;return _react2.default.createElement(LinkedAccount, { type: d['type'], key: i, identification: d['identification'], removeLinkFromParent: _this4.removeLinkFromParent });
 			});
 
 			if (i > 0) {
@@ -65018,11 +65045,11 @@ var SettingsPage = function (_React$Component3) {
 	}, {
 		key: 'buildUnlinkedAccountsList',
 		value: function buildUnlinkedAccountsList() {
-			var _this4 = this;
+			var _this5 = this;
 
 			var i = 0;
 			var unlinkedAccounts = this.state.unlinkedAccounts.map(function (d) {
-				i++;return _react2.default.createElement(UnlinkedAccount, { username: _this4.state.user['username'], type: d['type'], key: i });
+				i++;return _react2.default.createElement(UnlinkedAccount, { username: _this5.state.user['username'], type: d['type'], key: i });
 			});
 
 			if (i > 0) {
@@ -65054,7 +65081,7 @@ var SettingsPage = function (_React$Component3) {
 					{ className: 'settings-page' },
 					_react2.default.createElement(
 						'div',
-						{ className: 'settings-header' },
+						{ className: 'settings-header-top' },
 						'Logged in as:'
 					),
 					_react2.default.createElement(
@@ -65063,12 +65090,7 @@ var SettingsPage = function (_React$Component3) {
 						this.state.user['username']
 					),
 					this.buildLinkedAccountsList(),
-					this.buildUnlinkedAccountsList(),
-					_react2.default.createElement(
-						_reactBootstrap.Button,
-						null,
-						'Save'
-					)
+					this.buildUnlinkedAccountsList()
 				)
 			);
 		}
