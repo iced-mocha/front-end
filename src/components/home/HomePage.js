@@ -93,7 +93,6 @@ class HomePage extends React.Component {
           { listItems }
         </ListGroup> 
       </div>
-      <FacebookSection onLogin={this.onFacebookLogin} />
 			<button onClick={this.getMorePosts}>
           		Click me
         	</button>

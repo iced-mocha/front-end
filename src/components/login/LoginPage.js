@@ -1,7 +1,5 @@
 import React from 'react';
 import $ from "jquery";
-import FacebookSection from './FacebookSection'
-import RedditSection from './RedditSection'
 import { LoginButton, SignupButton } from './Login'
 import { Redirect } from 'react-router';
 import { Form, FormGroup, FormControl, Button } from 'react-bootstrap'
@@ -88,9 +86,7 @@ class LoginPage extends React.Component {
     return (
       <div className="login-page">
         <h1>Login</h1>
-		<LoginForm updateLoginStatus={this.props.updateLoginStatus} test={"hello"}/>
-        <FacebookSection />
-        <RedditSection />
+				<LoginForm updateLoginStatus={this.props.updateLoginStatus} test={"hello"}/>
       </div>
     );
   }

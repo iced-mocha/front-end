@@ -57,7 +57,10 @@ html {
   max-height: 20px !important;
   max-width: 20px !important;
   margin-right: 8px;
-  padding-bottom: 2px;
+}
+
+.unlinked-container {
+  display: flex;
 }
 
 .account-row {

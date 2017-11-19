@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import RedditSection from '../login/RedditSection'
+import FacebookSection from '../login/FacebookSection'
 import { Jumbotron, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Row, Col } from 'react-bootstrap';
 import FontAwesome from 'react-fontawesome'
@@ -100,23 +101,25 @@ class UnlinkedAccount extends React.Component {
 		if (this.state.type === "reddit") {
 			return (<RedditSection username={this.state.username} content={content} />);
     } else if (this.state.type === "facebook") {
-			return (<RedditSection username={this.state.username} content={content} />);
+			return (<FacebookSection username={this.state.username} content={content} />);
     }
 		return "";
   }
 
   render() {
-		const contents = (
-			<div> 
-				<img className="account-img" src={this.imageForType(this.state.type)} alt={this.altForType(this.state.type)} /> 
-				<span className='unlinked-msg'>Click to link your {this.state.type} account!</span>
-			</div>
+		const contents = ( 
+				<div className='unlinked-msg'>Click to link your {this.state.type} account!</div>
   	);
 
 		return (
-			<div> 
-				{this.makeLink(contents)}
-			</div>
+			<Row className='account-row'> 
+				<Col md={12}>
+					<div className='unlinked-container'>
+						<img className="account-img" src={this.imageForType(this.state.type)} alt={this.altForType(this.state.type)} /> 
+						{this.makeLink(contents)}
+					</div>
+				</Col>
+			</Row>
 		);
   }
 }
@@ -167,7 +170,7 @@ class SettingsPage extends React.Component {
 		});
 
 		if (i > 0) {
-			return this.wrapInSettingsHeader("Linked Accounts:", linkedAccounts);
+			return this.wrapInSettingsHeader("Linked Accounts", linkedAccounts);
 		}
 		return linkedAccounts;
   }
@@ -179,7 +182,7 @@ class SettingsPage extends React.Component {
 		});
 
 		if (i > 0) {
-			return this.wrapInSettingsHeader("Unlinked Accounts:", unlinkedAccounts);
+			return this.wrapInSettingsHeader("Unlinked Accounts", unlinkedAccounts);
 		}
 		return unlinkedAccounts;
   }
@@ -207,7 +210,7 @@ class SettingsPage extends React.Component {
 		return (
 				// Currently conditionally render linked accounts header: TODO: put this in a function/component}
 				<div className='settings-page'> 	
-					<div className='settings-header-top'>Logged in as:</div>
+					<div className='settings-header-top'>Logged in as</div>
 					<div className='settings-value'>{this.state.user['username']}</div>
 					{this.buildLinkedAccountsList()}
 					{this.buildUnlinkedAccountsList()}
