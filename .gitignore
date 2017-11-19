@@ -3,4 +3,4 @@ node_modules
 .babel_cache
 src/server-es5.js
 *.swp
-src/static/js/bundle.js
+bundle.js

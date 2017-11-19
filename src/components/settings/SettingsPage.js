@@ -29,32 +29,22 @@ class LinkedAccount extends React.Component {
 	}
 
   altForType(type) {
-		if (type === "reddit") {
-			return "Reddit Icon";
-		} else if (type === "facebook") {
-			return "Facebook Icon";
-		}
-		return "";
+		return type + " icon";
   }
 
   imageForType(type) {
-		if (type === "reddit") {
-			return "/img/reddit-icon.png";
-		} else if (type === "facebook") {
-			return "/img/facebook-icon.png";
-		}
-		return "";
+		return "/img/" + type + "-icon.png";
   }
 
 	deleteLink() {
+		var self = this;
 		axios({
 			method: 'delete',
 		  url: 'http://0.0.0.0:3000/v1/users/accounts/' + this.state.type,
 			withCredentials: true
 		}).then(function(response) {
-				//self.state.removeLinkFromParent(self.state.type)
+			self.state.removeLinkFromParent(self.state.type)
 		});
-		this.state.removeLinkFromParent(this.state.type)
 	}
 
   render() {
@@ -79,22 +69,12 @@ class UnlinkedAccount extends React.Component {
 		this.state = props
   }
   
-  altForType(type) {
-		if (type === "reddit") {
-			return "Reddit Icon";
-		} else if (type === "facebook") {
-			return "Facebook Icon";
-		}
-		return "";
+	altForType(type) {
+		return type + " icon";
   }
 
   imageForType(type) {
-		if (type === "reddit") {
-			return "/img/reddit-icon.png";
-		} else if (type === "facebook") {
-			return "/img/facebook-icon.png";
-		}
-		return "";
+		return "/img/" + type + "-icon.png";
   }
   
   makeLink(content) {
