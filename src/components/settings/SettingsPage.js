@@ -27,19 +27,23 @@ class LinkedAccount extends React.Component {
 		});
 	}
 
-	imageForType(type) {
-		if (type === "reddit") {
-			return "/img/reddit-icon.png"
-		}
-		return ""
-	}
-  
-	altForType(type) {
+  altForType(type) {
 		if (type === "reddit") {
 			return "Reddit Icon";
+		} else if (type === "facebook") {
+			return "Facebook Icon";
 		}
 		return "";
-	}
+  }
+
+  imageForType(type) {
+		if (type === "reddit") {
+			return "/img/reddit-icon.png";
+		} else if (type === "facebook") {
+			return "/img/facebook-icon.png";
+		}
+		return "";
+  }
 
 	deleteLink() {
 		axios({
@@ -69,7 +73,6 @@ class UnlinkedAccount extends React.Component {
   constructor(props) {
     super(props);
     this.imageForType = this.imageForType.bind(this);
-    this.linkForType = this.linkForType.bind(this);
     this.altForType = this.altForType.bind(this);
     this.makeLink = this.makeLink.bind(this);
 		this.state = props
@@ -78,6 +81,8 @@ class UnlinkedAccount extends React.Component {
   altForType(type) {
 		if (type === "reddit") {
 			return "Reddit Icon";
+		} else if (type === "facebook") {
+			return "Facebook Icon";
 		}
 		return "";
   }
@@ -85,19 +90,16 @@ class UnlinkedAccount extends React.Component {
   imageForType(type) {
 		if (type === "reddit") {
 			return "/img/reddit-icon.png";
+		} else if (type === "facebook") {
+			return "/img/facebook-icon.png";
 		}
 		return "";
   }
   
-  linkForType(type) {
-		if (type === "reddit") {
-			return "Reddit Icon";
-    }
-		return "";
-  }
-
   makeLink(content) {
 		if (this.state.type === "reddit") {
+			return (<RedditSection username={this.state.username} content={content} />);
+    } else if (this.state.type === "facebook") {
 			return (<RedditSection username={this.state.username} content={content} />);
     }
 		return "";
@@ -190,6 +192,12 @@ class SettingsPage extends React.Component {
 			linkedAccounts.push({type: 'reddit', identification: user['reddit-username']})
     } else {
 			unlinkedAccounts.push({type: 'reddit'})
+    }	
+		
+		if (user['facebook-username'] !== "") {
+			linkedAccounts.push({type: 'facebook', identification: user['facebook-username']})
+    } else {
+			unlinkedAccounts.push({type: 'facebook'})
     }	
 
 		this.setState({linkedAccounts: linkedAccounts, unlinkedAccounts: unlinkedAccounts})

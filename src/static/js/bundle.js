@@ -64842,18 +64842,22 @@ var LinkedAccount = function (_React$Component) {
 			});
 		}
 	}, {
-		key: 'imageForType',
-		value: function imageForType(type) {
-			if (type === "reddit") {
-				return "/img/reddit-icon.png";
-			}
-			return "";
-		}
-	}, {
 		key: 'altForType',
 		value: function altForType(type) {
 			if (type === "reddit") {
 				return "Reddit Icon";
+			} else if (type === "facebook") {
+				return "Facebook Icon";
+			}
+			return "";
+		}
+	}, {
+		key: 'imageForType',
+		value: function imageForType(type) {
+			if (type === "reddit") {
+				return "/img/reddit-icon.png";
+			} else if (type === "facebook") {
+				return "/img/facebook-icon.png";
 			}
 			return "";
 		}
@@ -64907,7 +64911,6 @@ var UnlinkedAccount = function (_React$Component2) {
 		var _this2 = _possibleConstructorReturn(this, (UnlinkedAccount.__proto__ || Object.getPrototypeOf(UnlinkedAccount)).call(this, props));
 
 		_this2.imageForType = _this2.imageForType.bind(_this2);
-		_this2.linkForType = _this2.linkForType.bind(_this2);
 		_this2.altForType = _this2.altForType.bind(_this2);
 		_this2.makeLink = _this2.makeLink.bind(_this2);
 		_this2.state = props;
@@ -64919,6 +64922,8 @@ var UnlinkedAccount = function (_React$Component2) {
 		value: function altForType(type) {
 			if (type === "reddit") {
 				return "Reddit Icon";
+			} else if (type === "facebook") {
+				return "Facebook Icon";
 			}
 			return "";
 		}
@@ -64927,14 +64932,8 @@ var UnlinkedAccount = function (_React$Component2) {
 		value: function imageForType(type) {
 			if (type === "reddit") {
 				return "/img/reddit-icon.png";
-			}
-			return "";
-		}
-	}, {
-		key: 'linkForType',
-		value: function linkForType(type) {
-			if (type === "reddit") {
-				return "Reddit Icon";
+			} else if (type === "facebook") {
+				return "/img/facebook-icon.png";
 			}
 			return "";
 		}
@@ -64942,6 +64941,8 @@ var UnlinkedAccount = function (_React$Component2) {
 		key: 'makeLink',
 		value: function makeLink(content) {
 			if (this.state.type === "reddit") {
+				return _react2.default.createElement(_RedditSection2.default, { username: this.state.username, content: content });
+			} else if (this.state.type === "facebook") {
 				return _react2.default.createElement(_RedditSection2.default, { username: this.state.username, content: content });
 			}
 			return "";
@@ -65067,6 +65068,12 @@ var SettingsPage = function (_React$Component3) {
 				linkedAccounts.push({ type: 'reddit', identification: user['reddit-username'] });
 			} else {
 				unlinkedAccounts.push({ type: 'reddit' });
+			}
+
+			if (user['facebook-username'] !== "") {
+				linkedAccounts.push({ type: 'facebook', identification: user['facebook-username'] });
+			} else {
+				unlinkedAccounts.push({ type: 'facebook' });
 			}
 
 			this.setState({ linkedAccounts: linkedAccounts, unlinkedAccounts: unlinkedAccounts });
