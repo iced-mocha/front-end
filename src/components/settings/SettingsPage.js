@@ -60,6 +60,7 @@ class LinkedAccount extends React.Component {
   }
 }
 
+// This component display information about an unlinked account for the user (i.e. reddit/facebook etc.)
 class UnlinkedAccount extends React.Component {
   constructor(props) {
     super(props);
@@ -87,9 +88,7 @@ class UnlinkedAccount extends React.Component {
   }
 
   render() {
-		const contents = ( 
-				<div className='unlinked-msg'>Click to link your {this.state.type} account!</div>
-  	);
+		const contents = (<div className='unlinked-msg'>Click to link your {this.state.type} account!</div>);
 
 		return (
 			<Row className='account-row'> 
@@ -117,15 +116,17 @@ class SettingsPage extends React.Component {
   }
 	
 	removeLinkFromParent(type) {
-		var i = 0;
+		// Creates the new list of linked accounts by removing 'type' from it
 		var newLinks = [];
-		for (i = 0; i < this.state.linkedAccounts.length; i++) {
+		for (var i = 0; i < this.state.linkedAccounts.length; i++) {
 			if (this.state.linkedAccounts[i]['type'] !== type) {
 				newLinks.push(this.state.linkedAccounts[i]);
 			}
 		}
-		
+	
+		// Adds the removed account to the list of unlinked accounts	
 		this.state.unlinkedAccounts.push({type: type})
+
 		this.setState({unlinkedAccounts: this.state.unlinkedAccounts, linkedAccounts: newLinks})
 	}
 

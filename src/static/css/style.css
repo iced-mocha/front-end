@@ -33,6 +33,11 @@ html {
 
 .unlinked-msg {
   font-size: 15px;
+  color: #23527c;
+}
+
+.unlinked-msg:hover {
+  cursor: pointer;
 }
 
 .linked-delete-icon:hover {
