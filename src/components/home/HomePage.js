@@ -41,7 +41,7 @@ class HomePage extends React.Component {
     }
     axios.get(url)
       .then(response => {
-        var data = JSON.parse(response.data) // TODO: Shouldn't need to call JSON.parse
+        var data = response.data
         this.setState({
           posts: this.state.posts.concat(data.posts),
           pageToken: data.page_token,

@@ -43,7 +43,7 @@ app.get('/posts', (req, res) => {
   request(options)
     .then(response => {
       res.setHeader('Content-Type', 'application/json');
-      res.send(JSON.stringify(response));
+      res.send(response);
     }).catch(err => {
       res.send(err);
     });
