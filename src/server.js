@@ -14,6 +14,23 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(Express.static(path.join(__dirname, 'static')));
 
+app.get('/facebook/user', (req, res) => {
+  var options = {
+    url: 'https://graph.facebook.com/me',
+    auth: {
+      bearer: req.query.fb_token
+    }
+  }
+  request(options)
+    .then(response => {
+      console.log(JSON.stringify(response));
+      res.setHeader('Content-Type', 'application/json');
+      res.send(response);
+    }).catch(err => {
+      res.send(err);
+    });
+});
+
 app.get('/posts', (req, res) => {
   var queryParams = {
     fb_id: req.query.fb_id,
