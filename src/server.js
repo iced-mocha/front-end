@@ -30,25 +30,6 @@ app.get('/facebook/user', (req, res) => {
     });
 });
 
-app.get('/posts', (req, res) => {
-  var queryParams = {
-    fb_id: req.query.fb_id,
-    fb_token: req.query.fb_token,
-    page_token: req.query.page_token
-  };
-  var options = {
-    url: 'http://core:3000/v1/posts',
-    qs: queryParams
-  }
-  request(options)
-    .then(response => {
-      res.setHeader('Content-Type', 'application/json');
-      res.send(response);
-    }).catch(err => {
-      res.send(err);
-    });
-});
-
 app.get('*', (req, res) => {
   let markup = '';
   let status = 200;

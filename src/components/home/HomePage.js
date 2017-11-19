@@ -35,11 +35,11 @@ class HomePage extends React.Component {
     // TODO: We need to detect when there are no more pages to load
     var url
     if (this.state.pageToken !== "") {
-      url = "http://localhost:8080/posts?page_token=" + this.state.pageToken;
+      url = "http://localhost:3000/v1/posts?page_token=" + this.state.pageToken;
     } else {
-      url = "http://localhost:8080/posts?fb_id="+this.state.fbId+"&fb_token="+this.state.fbToken
+      url = "http://localhost:3000/v1/posts?fb_id="+this.state.fbId+"&fb_token="+this.state.fbToken
     }
-    axios.get(url)
+    axios.get(url, {withCredentials: true})
       .then(response => {
         var data = response.data
         this.setState({
