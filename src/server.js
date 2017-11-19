@@ -23,7 +23,6 @@ app.get('/facebook/user', (req, res) => {
   }
   request(options)
     .then(response => {
-      console.log(JSON.stringify(response));
       res.setHeader('Content-Type', 'application/json');
       res.send(response);
     }).catch(err => {
@@ -43,7 +42,6 @@ app.get('/posts', (req, res) => {
   }
   request(options)
     .then(response => {
-      console.log(response);
       res.setHeader('Content-Type', 'application/json');
       res.send(JSON.stringify(response));
     }).catch(err => {
