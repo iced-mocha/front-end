@@ -112,7 +112,7 @@ class SettingsPage extends React.Component {
     this.buildUnlinkedAccountsList = this.buildUnlinkedAccountsList.bind(this);
     this.wrapInSettingsHeader = this.wrapInSettingsHeader.bind(this);
 		this.removeLinkFromParent = this.removeLinkFromParent.bind(this);
-    this.state = {user: {}, linkedAccounts: [], unlinkedAccounts: []};
+    this.state = {isLoading: true, user: {}, linkedAccounts: [], unlinkedAccounts: []};
   }
 	
 	removeLinkFromParent(type) {
@@ -131,7 +131,7 @@ class SettingsPage extends React.Component {
 	}
 
   componentWillReceiveProps(nextProps) {
-		this.setState({ user: nextProps.user });
+		this.setState({ isLoading: false, user: nextProps.user });
 		this.getLinkedAccounts(nextProps.user);
   }
 
@@ -188,6 +188,11 @@ class SettingsPage extends React.Component {
   }
 
   render() {
+		// If we haven't received our user yet lets show a loading icon
+		if (this.state.isLoading) {
+			return (<div className='spinner-wrapper'><FontAwesome name='spinner' spin /></div>);
+		}
+
 		return (
 				// Currently conditionally render linked accounts header: TODO: put this in a function/component}
 				<div className='settings-page'> 	
