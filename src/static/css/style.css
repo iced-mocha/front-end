@@ -107,10 +107,18 @@ footer p {
   margin: 0 0 1em 0;
 }
 
+/* Start of login page styling */
+
 .login-page, .signup-page {
   max-width: 35%;
   margin: auto;
 }
+
+.error-container {
+	padding: 0px 4px;
+}
+
+/* End of login page styling */
 
 .signup-link {
   color: #333;

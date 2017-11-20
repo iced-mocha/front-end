@@ -1,6 +1,7 @@
 import React from 'react';
 import $ from "jquery";
 import { LoginButton, SignupButton } from './Login'
+import { DismissableAlert } from '../alerts/Alerts'
 import { Redirect } from 'react-router';
 import { Form, FormGroup, FormControl, Button } from 'react-bootstrap'
 
@@ -9,7 +10,12 @@ class LoginForm extends React.Component {
 	  super(props);
 	  this.prepareData = this.prepareData.bind(this);
 	  this.handleSubmit = this.handleSubmit.bind(this);
-      this.state = { loginRedirect: false };
+	  this.buildError = this.buildError.bind(this);
+    this.state = { loginRedirect: false, addError: props.addError };
+	}
+
+	componentWillReceiveProps(nextProps) {
+    this.setState({ loginRedirect: nextProps.loginRedirect, addError: nextProps.addError });
 	}
 
 	// Converts the array data from serializeArray() into usable JSON
@@ -20,14 +26,19 @@ class LoginForm extends React.Component {
 		}
 
 		return map
-    }
+  }
+
+	buildError(message) {
+		return (
+			<DismissableAlert type='danger' title='Unable to login' message={message} />
+		);	
+	}
 	
 	handleSubmit(e) {
 	  e.preventDefault();
 	
 	  // Allow us to access 'this'
-      var self = this;
-
+    var self = this;
 	  var valueMap = $('#loginForm').serializeArray()	
 
 	  // Post to backend
@@ -38,16 +49,19 @@ class LoginForm extends React.Component {
 		  xhrFields: {
 			withCredentials: true
 		  },
-	      success: function(json) {
-			// Cause a rerender of our global components
-			self.props.updateLoginStatus(true);
-			self.setState({loginRedirect: true});
-	      },
-          error: function (xhr) {
-		    // TODO: report log in errors
-			 console.log("error");
-	      }
-	   });
+	    success: function(json) {
+				// Cause a rerender of our global components
+				self.props.updateLoginStatus(true);
+				self.setState({loginRedirect: true});
+	    },
+      error: function (xhr) {
+				//TODO: ensure responseText is JSON
+				console.log("error loggin in");
+				var data = JSON.parse(xhr.responseText);
+				console.log(data['error']);
+				self.state.addError(self.buildError(data['error']));
+	    }
+	  });
 	}
 
 	render() {
@@ -57,37 +71,53 @@ class LoginForm extends React.Component {
 
 
 	  return (
-		<div className="login-form">
-		  <Form id="loginForm" onSubmit={this.handleSubmit} method="post">
-			<FormGroup controlId="formUsername">
-			  <FormControl type="text" name="username" placeholder="Username" />
-			</FormGroup>
-			<FormGroup controlId="formPassword">
-			  <FormControl type="password" name="password" placeholder="Password" />
-			</FormGroup>
-			<div className="login-buttons">
-				<SignupButton />
-				<Button type="submit">
-				  Login
-				</Button>
+			<div className="login-form">
+				<Form id="loginForm" onSubmit={this.handleSubmit} method="post">
+					<FormGroup controlId="formUsername">
+						<FormControl type="text" name="username" placeholder="Username" />
+					</FormGroup>
+					<FormGroup controlId="formPassword">
+						<FormControl type="password" name="password" placeholder="Password" />
+					</FormGroup>
+					<div className="login-buttons">
+						<SignupButton />
+						<Button type="submit">
+							Login
+						</Button>
+					</div>
+				</Form>
 			</div>
-		  </Form>
-		</div>
-       );
+    );
 	}
 }
 
 class LoginPage extends React.Component {
   constructor (props){
     super(props);
+	  this.addError = this.addError.bind(this);
+		this.state = { error: ""};
   }
+
+	componentWillReceiveProps(nextProps) {
+		// Erase our current error messages
+		this.state = { error: ""};
+	}
+
+	addError(error) {
+		this.setState({error: error})
+	}
 
   render() {
     return (
-      <div className="login-page">
-        <h1>Login</h1>
-				<LoginForm updateLoginStatus={this.props.updateLoginStatus} test={"hello"}/>
-      </div>
+			<div>
+				<div className="error-container"> 
+					{this.state.error}
+				</div>
+				<div className="login-page">
+					<h1>Login</h1>
+					<LoginForm updateLoginStatus={this.props.updateLoginStatus} addError={this.addError}/>
+				</div>
+			</div>
     );
   }
 }
