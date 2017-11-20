@@ -11,6 +11,7 @@ class LoginForm extends React.Component {
 	  this.prepareData = this.prepareData.bind(this);
 	  this.handleSubmit = this.handleSubmit.bind(this);
 	  this.buildError = this.buildError.bind(this);
+	  this.validUserPass = this.validUserPass.bind(this);
     this.state = { loginRedirect: false, addError: props.addError };
 	}
 
@@ -33,6 +34,10 @@ class LoginForm extends React.Component {
 			<DismissableAlert type='danger' title='Unable to login' message={message} />
 		);	
 	}
+
+	validUserPass(obj) {
+		return !(obj['username'] === "" || obj['password'] === "")
+	}
 	
 	handleSubmit(e) {
 	  e.preventDefault();
@@ -40,12 +45,18 @@ class LoginForm extends React.Component {
 	  // Allow us to access 'this'
     var self = this;
 	  var valueMap = $('#loginForm').serializeArray()	
+		var preparedData = self.prepareData(valueMap)
+
+		if (!self.validUserPass(preparedData)) {
+			self.state.addError(self.buildError("please enter both a username and password to login"));
+			return
+		}
 
 	  // Post to backend
 	  $.ajax({
 		  type: "POST",
 		  url: "http://0.0.0.0:3000/v1/login",
-		  data: JSON.stringify(self.prepareData(valueMap)),
+		  data: JSON.stringify(preparedData),
 		  xhrFields: {
 			withCredentials: true
 		  },
