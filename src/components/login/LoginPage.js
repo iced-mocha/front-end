@@ -32,19 +32,19 @@ class LoginForm extends React.Component {
 	buildError(message) {
 		return (
 			<DismissableAlert type='danger' title='Unable to login' message={message} />
-		);	
+		);
 	}
 
 	validUserPass(obj) {
 		return !(obj['username'] === "" || obj['password'] === "")
 	}
-	
+
 	handleSubmit(e) {
 	  e.preventDefault();
-	
+
 	  // Allow us to access 'this'
     var self = this;
-	  var valueMap = $('#loginForm').serializeArray()	
+	  var valueMap = $('#loginForm').serializeArray()
 		var preparedData = self.prepareData(valueMap)
 
 		if (!self.validUserPass(preparedData)) {
@@ -66,10 +66,8 @@ class LoginForm extends React.Component {
 				self.setState({loginRedirect: true});
 	    },
       error: function (xhr) {
-				//TODO: ensure responseText is JSON
-				console.log("error loggin in");
+				//TODO: ensure responseText is JSON;
 				var data = JSON.parse(xhr.responseText);
-				console.log(data['error']);
 				self.state.addError(self.buildError(data['error']));
 	    }
 	  });
@@ -121,7 +119,7 @@ class LoginPage extends React.Component {
   render() {
     return (
 			<div>
-				<div className="error-container"> 
+				<div className="error-container">
 					{this.state.error}
 				</div>
 				<div className="login-page">
