@@ -46,9 +46,15 @@ class Post extends React.Component {
       <ListGroupItem>
         <a href={this.props.PostLink}>
           <div className="post-container">
-          { this.props.HeroImg != "" && 
+          { this.props.HeroImg && !this.props.Video &&
             <div className="hero-img-container">
               <img className="hero-img" src={this.props.HeroImg} />
+            </div> }
+          { this.props.Video &&
+            <div className="hero-img-container">
+              <video className="hero-img">
+                <source src={this.props.Video} type="video/mp4"/>
+              </video>
             </div> }
             <div className="post-description">
               <div className="post-info">
