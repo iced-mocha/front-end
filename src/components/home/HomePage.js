@@ -66,6 +66,7 @@ class HomePage extends React.Component {
 
   componentDidMount() {
     document.addEventListener("scroll", this.onScroll);
+    this.getMorePosts()
   }
 
   render() {
@@ -92,17 +93,11 @@ class HomePage extends React.Component {
 
     return (
       <div className="home-page">
-      <div className="post-list">
-        <ListGroup ref="post-list">
-          { listItems }
-        </ListGroup> 
-      </div>
-			<button onClick={this.getMorePosts}>
-          		Click me
-        	</button>
-      <p>
-        Add google news attribution
-      </p>
+        <div className="post-list">
+          <ListGroup ref="post-list">
+            { listItems }
+          </ListGroup>
+        </div>
       </div>
     );
   }
