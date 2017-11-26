@@ -14,15 +14,15 @@ class LinkedAccount extends React.Component {
 		this.altForType = this.altForType.bind(this);
 		this.deleteLink = this.deleteLink.bind(this);
 		this.state = {
-			type: props.type, 
-			identification: props.identification, 
+			type: props.type,
+			identification: props.identification,
 			removeLinkFromParent: props.removeLinkFromParent
 		};
 	}
 
 	componentWillReceiveProps(nextProps) {
 		this.setState({
-			type: nextProps.type, 
+			type: nextProps.type,
 			identification: nextProps.identification,
 			removeLinkFromParent: nextProps.removeLinkFromParent
 		});
@@ -49,10 +49,10 @@ class LinkedAccount extends React.Component {
 
   render() {
 		return(
-			<Row className='account-row'> 
+			<Row className='account-row'>
 				<Col md={11}>
 					<img className="account-img" src={this.imageForType(this.state.type)} alt={this.altForType(this.state.type)} />
-					<span className="account-value" >{this.state.identification} </span> 
+					<span className="account-value" >{this.state.identification} </span>
 				</Col>
 				<Col md={1}><FontAwesome onClick={this.deleteLink} className="linked-delete-icon" name="times"/></Col>
 			</Row>
@@ -69,7 +69,7 @@ class UnlinkedAccount extends React.Component {
     this.makeLink = this.makeLink.bind(this);
 		this.state = props
   }
-  
+
 	altForType(type) {
 		return type + " icon";
   }
@@ -77,7 +77,7 @@ class UnlinkedAccount extends React.Component {
   imageForType(type) {
 		return "/img/" + type + "-icon.png";
   }
-  
+
   makeLink(content) {
 		if (this.state.type === "reddit") {
 			return (<RedditSection username={this.state.username} content={content} />);
@@ -91,10 +91,10 @@ class UnlinkedAccount extends React.Component {
 		const contents = (<div className='unlinked-msg'>Click to link your {this.state.type} account!</div>);
 
 		return (
-			<Row className='account-row'> 
+			<Row className='account-row'>
 				<Col md={12}>
 					<div className='unlinked-container'>
-						<img className="account-img" src={this.imageForType(this.state.type)} alt={this.altForType(this.state.type)} /> 
+						<img className="account-img" src={this.imageForType(this.state.type)} alt={this.altForType(this.state.type)} />
 						{this.makeLink(contents)}
 					</div>
 				</Col>
@@ -103,7 +103,6 @@ class UnlinkedAccount extends React.Component {
   }
 }
 
-// TODO Implement loading state
 // Set loading: true in componentWillMount of App getUser
 class SettingsPage extends React.Component {
   constructor(props) {
@@ -112,9 +111,19 @@ class SettingsPage extends React.Component {
     this.buildUnlinkedAccountsList = this.buildUnlinkedAccountsList.bind(this);
     this.wrapInSettingsHeader = this.wrapInSettingsHeader.bind(this);
 		this.removeLinkFromParent = this.removeLinkFromParent.bind(this);
-    this.state = {isLoading: true, user: {}, linkedAccounts: [], unlinkedAccounts: []};
+		this.getLinkedAccounts = this.getLinkedAccounts.bind(this);
+		this.state = {};
+
+		if (props.user !== undefined && props.user !== {}) {
+			var accounts = this.getLinkedAccounts(props.user);
+			this.state = {
+				user: props.user,
+				linkedAccounts: accounts.linkedAccounts,
+				unlinkedAccounts: accounts.unlinkedAccounts
+			};
+		}
   }
-	
+
 	removeLinkFromParent(type) {
 		// Creates the new list of linked accounts by removing 'type' from it
 		var newLinks = [];
@@ -123,20 +132,25 @@ class SettingsPage extends React.Component {
 				newLinks.push(this.state.linkedAccounts[i]);
 			}
 		}
-	
-		// Adds the removed account to the list of unlinked accounts	
+
+		// Adds the removed account to the list of unlinked accounts
 		this.state.unlinkedAccounts.push({type: type})
 
 		this.setState({unlinkedAccounts: this.state.unlinkedAccounts, linkedAccounts: newLinks})
 	}
 
   componentWillReceiveProps(nextProps) {
-		this.setState({ isLoading: false, user: nextProps.user });
-		this.getLinkedAccounts(nextProps.user);
+		var accounts = this.getLinkedAccounts(nextProps.user);
+		this.setState({
+			isLoading: false,
+			user: nextProps.user,
+			linkedAccounts: accounts.linkedAccounts,
+		 	unlinkedAccounts: accounts.unlinkedAccounts
+		});
   }
 
   wrapInSettingsHeader(title, content) {
-		return ( 
+		return (
 			<div>
 				<div className='settings-header'>{title}</div>
 				{content}
@@ -146,7 +160,7 @@ class SettingsPage extends React.Component {
 
   buildLinkedAccountsList() {
 		var i = 0;
-		var linkedAccounts = this.state.linkedAccounts.map((d) => { 
+		var linkedAccounts = this.state.linkedAccounts.map((d) => {
 			i++; return <LinkedAccount type={d['type']} key={i} identification={d['identification']} removeLinkFromParent={this.removeLinkFromParent}/>;
 		});
 
@@ -155,11 +169,11 @@ class SettingsPage extends React.Component {
 		}
 		return linkedAccounts;
   }
-  
+
   buildUnlinkedAccountsList() {
 		var i = 0;
-		const unlinkedAccounts = this.state.unlinkedAccounts.map((d) => { 
-			i++; return <UnlinkedAccount username={this.state.user['username']} type={d['type']} key={i}/>; 
+		const unlinkedAccounts = this.state.unlinkedAccounts.map((d) => {
+			i++; return <UnlinkedAccount username={this.state.user['username']} type={d['type']} key={i}/>;
 		});
 
 		if (i > 0) {
@@ -169,33 +183,33 @@ class SettingsPage extends React.Component {
   }
 
   getLinkedAccounts(user) {
-		var linkedAccounts = []
-    var unlinkedAccounts = []
+		var linkedAccounts = [];
+    var unlinkedAccounts = [];
 
 		if (user['reddit-username'] !== "") {
-			linkedAccounts.push({type: 'reddit', identification: user['reddit-username']})
+			linkedAccounts.push({type: 'reddit', identification: user['reddit-username']});
     } else {
-			unlinkedAccounts.push({type: 'reddit'})
-    }	
-		
-		if (user['facebook-username'] !== "") {
-			linkedAccounts.push({type: 'facebook', identification: user['facebook-username']})
-    } else {
-			unlinkedAccounts.push({type: 'facebook'})
-    }	
+			unlinkedAccounts.push({type: 'reddit'});
+    }
 
-		this.setState({linkedAccounts: linkedAccounts, unlinkedAccounts: unlinkedAccounts})
+		if (user['facebook-username'] !== "") {
+			linkedAccounts.push({type: 'facebook', identification: user['facebook-username']});
+    } else {
+			unlinkedAccounts.push({type: 'facebook'});
+    }
+
+		return {linkedAccounts: linkedAccounts, unlinkedAccounts: unlinkedAccounts};
   }
 
   render() {
 		// If we haven't received our user yet lets show a loading icon
-		if (this.state.isLoading) {
+		if (this.state.user === undefined || this.state.user === {}) {
 			return (<div className='spinner-wrapper'><FontAwesome name='spinner' spin /></div>);
 		}
 
 		return (
 				// Currently conditionally render linked accounts header: TODO: put this in a function/component}
-				<div className='settings-page'> 	
+				<div className='settings-page'>
 					<div className='settings-header-top'>Logged in as</div>
 					<div className='settings-value'>{this.state.user['username']}</div>
 					{this.buildLinkedAccountsList()}
