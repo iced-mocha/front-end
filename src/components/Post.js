@@ -82,10 +82,26 @@ class Post extends React.Component {
         { this.state.expandComments &&
           <div className="comments-section">
           { this.props.Platform == "facebook" &&
-            <FacebookComments fbId={this.props.fbId} fbToken={this.props.fbToken} objectId={this.props.ID} postLink={this.props.PostLink} />
+            <CommentsSection
+              postId={this.props.ID}
+              postLink={this.props.PostLink}
+              platform={this.props.Platform}
+              fbId={this.props.fbId}
+              fbToken={this.props.fbToken}
+              collapsePoints={[]}
+              initialVisibleChildren={5}
+              moreButtonChildren={10}
+              rootComments={10}/>
           }
           { this.props.Platform == "hacker-news" &&
-            <CommentsSection postId={this.props.ID} platform={this.props.Platform} />
+            <CommentsSection 
+              postId={this.props.ID}
+              postLink={"https://news.ycombinator.com/item?id=" + this.props.ID} 
+              platform={this.props.Platform}
+              collapsePoints={[3, 6]}
+              initialVisibleChildren={3}
+              moreButtonChildren={10}
+              rootComments={5}/>
           }
           </div>
         }

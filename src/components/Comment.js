@@ -9,11 +9,17 @@ class Comment extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      expandComments: (props.depth != 3 && props.depth != 6),
-      visibleChildren: 3
+      expandComments: props.collapsePoints && !props.collapsePoints.includes(props.depth),
+      visibleChildren: props.initialVisibleChildren
     };
     props.getChildren()
-      .then(children => this.setState({children: children.map(comment => <Comment {...comment}/>)}))
+      .then(children => this.setState({children: children.map(comment => 
+        <Comment
+          {...comment}
+          collapsePoints={props.collapsePoints}
+          initialVisibleChildren={props.initialVisibleChildren}
+          moreButtonChildren={props.moreButtonChildren}
+          />)}))
       .catch(err => {});
   }
 
@@ -33,7 +39,7 @@ class Comment extends React.Component {
           <div className="inner-comments" dangerouslySetInnerHTML={{ __html: this.props.content}} />
         { this.state.children ? this.state.children.slice(0, this.state.visibleChildren) : <h3>Loading</h3> }
         { this.state.children && this.state.children.length > this.state.visibleChildren &&
-          <button className="transparent-button shift-right" onClick={() => this.setState({visibleChildren: this.state.visibleChildren + 10})}>
+          <button className="transparent-button shift-right" onClick={() => this.setState({visibleChildren: this.state.visibleChildren + this.props.moreButtonChildren})}>
             <div className="comment-header">
               <img className="expand-icon" src="/img/expand-icon.png"/>
               <h4 className="more-comments">more</h4>
