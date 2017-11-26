@@ -6,11 +6,20 @@ export class DismissableAlert extends React.Component {
     super(props);
 		this.handleAlertDismiss = this.handleAlertDismiss.bind(this);
     this.state = {
-			alertVisible: true, 
-			type: props.type, 
+			alertVisible: true,
+			type: props.type,
 			title: props.title,
 			message: props.message
 		};
+  }
+
+  componentWillReceiveProps(props) {
+    this.state = {
+      alertVisible: true,
+      type: props.type,
+      title: props.title,
+      message: props.message
+    };
   }
 
   handleAlertDismiss() {

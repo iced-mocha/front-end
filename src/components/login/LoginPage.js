@@ -112,8 +112,8 @@ class LoginPage extends React.Component {
 		this.state = { error: ""};
 	}
 
-	addError(error) {
-		this.setState({error: error})
+	addError(err) {
+		this.setState({error: err})
 	}
 
   render() {
