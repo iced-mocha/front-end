@@ -4,8 +4,8 @@ import axios from 'axios';
 import FacebookSection from '../login/FacebookSection';
 import Post from '../Post';
 import util from 'util';
-import { ListGroup } from 'react-bootstrap';
-import { ListGroupItem } from 'react-bootstrap';
+import { ListGroup, ListGroupItem } from 'react-bootstrap';
+import FontAwesome from 'react-fontawesome'
 
 class HomePage extends React.Component {
   constructor(props, context) {
@@ -33,12 +33,11 @@ class HomePage extends React.Component {
   getMorePosts() {
     this.setState({loadingMorePosts: true});
     // TODO: We need to detect when there are no more pages to load
-    var url
+    var url = "http://0.0.0.0:3000/v1/posts"
     if (this.state.pageToken !== "") {
-      url = "http://0.0.0.0:3000/v1/posts?page_token=" + this.state.pageToken;
-    } else {
-      url = "http://0.0.0.0:3000/v1/posts?fb_id="+this.state.fbId+"&fb_token="+this.state.fbToken
+      url = url + "?page_token=" + this.state.pageToken;
     }
+
     axios({
         method: 'get',
         url: url,
@@ -70,26 +69,32 @@ class HomePage extends React.Component {
   }
 
   render() {
-    var listItems
+    var listItems;
+    var i = 0;
 
-    if(this.state.posts){
-      listItems = this.state.posts.map(
-          postData => {
-            if (postData.Platform === "hacker-news") {
-                postData.imgUrl = "/img/hacker-news-icon.ico";
-            } else if (postData.Platform === "reddit") {
-                postData.imgUrl = "/img/reddit-icon.png";
-            } else if (postData.Platform == "facebook") {
-                postData.imgUrl = "/img/facebook-icon.png";
-                postData.fbId = this.state.fbId;
-                postData.fbToken = this.state.fbToken;
-            }	else if (postData.Platform == "google-news") {
-                postData.imgUrl = "/img/google-news-icon.png";
-            }
-
-            return <Post key={postData.id} {...postData} />
-          });
+    if (this.state.posts.length === 0) {
+        return (<div className='spinner-wrapper'><FontAwesome name='spinner' spin /></div>);
     }
+
+    listItems = this.state.posts.map(
+        postData => {
+          if (postData.Platform === "hacker-news") {
+              postData.imgUrl = "/img/hacker-news-icon.ico";
+          } else if (postData.Platform === "reddit") {
+              postData.imgUrl = "/img/reddit-icon.png";
+          } else if (postData.Platform == "facebook") {
+              postData.imgUrl = "/img/facebook-icon.png";
+              postData.fbId = this.state.fbId;
+              postData.fbToken = this.state.fbToken;
+          }	else if (postData.Platform == "google-news") {
+              postData.imgUrl = "/img/google-news-icon.png";
+          }
+          i++;
+          // TODO: Currently postData.id is undefined resulting in an error on front-end
+          //return <Post key={postData.id} {...postData} />
+          return <Post key={i} {...postData} />;
+        }
+    );
 
     return (
       <div className="home-page">

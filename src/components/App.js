@@ -7,7 +7,6 @@ import SignupPage from './login/SignupPage';
 import HomePage from './home/HomePage';
 import SettingsPage from './settings/SettingsPage';
 import { NotFoundPage } from './NotFoundPage';
-import posts from '../data/posts';
 import axios from 'axios';
 
 const renderIndex = () => <IndexPage posts={posts} />;
