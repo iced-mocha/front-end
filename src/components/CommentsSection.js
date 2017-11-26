@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ListGroupItem } from 'react-bootstrap';
 import FacebookProvider, { Comments } from 'react-facebook';
 import Comment from './Comment';
+import FontAwesome from 'react-fontawesome'
 
 // To do use right icon for each kind of post
 class CommentsSection extends React.Component {
@@ -101,18 +102,21 @@ class CommentsSection extends React.Component {
   }
 
   render() {
+
+    if (!this.state.comments) {
+      return (<div className='small-spinner-wrapper'><FontAwesome name='spinner' spin /></div>);
+    }
+
     return (
       <div>
-      { this.state.comments ?
-        this.state.comments.slice(0, this.props.rootComments).map(comment => 
-            <Comment 
-              {...comment}
-              collapsePoints={this.props.collapsePoints}
-              initialVisibleChildren={this.props.initialVisibleChildren}
-              moreButtonChildren={this.props.moreButtonChildren}
-              />)
-      : <h3>Loading</h3>
-      }
+        { this.state.comments.slice(0, this.props.rootComments).map(comment =>
+              <Comment
+                {...comment}
+                collapsePoints={this.props.collapsePoints}
+                initialVisibleChildren={this.props.initialVisibleChildren}
+                moreButtonChildren={this.props.moreButtonChildren}
+                />)
+        }
         <a className="more-comments-link" href={this.props.postLink}>Full Post</a>
       </div>
     );

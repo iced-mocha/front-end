@@ -25,6 +25,13 @@ html {
  background: #F0F0F0;
 }
 
+.small-spinner-wrapper {
+  margin: auto;
+  width: 22px;
+  font-size: 22px;
+  color: #5e5e5e;
+}
+
 /* Styling for the /settings page */
 
 .spinner-wrapper {
