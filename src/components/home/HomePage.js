@@ -44,11 +44,12 @@ class HomePage extends React.Component {
         withCredentials: true
       })
       .then(response => {
-        var data = response.data
+        var data = response.data;
         this.setState({
           posts: this.state.posts.concat(data.posts),
           pageToken: data.page_token,
-          loadingMorePosts: false
+          loadingMorePosts: false,
+          noMorePosts: data.posts.length == 0
         });
       })
       .catch(err => {
@@ -102,6 +103,9 @@ class HomePage extends React.Component {
           <ListGroup ref="post-list">
             { listItems }
           </ListGroup>
+          { this.state.noMorePosts ||
+            <div className='spinner-wrapper'><FontAwesome name='spinner' spin /></div>
+          }
         </div>
       </div>
     );
