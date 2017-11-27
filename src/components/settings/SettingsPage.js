@@ -82,7 +82,7 @@ class UnlinkedAccount extends React.Component {
 		if (this.state.type === "reddit") {
 			return (<RedditSection username={this.state.username} content={content} />);
     } else if (this.state.type === "facebook") {
-			return (<FacebookSection username={this.state.username} content={content} />);
+			return (<FacebookSection addLinkToParent={this.state.addLinkToParent} username={this.state.username} content={content} />);
     }
 		return "";
   }
@@ -111,6 +111,7 @@ class SettingsPage extends React.Component {
     this.buildUnlinkedAccountsList = this.buildUnlinkedAccountsList.bind(this);
     this.wrapInSettingsHeader = this.wrapInSettingsHeader.bind(this);
 		this.removeLinkFromParent = this.removeLinkFromParent.bind(this);
+		this.addLinkToParent = this.addLinkToParent.bind(this);
 		this.getLinkedAccounts = this.getLinkedAccounts.bind(this);
 		this.state = {};
 
@@ -124,6 +125,19 @@ class SettingsPage extends React.Component {
 		}
   }
 
+	addLinkToParent(type, identification) {
+		var newLinks = [];
+		for (var i = 0; i < this.state.unlinkedAccounts.length; i++) {
+			if (this.state.unlinkedAccounts[i]['type'] !== type) {
+				newLinks.push(this.state.unlinkedAccounts[i]);
+			}
+		}
+
+		this.state.linkedAccounts.push({type: type, identification: identification});
+
+		this.setState({linkedAccounts: this.state.linkedAccounts, unlinkedAccounts: newLinks});
+	}
+
 	removeLinkFromParent(type) {
 		// Creates the new list of linked accounts by removing 'type' from it
 		var newLinks = [];
@@ -134,9 +148,9 @@ class SettingsPage extends React.Component {
 		}
 
 		// Adds the removed account to the list of unlinked accounts
-		this.state.unlinkedAccounts.push({type: type})
+		this.state.unlinkedAccounts.push({type: type});
 
-		this.setState({unlinkedAccounts: this.state.unlinkedAccounts, linkedAccounts: newLinks})
+		this.setState({unlinkedAccounts: this.state.unlinkedAccounts, linkedAccounts: newLinks});
 	}
 
   componentWillReceiveProps(nextProps) {
@@ -173,7 +187,8 @@ class SettingsPage extends React.Component {
   buildUnlinkedAccountsList() {
 		var i = 0;
 		const unlinkedAccounts = this.state.unlinkedAccounts.map((d) => {
-			i++; return <UnlinkedAccount username={this.state.user['username']} type={d['type']} key={i}/>;
+			i++; return <UnlinkedAccount username={this.state.user['username']}
+				type={d['type']} key={i} addLinkToParent={this.addLinkToParent}/>;
 		});
 
 		if (i > 0) {
