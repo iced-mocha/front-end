@@ -44,7 +44,7 @@ class Post extends React.Component {
     }
     return (
       <ListGroupItem>
-        <a href={this.props.PostLink}>
+        <a href={this.props.url || this.props.PostLink}>
           <div className="post-container">
           { this.props.HeroImg && !this.props.Video &&
             <div className="hero-img-container">
@@ -68,7 +68,7 @@ class Post extends React.Component {
             </div>
           </div>
         </a>
-        { (this.props.Platform == "facebook" || this.props.Platform == "hacker-news") &&
+        { (this.props.Platform == "facebook" || this.props.Platform == "hacker-news" || this.props.Platform == "reddit") &&
           (this.state.expandComments ? (
             <button className="toggle-comments collapse-comments" onClick={this.toggleComments}>
               <img className="expand-icon" src="/img/collapse-icon.png" />
@@ -96,10 +96,21 @@ class Post extends React.Component {
           { this.props.Platform == "hacker-news" &&
             <CommentsSection 
               postId={this.props.ID}
-              postLink={"https://news.ycombinator.com/item?id=" + this.props.ID} 
+              postLink={this.props.PostLink} 
               platform={this.props.Platform}
-              collapsePoints={[3, 6]}
-              initialVisibleChildren={3}
+              collapsePoints={[4, 7]}
+              initialVisibleChildren={10}
+              moreButtonChildren={10}
+              rootComments={5}/>
+          }
+          { this.props.Platform == "reddit" &&
+            <CommentsSection 
+              postId={this.props.ID}
+              postLink={this.props.PostLink} 
+              platform={this.props.Platform}
+              subreddit={this.props.subreddit}
+              collapsePoints={[4, 7]}
+              initialVisibleChildren={10}
               moreButtonChildren={10}
               rootComments={5}/>
           }
