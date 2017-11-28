@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import RedditSection from '../login/RedditSection'
 import FacebookSection from '../login/FacebookSection'
+import { WeightSlider } from './Slider'
 import { Jumbotron, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Row, Col } from 'react-bootstrap';
 import FontAwesome from 'react-fontawesome'
@@ -112,6 +113,7 @@ class SettingsPage extends React.Component {
     this.wrapInSettingsHeader = this.wrapInSettingsHeader.bind(this);
 		this.removeLinkFromParent = this.removeLinkFromParent.bind(this);
 		this.addLinkToParent = this.addLinkToParent.bind(this);
+		this.sliderChange = this.sliderChange.bind(this);
 		this.getLinkedAccounts = this.getLinkedAccounts.bind(this);
 		this.state = {};
 
@@ -216,12 +218,20 @@ class SettingsPage extends React.Component {
 		return {linkedAccounts: linkedAccounts, unlinkedAccounts: unlinkedAccounts};
   }
 
+	sliderChange() {
+		console.log("test slider change");
+	}
+
   render() {
 		// If we haven't received our user yet lets show a loading icon
-		if (this.state.user === undefined || this.state.user === {}) {
+		if (this.state.user === undefined || this.state.user === {} ||
+			this.state.user['post-weights'] === undefined) {
 			return (<div className='spinner-wrapper'><FontAwesome name='spinner' spin /></div>);
 		}
 
+		console.log("in settings render:")
+		console.log(this.state.user)
+		console.log(this.state.user['post-weights'])
 		return (
 				// Currently conditionally render linked accounts header: TODO: put this in a function/component}
 				<div className='settings-page'>
@@ -229,6 +239,11 @@ class SettingsPage extends React.Component {
 					<div className='settings-value'>{this.state.user['username']}</div>
 					{this.buildLinkedAccountsList()}
 					{this.buildUnlinkedAccountsList()}
+					<div className='settings-header'>Posts Weighting</div>
+					<WeightSlider value={this.state.user['post-weights']['reddit']} type='reddit' onChange={this.sliderChange} />
+					<WeightSlider value={this.state.user['post-weights']['facebook']} type='facebook' onChange={this.sliderChange} />
+					<WeightSlider value={this.state.user['post-weights']['hacker-news']} type='hacker-news' onChange={this.sliderChange} />
+					<WeightSlider value={this.state.user['post-weights']['google-news']} type='google-news' onChange={this.sliderChange} />
 			</div>
 		);
   }

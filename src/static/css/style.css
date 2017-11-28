@@ -34,6 +34,30 @@ html {
 
 /* Styling for the /settings page */
 
+div.weight-slider-container input.weight-slider {
+  width: 90%;
+}
+
+.slider-value {
+  margin: 0px 8px;
+  font-weight: bold;
+}
+
+/* Everything but Firefox */
+.weight-slider::-webkit-slider-thumb {
+    cursor: pointer; /* Cursor on hover */
+}
+
+/* Firefox - not working new firefox */
+.weight-slider::-moz-range-thumb {
+    cursor: pointer; /* Cursor on hover */
+}
+
+.weight-slider-container {
+  display: flex;
+  margin: 4px 0px;
+}
+
 .spinner-wrapper {
   margin: auto;
   width: 44px;
@@ -79,12 +103,18 @@ html {
   margin-right: 8px;
 }
 
+.slider-img {
+  max-height: 20px !important;
+  max-width: 20px !important;
+}
+
 .unlinked-container {
   display: flex;
 }
 
 .account-row {
   height: 24px;
+  margin: 2px 0px;
 }
 
 .settings-page {
