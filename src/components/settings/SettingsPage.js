@@ -114,15 +114,20 @@ class SettingsPage extends React.Component {
 		this.removeLinkFromParent = this.removeLinkFromParent.bind(this);
 		this.addLinkToParent = this.addLinkToParent.bind(this);
 		this.sliderChange = this.sliderChange.bind(this);
+		this.submitWeights = this.submitWeights.bind(this);
 		this.getLinkedAccounts = this.getLinkedAccounts.bind(this);
-		this.state = {};
-
+		
 		if (props.user !== undefined && props.user !== {}) {
 			var accounts = this.getLinkedAccounts(props.user);
 			this.state = {
 				user: props.user,
 				linkedAccounts: accounts.linkedAccounts,
-				unlinkedAccounts: accounts.unlinkedAccounts
+				unlinkedAccounts: accounts.unlinkedAccounts,
+				hasWeightsChanged: false,
+				reddit: -1,
+				facebook: -1,
+				hackerNews: -1,
+				googleNews: -1
 			};
 		}
   }
@@ -161,7 +166,8 @@ class SettingsPage extends React.Component {
 			isLoading: false,
 			user: nextProps.user,
 			linkedAccounts: accounts.linkedAccounts,
-		 	unlinkedAccounts: accounts.unlinkedAccounts
+		 	unlinkedAccounts: accounts.unlinkedAccounts,
+			hasWeightsChanged: false
 		});
   }
 
@@ -218,8 +224,60 @@ class SettingsPage extends React.Component {
 		return {linkedAccounts: linkedAccounts, unlinkedAccounts: unlinkedAccounts};
   }
 
-	sliderChange() {
-		console.log("test slider change");
+	sliderChange(type, value) {
+		// When we receive a value hold it a 'changed' state until the user saves
+		// This is to allow to restore to previous state after moving sliders
+		console.log("Slider change:")
+		console.log(type)
+		console.log(value)
+
+		// We dont need to trigger a render for this state
+		if (type === 'reddit') {
+			this.state.reddit = value;
+		} else if (type === 'facebook') {
+			this.state.facebook = value;
+		} else if (type === 'hacker-news') {
+			this.state.hackerNews = value;
+		} else if (type === 'google-news') {
+			this.state.googleNews = value;
+		}
+
+		this.setState({hasWeightsChanged: true});
+	}
+
+	submitWeights() {
+		// Go through all our current slider states - if they dont equal -1 they have changed
+		// so update our user state.
+		var u = this.state.user
+
+		if (this.state.reddit !== -1) {
+			console.log("changing reddit")
+			console.log(this.state.reddit)
+
+			u['post-weights']['reddit'] = this.state.reddit;
+		}
+
+		if (this.state.facebook !== -1) {
+			console.log("changing facebook")
+
+			u['post-weights']['facebook'] = this.state.facebook;
+		}
+
+		if (this.state.hackerNews !== -1) {
+			console.log("changing h news")
+
+			u['post-weights']['hacker-news'] = this.state.hackerNews;
+		}
+
+		if (this.state.googleNews !== -1) {
+			console.log("changing g news")
+			u['post-weights']['google-news'] = this.state.googleNews;
+		}
+
+		this.setState({
+			user: u,
+			hasWeightsChanged: false
+		});
 	}
 
   render() {
@@ -229,9 +287,6 @@ class SettingsPage extends React.Component {
 			return (<div className='spinner-wrapper'><FontAwesome name='spinner' spin /></div>);
 		}
 
-		console.log("in settings render:")
-		console.log(this.state.user)
-		console.log(this.state.user['post-weights'])
 		return (
 				// Currently conditionally render linked accounts header: TODO: put this in a function/component}
 				<div className='settings-page'>
@@ -244,6 +299,7 @@ class SettingsPage extends React.Component {
 					<WeightSlider value={this.state.user['post-weights']['facebook']} type='facebook' onChange={this.sliderChange} />
 					<WeightSlider value={this.state.user['post-weights']['hacker-news']} type='hacker-news' onChange={this.sliderChange} />
 					<WeightSlider value={this.state.user['post-weights']['google-news']} type='google-news' onChange={this.sliderChange} />
+					<Button className='btn-weights' onClick={this.submitWeights} disabled={!this.state.hasWeightsChanged}> Save </Button>
 			</div>
 		);
   }
