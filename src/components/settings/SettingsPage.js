@@ -114,20 +114,23 @@ class SettingsPage extends React.Component {
 		this.removeLinkFromParent = this.removeLinkFromParent.bind(this);
 		this.addLinkToParent = this.addLinkToParent.bind(this);
 		this.sliderChange = this.sliderChange.bind(this);
+		this.resetWeights = this.resetWeights.bind(this);
 		this.submitWeights = this.submitWeights.bind(this);
 		this.getLinkedAccounts = this.getLinkedAccounts.bind(this);
-		
-		if (props.user !== undefined && props.user !== {}) {
+		this.state = {};
+
+		if (props.user !== undefined && props.user !== {} &&
+			props.user['post-weights'] !== undefined) {
 			var accounts = this.getLinkedAccounts(props.user);
 			this.state = {
 				user: props.user,
 				linkedAccounts: accounts.linkedAccounts,
 				unlinkedAccounts: accounts.unlinkedAccounts,
 				hasWeightsChanged: false,
-				reddit: -1,
-				facebook: -1,
-				hackerNews: -1,
-				googleNews: -1
+				reddit: props.user['post-weights']['reddit'],
+				facebook: props.user['post-weights']['facebook'],
+				hackerNews: props.user['post-weights']['hacker-news'],
+				googleNews: props.user['post-weights']['google-news']
 			};
 		}
   }
@@ -162,13 +165,28 @@ class SettingsPage extends React.Component {
 
   componentWillReceiveProps(nextProps) {
 		var accounts = this.getLinkedAccounts(nextProps.user);
-		this.setState({
-			isLoading: false,
-			user: nextProps.user,
-			linkedAccounts: accounts.linkedAccounts,
-		 	unlinkedAccounts: accounts.unlinkedAccounts,
-			hasWeightsChanged: false
-		});
+
+		if (nextProps.user['post-weights'] !== undefined) {
+			this.setState({
+				isLoading: false,
+				user: nextProps.user,
+				linkedAccounts: accounts.linkedAccounts,
+				unlinkedAccounts: accounts.unlinkedAccounts,
+				hasWeightsChanged: false,
+				reddit: nextProps.user['post-weights']['reddit'],
+				facebook: nextProps.user['post-weights']['facebook'],
+				hackerNews: nextProps.user['post-weights']['hacker-news'],
+				googleNews: nextProps.user['post-weights']['google-news']
+			});
+		} else {
+			this.setState({
+				isLoading: false,
+				user: nextProps.user,
+				linkedAccounts: accounts.linkedAccounts,
+			 	unlinkedAccounts: accounts.unlinkedAccounts,
+				hasWeightsChanged: false,
+			});
+		}
   }
 
   wrapInSettingsHeader(title, content) {
@@ -227,9 +245,6 @@ class SettingsPage extends React.Component {
 	sliderChange(type, value) {
 		// When we receive a value hold it a 'changed' state until the user saves
 		// This is to allow to restore to previous state after moving sliders
-		console.log("Slider change:")
-		console.log(type)
-		console.log(value)
 
 		// We dont need to trigger a render for this state
 		if (type === 'reddit') {
@@ -245,39 +260,50 @@ class SettingsPage extends React.Component {
 		this.setState({hasWeightsChanged: true});
 	}
 
+	resetWeights() {
+		// Force the sliders to reset to the state contained in user
+		this.setState({
+			reddit: this.state.user['post-weights']['reddit'],
+			facebook: this.state.user['post-weights']['facebook'],
+			hackerNews: this.state.user['post-weights']['hacker-news'],
+			googleNews: this.state.user['post-weights']['google-news'],
+			hasWeightsChanged: false
+		});
+	}
+
 	submitWeights() {
 		// Go through all our current slider states - if they dont equal -1 they have changed
 		// so update our user state.
-		var u = this.state.user
+		var u = this.state.user;
+		u['post-weights']['reddit'] = this.state.reddit;
+		u['post-weights']['facebook'] = this.state.facebook;
+		u['post-weights']['hacker-news'] = this.state.hackerNews;
+		u['post-weights']['google-news'] = this.state.googleNews;
 
-		if (this.state.reddit !== -1) {
-			console.log("changing reddit")
-			console.log(this.state.reddit)
+		var self = this;
 
-			u['post-weights']['reddit'] = this.state.reddit;
-		}
-
-		if (this.state.facebook !== -1) {
-			console.log("changing facebook")
-
-			u['post-weights']['facebook'] = this.state.facebook;
-		}
-
-		if (this.state.hackerNews !== -1) {
-			console.log("changing h news")
-
-			u['post-weights']['hacker-news'] = this.state.hackerNews;
-		}
-
-		if (this.state.googleNews !== -1) {
-			console.log("changing g news")
-			u['post-weights']['google-news'] = this.state.googleNews;
-		}
-
-		this.setState({
-			user: u,
-			hasWeightsChanged: false
+		axios({
+			method: 'post',
+			url: 'http://0.0.0.0:3000/v1/weights',
+			withCredentials: true,
+			data: {
+				'reddit': self.state.reddit,
+				'facebook': self.state.facebook,
+				'hacker-news': self.state.hackerNews,
+				'google-news': self.state.googleNews
+			}
+		}).then(function(response) {
+			// TODO: show loading icon as soon as this fires
+			self.setState({
+				user: u,
+				hasWeightsChanged: false
+			});
+		}).catch(function(error){
+			// TODO: show banner saying unable to update weights
+			self.resetWeights();
 		});
+
+
 	}
 
   render() {
@@ -295,11 +321,14 @@ class SettingsPage extends React.Component {
 					{this.buildLinkedAccountsList()}
 					{this.buildUnlinkedAccountsList()}
 					<div className='settings-header'>Posts Weighting</div>
-					<WeightSlider value={this.state.user['post-weights']['reddit']} type='reddit' onChange={this.sliderChange} />
-					<WeightSlider value={this.state.user['post-weights']['facebook']} type='facebook' onChange={this.sliderChange} />
-					<WeightSlider value={this.state.user['post-weights']['hacker-news']} type='hacker-news' onChange={this.sliderChange} />
-					<WeightSlider value={this.state.user['post-weights']['google-news']} type='google-news' onChange={this.sliderChange} />
-					<Button className='btn-weights' onClick={this.submitWeights} disabled={!this.state.hasWeightsChanged}> Save </Button>
+					<WeightSlider value={this.state.reddit} type='reddit' onChange={this.sliderChange} />
+					<WeightSlider value={this.state.facebook} type='facebook' onChange={this.sliderChange} />
+					<WeightSlider value={this.state.hackerNews} type='hacker-news' onChange={this.sliderChange} />
+					<WeightSlider value={this.state.googleNews} type='google-news' onChange={this.sliderChange} />
+					<div className="btn-weights-group">
+						<Button className='btn-w-reset' onClick={this.resetWeights} disabled={!this.state.hasWeightsChanged}>Reset</Button>
+						<Button className='btn-w-submit' bsStyle='primary' onClick={this.submitWeights} disabled={!this.state.hasWeightsChanged}>Save</Button>
+					</div>
 			</div>
 		);
   }

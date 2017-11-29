@@ -20,7 +20,12 @@ export class WeightSlider extends React.Component {
 
   handleChange(event) {
     this.setState({value: event.target.value});
-    this.state.onChange(this.state.type, Math.ceil(this.state.value / 10));
+    var x = 0;
+    if (this.state.value > 1) {
+      x = Math.ceil(this.state.value / 10)
+    }
+
+    this.state.onChange(this.state.type, x);
   }
 
   componentWillReceiveProps(props) {

@@ -125,7 +125,15 @@ div.weight-slider-container input.weight-slider:hover {
   display: flex;
 }
 
-.btn-weights {
+.btn-w-reset {
+  margin-right: 2px;
+}
+
+.btn-w-submit {
+  margin-left: 2px;
+}
+
+.btn-weights-group {
   float: right;
   margin-right: 2%;
 }
