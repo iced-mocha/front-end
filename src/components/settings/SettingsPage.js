@@ -117,6 +117,7 @@ class SettingsPage extends React.Component {
 		this.resetWeights = this.resetWeights.bind(this);
 		this.submitWeights = this.submitWeights.bind(this);
 		this.getLinkedAccounts = this.getLinkedAccounts.bind(this);
+		this.isSliderHidden = this.isSliderHidden.bind(this);
 		this.state = {};
 
 		if (props.user !== undefined && props.user !== {} &&
@@ -302,8 +303,17 @@ class SettingsPage extends React.Component {
 			// TODO: show banner saying unable to update weights
 			self.resetWeights();
 		});
+	}
 
+	isSliderHidden(type) {
+		var unlinked = this.state.unlinkedAccounts;
+		for (var i = 0; i < unlinked.length; i++) {
+			if (unlinked[i].type === type) {
+				return true;
+			}
+		}
 
+		return false;
 	}
 
   render() {
@@ -322,7 +332,7 @@ class SettingsPage extends React.Component {
 					{this.buildUnlinkedAccountsList()}
 					<div className='settings-header'>Posts Weighting</div>
 					<WeightSlider value={this.state.reddit} type='reddit' onChange={this.sliderChange} />
-					<WeightSlider value={this.state.facebook} type='facebook' onChange={this.sliderChange} />
+					<WeightSlider value={this.state.facebook} hidden={this.isSliderHidden('facebook')} type='facebook' onChange={this.sliderChange} />
 					<WeightSlider value={this.state.hackerNews} type='hacker-news' onChange={this.sliderChange} />
 					<WeightSlider value={this.state.googleNews} type='google-news' onChange={this.sliderChange} />
 					<div className="btn-weights-group">
