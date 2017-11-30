@@ -52,7 +52,7 @@ class Post extends React.Component {
             </div> }
           { this.props.Video &&
             <div className="hero-img-container">
-              <video className="hero-img">
+              <video className="hero-img" autoPlay={!this.props.IsVideo} loop={!this.props.IsVideo} muted={!this.props.IsVideo}>
                 <source src={this.props.Video} type="video/mp4"/>
               </video>
             </div> }
