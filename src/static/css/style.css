@@ -12,6 +12,11 @@ a {
   display: none !important;
 }
 
+.site-font {
+  /* Taken from Github */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
 a:hover {
   text-decoration: none !important;
 }
@@ -21,8 +26,24 @@ div.menu-header {
   font-size: 14px;
 }
 
+#nav .dropdown-menu {
+  margin-top: -4px;
+  border-radius: 4px;
+  box-shadow: 0 3px 12px rgba(27,31,35,0.15);
+}
+
+.signed-in-title {
+  color: #586069;
+  margin: 2px 0;
+}
+
+.signed-in-value {
+  color: #586069;
+  font-weight: 600;
+}
+
 .menu-header-value {
-  color: #333;
+  color: #586069;
 }
 
 html {
