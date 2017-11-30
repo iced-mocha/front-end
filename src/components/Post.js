@@ -13,12 +13,41 @@ class Post extends React.Component {
       expandComments: false
     };
     this.toggleComments = this.toggleComments.bind(this);
+    this.getHeroImage = this.getHeroImage.bind(this);
   }
 
   toggleComments(e) {
     this.setState({
       expandComments: !this.state.expandComments
     });
+  }
+
+  getHeroImage() {
+    if (this.props.Video) {
+      return (
+        <div className="hero-img-container">
+          <video className="hero-img" autoPlay={!this.props.IsVideo} loop={!this.props.IsVideo} muted={!this.props.IsVideo}>
+            <source src={this.props.Video} type="video/mp4"/>
+          </video>
+        </div>
+      );
+    } else if (this.props.HeroImg) {
+      const youtubeRe = /youtube\.com.*v=(.*)&.*/;
+      let matches = youtubeRe.exec(this.props.url);
+      if (matches && matches.length == 2) {
+        return (
+          <div className="hero-img-container video-container">
+            <iframe src={"https://www.youtube.com/embed/" + matches[1]}>
+            </iframe>
+          </div>
+        );
+      }
+      return (
+        <div className="hero-img-container">
+          <img className="hero-img" src={this.props.HeroImg} />
+        </div>
+      );
+    }
   }
 
   render() {
@@ -46,16 +75,7 @@ class Post extends React.Component {
       <ListGroupItem>
         <a href={this.props.url || this.props.PostLink}>
           <div className="post-container">
-          { this.props.HeroImg && !this.props.Video &&
-            <div className="hero-img-container">
-              <img className="hero-img" src={this.props.HeroImg} />
-            </div> }
-          { this.props.Video &&
-            <div className="hero-img-container">
-              <video className="hero-img" autoPlay={!this.props.IsVideo} loop={!this.props.IsVideo} muted={!this.props.IsVideo}>
-                <source src={this.props.Video} type="video/mp4"/>
-              </video>
-            </div> }
+          { this.getHeroImage() }
             <div className="post-description">
               <div className="post-info">
                 <div className="post-header">
