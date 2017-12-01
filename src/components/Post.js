@@ -75,17 +75,33 @@ class Post extends React.Component {
       <ListGroupItem>
         <a href={this.props.url || this.props.PostLink}>
           <div className="post-container">
-          { this.getHeroImage() }
             <div className="post-description">
               <div className="post-info">
                 <div className="post-header">
                   <div className="post-title">{this.props.Title}</div>
                   <img className="post-img what-the-frick" src={this.props.imgUrl} alt="Reddit icon" />
                 </div>
-                <div className="post-date">{dateMessage}</div>
-                <div className="post-author">{this.props.Author}</div>
+                <div>
+                  {dateMessage}
+                  {this.props.Author && " - "}
+                  {this.props.subreddit ? 
+                    <a href={"https://reddit.com/u/" + this.props.Author}>
+                    { this.props.Author }
+                    </a>
+                    : this.props.Author}
+                  {this.props.subreddit && " - "}
+                  {this.props.subreddit &&
+                  <a href={"https://reddit.com/r/" + this.props.subreddit}>
+                  { "r/" + this.props.subreddit }
+                  </a>
+                  }
+                </div>
               </div>
             </div>
+          { this.getHeroImage() }
+          {this.props.Content && 
+          <div className="post-body" dangerouslySetInnerHTML={{ __html: this.props.Content}} />
+          }
           </div>
         </a>
         { (this.props.Platform == "facebook" || this.props.Platform == "hacker-news" || this.props.Platform == "reddit") &&
