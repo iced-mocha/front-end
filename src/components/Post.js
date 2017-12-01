@@ -32,7 +32,7 @@ class Post extends React.Component {
         </div>
       );
     } else if (this.props.HeroImg) {
-      const youtubeRe = /youtube\.com.*v=(.*)&.*/;
+      const youtubeRe = /youtube\.com.*v=([^&]*)/;
       let matches = youtubeRe.exec(this.props.url);
       if (matches && matches.length == 2) {
         return (
