@@ -22,10 +22,6 @@ class HomePage extends React.Component {
     this.onScroll = this.onScroll.bind(this);
   }
 
-  componentWillReceiveProps() {
-    this.getMorePosts();
-  }
-
   onFacebookLogin(id, token) {
     this.setState({
       fbId: id,
