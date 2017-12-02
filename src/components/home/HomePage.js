@@ -5,7 +5,8 @@ import FacebookSection from '../login/FacebookSection';
 import Post from '../Post';
 import util from 'util';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
-import FontAwesome from 'react-fontawesome'
+import FontAwesome from 'react-fontawesome';
+import Config from '../../../config.json';
 
 class HomePage extends React.Component {
   constructor(props, context) {
@@ -33,7 +34,7 @@ class HomePage extends React.Component {
   getMorePosts() {
     this.setState({loadingMorePosts: true});
     // TODO: We need to detect when there are no more pages to load
-    var url = "http://0.0.0.0:3000/v1/posts"
+    var url = Config.coreURL + "/v1/posts"
     if (this.state.pageToken !== "") {
       url = url + "?page_token=" + this.state.pageToken;
     }
