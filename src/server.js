@@ -4,6 +4,7 @@ import { Server } from 'https';
 import Express from 'express';
 import React from 'react';
 import fs from 'fs';
+import favicon from 'serve-favicon';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter as Router } from 'react-router-dom';
 import { App } from './components/App';
@@ -18,6 +19,7 @@ const server = new Server(credentials, app);
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(favicon(path.join(__dirname,'static','img','favicon.ico')));
 app.use(Express.static(path.join(__dirname, 'static')));
 
 app.get('/facebook/user', (req, res) => {
