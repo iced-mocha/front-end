@@ -8,6 +8,7 @@ import HomePage from './home/HomePage';
 import SettingsPage from './settings/SettingsPage';
 import { NotFoundPage } from './NotFoundPage';
 import axios from 'axios';
+import Config from '../../config.json';
 
 const renderIndex = () => <IndexPage posts={posts} />;
 
@@ -24,7 +25,7 @@ export class App extends React.Component {
 
   isLoggedIn() {
 	  var self = this;
-	  axios.get('http://0.0.0.0:3000/v1/loggedin', {withCredentials: true})
+	  axios.get(Config.coreURL + '/v1/loggedin', {withCredentials: true})
 			.then(response => {
 				self.setState({loggedIn: response.data['logged-in']})
 	    })
@@ -35,7 +36,7 @@ export class App extends React.Component {
 
 	updateUser() {
 		var self = this;
-		axios.get('http://0.0.0.0:3000/v1/users', {withCredentials: true})
+		axios.get(Config.coreURL + '/v1/users', {withCredentials: true})
 			.then(response => {
 				self.setState({user: response.data})
 			})

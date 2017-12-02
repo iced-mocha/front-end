@@ -1,4 +1,5 @@
 import React from 'react';
+import Config from '../../../config.json';
 
 class RedditSection extends React.Component {
   constructor(props) {
@@ -8,8 +9,7 @@ class RedditSection extends React.Component {
   }
 
   getLink(username) {
-		// TODO: Config file
-		return "http://localhost:3001/v1/" + username + "/authorize"
+		return Config["coreURL"] + "/v1/users/" + username + "/authorize/reddit"
   }
 
   render() {

@@ -1,9 +1,10 @@
 import React from 'react';
-import { LoginButton, SignupButton } from './Login'
-import { DismissableAlert } from '../alerts/Alerts'
+import { LoginButton, SignupButton } from './Login';
+import { DismissableAlert } from '../alerts/Alerts';
 import { Redirect } from 'react-router';
 import $ from "jquery";
-import { Form, FormGroup, FormControl, Button } from 'react-bootstrap'
+import { Form, FormGroup, FormControl, Button } from 'react-bootstrap';
+import Config from '../../../config.json';
 
 class SignupForm extends React.Component {
 
@@ -57,7 +58,7 @@ class SignupForm extends React.Component {
 	  // Post to backend
 	  $.ajax({
 		  type: "POST",
-		  url: "http://localhost:3000/v1/users",
+		  url: Config.coreURL + "/v1/users",
 		  data: JSON.stringify(preparedData),
 		  xhrFields: {
 				withCredentials: false
