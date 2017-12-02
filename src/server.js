@@ -1,14 +1,20 @@
 import path from 'path';
 import request from 'request-promise';
-import { Server } from 'http';
+import { Server } from 'https';
 import Express from 'express';
 import React from 'react';
+import fs from 'fs';
 import { renderToString } from 'react-dom/server';
 import { StaticRouter as Router } from 'react-router-dom';
 import { App } from './components/App';
 
+var privateKey  = fs.readFileSync('server.key', 'utf8');
+var certificate = fs.readFileSync('server.crt', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
+
 const app = new Express();
-const server = new Server(app);
+const server = new Server(credentials, app);
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
