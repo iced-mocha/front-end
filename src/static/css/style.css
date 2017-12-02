@@ -325,6 +325,10 @@ footer p {
   opacity: 0.5;
 }
 
+.post-info-container {
+  display: flex;
+}
+
 .post-info {
   width: 100%;
   text-decoration: none;
@@ -332,6 +336,16 @@ footer p {
 
 .post-header {
   display: flex;
+}
+
+a.post-header-link:visited {
+  color: block;
+  text-decoration: none;
+}
+
+a.post-header-link:hover,
+.post-header-link {
+  color: black;
 }
 
 .toggle-comments {

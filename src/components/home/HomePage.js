@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import FacebookSection from '../login/FacebookSection';
-import Post from '../Post';
+import Post from '../posts/Post';
 import util from 'util';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import FontAwesome from 'react-fontawesome';
