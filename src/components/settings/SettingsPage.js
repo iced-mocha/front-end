@@ -1,11 +1,12 @@
 import React from 'react';
 import axios from 'axios';
-import RedditSection from '../login/RedditSection'
-import FacebookSection from '../login/FacebookSection'
-import { WeightSlider } from './Slider'
+import RedditSection from '../login/RedditSection';
+import FacebookSection from '../login/FacebookSection';
+import { WeightSlider } from './Slider';
 import { Jumbotron, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Row, Col } from 'react-bootstrap';
-import FontAwesome from 'react-fontawesome'
+import FontAwesome from 'react-fontawesome';
+import Config from '../../../config.json';
 
 // This component display information about a particular account linked for the user (i.e. reddit/facebook etc.)
 class LinkedAccount extends React.Component {
@@ -19,9 +20,11 @@ class LinkedAccount extends React.Component {
 			identification: props.identification,
 			removeLinkFromParent: props.removeLinkFromParent
 		};
+
 	}
 
 	componentWillReceiveProps(nextProps) {
+
 		this.setState({
 			type: nextProps.type,
 			identification: nextProps.identification,
@@ -41,7 +44,7 @@ class LinkedAccount extends React.Component {
 		var self = this;
 		axios({
 			method: 'delete',
-		  url: 'http://0.0.0.0:3000/v1/users/accounts/' + this.state.type,
+		  url: Config.coreURL + '/v1/users/accounts/' + this.state.type,
 			withCredentials: true
 		}).then(function(response) {
 			self.state.removeLinkFromParent(self.state.type)
@@ -285,7 +288,7 @@ class SettingsPage extends React.Component {
 
 		axios({
 			method: 'post',
-			url: 'http://0.0.0.0:3000/v1/weights',
+			url: Config.coreURL + '/v1/weights',
 			withCredentials: true,
 			data: {
 				'reddit': self.state.reddit,

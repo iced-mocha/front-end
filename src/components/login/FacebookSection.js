@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import FacebookProvider, { Login } from 'react-facebook';
+import Config from '../../../config.json';
 
 class FacebookSection extends React.Component {
   constructor(props) {
@@ -25,7 +26,7 @@ class FacebookSection extends React.Component {
   postFacebookInfo(fbToken, fbName) {
     axios({
       method: 'post',
-      url: 'http://0.0.0.0:3000/v1/users/' + this.state.username + '/authorize/facebook',
+      url: Config.coreURL + '/v1/users/' + this.state.username + '/authorize/facebook',
       withCredentials: true,
       data: {
         type: "facebook",

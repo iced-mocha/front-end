@@ -3,6 +3,7 @@ import axios from 'axios';
 import $ from "jquery";
 import { NavDropdown, Navbar, NavItem, Nav, MenuItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
+import Config from '../../config.json';
 
 class SignOutMenuItem extends React.Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class SignOutMenuItem extends React.Component {
   signout() {
     axios({
 	     method: 'post',
-	     url: 'http://0.0.0.0:3000/v1/logout',
+	     url: Config.coreURL + '/v1/logout',
 	     withCredentials: true
 	  });
 	  // This function is passed into update state further up the tree

@@ -4,3 +4,5 @@ node_modules
 src/server-es5.js
 *.swp
 bundle.js
+server.crt
+server.key
