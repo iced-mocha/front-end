@@ -35,6 +35,15 @@ class Comment extends React.Component {
     return <h4 className="comment-author">{author}</h4>
   }
 
+  getScore(type, score) {
+    if (type === 'reddit') {
+      return (
+        <span className="comment-score">{score + " points"}</span>
+      );
+    }
+    return <span></span>
+  }
+
   render() {
     if (!this.props.content || !this.props.author) {
       return <div/>
@@ -48,6 +57,7 @@ class Comment extends React.Component {
             </div>
           </button>
           {this.getAuthor(this.props.type, this.props.author)}
+          {this.getScore(this.props.type, this.props.score)}
         </div>
         <div className={!this.state.expandComments ? "hidden" : ""}>
           <div className="inner-comments" dangerouslySetInnerHTML={{ __html: this.props.content}} />

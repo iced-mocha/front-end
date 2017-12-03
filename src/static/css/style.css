@@ -372,6 +372,12 @@ a.post-header-link:hover {
   color: #24292e;
 }
 
+.comment-score {
+  padding-top: 2px;
+  margin: 0 4px;
+  font-size: smaller;
+}
+
 .inner-comments {
   margin-left: 16px;
 }
