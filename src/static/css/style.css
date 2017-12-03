@@ -229,6 +229,15 @@ footer p {
   color: #333;
 }
 
+.post-score-light {
+  margin-right: 4px;
+}
+
+.post-score-bold {
+  margin-right: 4px;
+  font-weight: bold;
+}
+
 .post-img {
   max-height: 32px !important;
   max-width: 32px !important;

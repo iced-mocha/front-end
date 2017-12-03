@@ -69,7 +69,7 @@ class Post extends React.Component {
       }
     }
 
-    return dateMessage
+    return 'submitted ' + dateMessage
   }
 
   buildCommentSections() {
@@ -120,6 +120,30 @@ class Post extends React.Component {
     return <div className='post-author-info'>{authorLink ? " - " : ""}{authorLink}{subredditLink ? " - " : ""}{subredditLink}</div>;
   }
 
+  shortenScore(score) {
+    var first;
+    var second;
+    if(score >= 10000) {
+      first = score / 1000;
+      second = Math.round((score - (parseInt(first, 10) * 1000))/100);
+      return parseInt(first, 10) + '.' + second + 'K';
+    } else {
+      return score;
+    }
+  }
+
+  getScore() {
+    if (this.props.Platform === 'reddit') {
+      return (
+        <div>
+          <span className='post-score-bold'>{this.shortenScore(this.props.score)}</span>
+          <span className='post-score-light'>points - </span>
+        </div>
+      );
+    }
+    return <div></div>
+  }
+
   buildExpandCommentsButton() {
     if (this.props.Platform === 'google-news') {
       return '';
@@ -157,6 +181,7 @@ class Post extends React.Component {
                     <img className="post-img" src={this.props.imgUrl} alt="Reddit icon" />
                 </div>
                 <div className="post-info-container">
+                  {this.getScore()}
                   {dateMessage}
                   {this.buildPostLinks()}
                 </div>
