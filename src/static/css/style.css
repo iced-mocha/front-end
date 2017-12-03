@@ -8,6 +8,10 @@ a {
   color: #1f4ba0;
 }
 
+.flex {
+  display: flex;
+}
+
 .hidden {
   display: none !important;
 }
@@ -356,7 +360,7 @@ footer p {
 }
 
 a.post-header-link:visited {
-  color: black;
+  color: #24292e;
   text-decoration: none;
 }
 
@@ -366,6 +370,10 @@ a.post-header-link:hover {
 }
 .post-header-link {
   color: #24292e;
+}
+
+.inner-comments {
+  margin-left: 16px;
 }
 
 .toggle-comments {
@@ -398,13 +406,18 @@ a.post-header-link:hover {
   padding-bottom: 16px;
   padding-left: 0;
   padding-right: 16px;
-  background-color: #F0F0F0;
+  background-color: white;
   display: inline-block;
+}
+
+.comment-author {
+  font-weight: bold;
 }
 
 .expand-icon {
   width: 16px;
   height: 16px;
+  padding-bottom: 4px;
 }
 
 .transparent-button {
@@ -415,7 +428,6 @@ a.post-header-link:hover {
     margin: 0;
     display: block;
     text-align: left;
-    width: 100%;
 }
 
 .comment {

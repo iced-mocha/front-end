@@ -13,7 +13,7 @@ class Comment extends React.Component {
       visibleChildren: props.initialVisibleChildren
     };
     props.getChildren()
-      .then(children => this.setState({children: children.map(comment => 
+      .then(children => this.setState({children: children.map(comment =>
         <Comment
           {...comment}
           collapsePoints={props.collapsePoints}
@@ -23,29 +23,43 @@ class Comment extends React.Component {
       .catch(err => {});
   }
 
+  getAuthor(type, author) {
+    // If its reddit link the reddit user
+    if (type === 'reddit') {
+      return (
+        <a href={'https://reddit.com/u/'+author} target='blank' className="post-header-link comment-author">
+          {author}
+        </a>
+      );
+    }
+    return <h4 className="comment-author">{author}</h4>
+  }
+
   render() {
     if (!this.props.content || !this.props.author) {
       return <div/>
     }
     return (
       <div className="comment" key={this.props.id}>
-        <button className="transparent-button" onClick={() => {this.setState({expandComments:!this.state.expandComments})}}>
-          <div className="comment-header">
-            <img className="expand-icon" src={this.state.expandComments ? "/img/collapse-icon.png" : "/img/expand-icon.png"} />
-            <h4 className="comment-author">{this.props.author}</h4>
-          </div>
-        </button>
-        <div className={!this.state.expandComments ? "hidden" : ""}>
-          <div className="inner-comments" dangerouslySetInnerHTML={{ __html: this.props.content}} />
-        { this.state.children ? this.state.children.slice(0, this.state.visibleChildren) : <h3>Loading</h3> }
-        { this.state.children && this.state.children.length > this.state.visibleChildren &&
-          <button className="transparent-button shift-right" onClick={() => this.setState({visibleChildren: this.state.visibleChildren + this.props.moreButtonChildren})}>
+        <div className='flex'>
+          <button className="transparent-button" onClick={() => {this.setState({expandComments:!this.state.expandComments})}}>
             <div className="comment-header">
-              <img className="expand-icon" src="/img/expand-icon.png"/>
-              <h4 className="more-comments">more</h4>
+              <img className="expand-icon" src={this.state.expandComments ? "/img/collapse-icon.png" : "/img/expand-icon.png"} />
             </div>
           </button>
-        }
+          {this.getAuthor(this.props.type, this.props.author)}
+        </div>
+        <div className={!this.state.expandComments ? "hidden" : ""}>
+          <div className="inner-comments" dangerouslySetInnerHTML={{ __html: this.props.content}} />
+          { this.state.children ? this.state.children.slice(0, this.state.visibleChildren) : <h3>Loading</h3> }
+          { this.state.children && this.state.children.length > this.state.visibleChildren &&
+            <button className="transparent-button shift-right" onClick={() => this.setState({visibleChildren: this.state.visibleChildren + this.props.moreButtonChildren})}>
+              <div className="comment-header">
+                <img className="expand-icon" src="/img/expand-icon.png"/>
+                <h4 className="more-comments">more</h4>
+              </div>
+            </button>
+          }
         </div>
       </div>
     );

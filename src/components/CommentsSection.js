@@ -6,7 +6,6 @@ import FacebookProvider, { Comments } from 'react-facebook';
 import Comment from './Comment';
 import FontAwesome from 'react-fontawesome'
 
-// To do use right icon for each kind of post
 class CommentsSection extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -18,6 +17,7 @@ class CommentsSection extends React.Component {
     this.htmlDecode = this.htmlDecode.bind(this);
     this.state = {};
     let getComments;
+
     if (props.platform == "hacker-news") {
       getComments = this.getHnPostComments(props.postId, 1);
     } else if (props.platform == "facebook") {
@@ -25,6 +25,7 @@ class CommentsSection extends React.Component {
     } else if (props.platform == "reddit") {
       getComments = this.getRedditComments("https://www.reddit.com/r/" + props.subreddit + "/comments/" + props.postId + ".json");
     }
+
     if (getComments) {
       getComments.then(comments => {
         this.setState({comments: comments});
@@ -52,6 +53,7 @@ class CommentsSection extends React.Component {
       .then(response => {
         let comment = {
           id: response.data.id,
+          type: 'hacker-news',
           author: response.data.by,
           content: response.data.text,
           depth: depth
@@ -85,6 +87,7 @@ class CommentsSection extends React.Component {
         let comments = response.data.data.map(fbComment => {
           comment = {
             id: fbComment.id,
+            type: 'facebook',
             author: fbComment.from.name,
             content: fbComment.data.message,
             depth: depth,
@@ -105,10 +108,11 @@ class CommentsSection extends React.Component {
         console.log(err);
       });
   }
-  
+
   getRedditComments(commentsURL) {
     return axios.get(commentsURL)
       .then(response => {
+        // Case where we receive no comments
         if (!response.data[1] || !response.data[1].data) {
           return [];
         }
@@ -124,13 +128,16 @@ class CommentsSection extends React.Component {
     if (!comment.data) {
       return
     }
+
     let children = [];
     if (comment.data.replies && Array.isArray(comment.data.replies.data.children)) {
       children = comment.data.replies.data.children.map(c => this.getRedditComment(c, depth + 1));
     }
     return {
       id: comment.data.id,
+      score: comment.data.score,
       author: comment.data.author,
+      type: 'reddit',
       content: this.htmlDecode(comment.data.body_html),
       depth: depth,
       getChildren: () => new Promise(resolve => resolve(children))
@@ -158,7 +165,7 @@ class CommentsSection extends React.Component {
                 moreButtonChildren={this.props.moreButtonChildren}
                 />)
         }
-        <a className="more-comments-link" href={this.props.postLink}>Full Post</a>
+        <a target='blank' className="more-comments-link" href={this.props.postLink}>Full Post</a>
       </div>
     );
   }

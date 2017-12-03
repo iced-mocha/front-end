@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { ListGroupItem } from 'react-bootstrap';
 import FacebookProvider, { Comments } from 'react-facebook';
 import CommentsSection from '../CommentsSection';
-import FacebookComments from '../FacebookComments';
 import Video from './Video';
 
 class Post extends React.Component {
