@@ -133,7 +133,7 @@ class Post extends React.Component {
   }
 
   getScore() {
-    if (this.props.Platform === 'reddit') {
+    if (this.props.Platform === 'reddit' || this.props.Platform === 'hacker-news') {
       return (
         <div>
           <span className='post-score-bold'>{this.shortenScore(this.props.score)}</span>
