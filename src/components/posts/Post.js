@@ -15,6 +15,7 @@ class Post extends React.Component {
     this.toggleComments = this.toggleComments.bind(this);
     this.getHeroImage = this.getHeroImage.bind(this);
     this.buildPostLinks = this.buildPostLinks.bind(this);
+    this.buildCommentSections = this.buildCommentSections.bind(this);
   }
 
   toggleComments(e) {
@@ -72,6 +73,36 @@ class Post extends React.Component {
     return dateMessage
   }
 
+  buildCommentSections() {
+    var t = this.props.Platform;
+    var cPoints = [];
+    var rComments = 10;
+    var visibleChildren = 5;
+
+    if (t === 'reddit' || t === 'hacker-news') {
+        cPoints = [4,7];
+        rComments = 5;
+        visibleChildren = 10;
+    }
+
+    return (
+      <div className="comments-section">
+        <CommentsSection
+          postId={this.props.ID}
+          postLink={this.props.PostLink}
+          platform={this.props.Platform}
+          fbId={this.props.fbId ? this.props.fbId : ''}
+          fbToken={this.props.fbToken ? this.props.fbToken : ''}
+          subreddit={this.props.subreddit ? this.props.subreddit : ''}
+          collapsePoints={cPoints}
+          initialVisibleChildren={visibleChildren}
+          moreButtonChildren={10}
+          rootComments={rComments}
+        />
+      </div>
+    );
+  }
+
   buildPostLinks() {
     var authorLink = undefined;
     var subredditLink = undefined;
@@ -87,7 +118,27 @@ class Post extends React.Component {
       </a>;
     }
 
-    return <div>{authorLink ? " - " : ""}{authorLink}{subredditLink ? " - " : ""}{subredditLink}</div>;
+    return <div className='post-author-info'>{authorLink ? " - " : ""}{authorLink}{subredditLink ? " - " : ""}{subredditLink}</div>;
+  }
+
+  buildExpandCommentsButton() {
+    if (this.props.Platform === 'google-news') {
+      return '';
+    }
+
+    if (this.state.expandComments) {
+      return (
+        <button className="toggle-comments collapse-comments" onClick={this.toggleComments}>
+          <img className="expand-icon" src="/img/collapse-icon.png" />
+        </button>
+      );
+    }
+
+    return (
+      <button className="toggle-comments expand-comments" onClick={this.toggleComments}>
+        <img className="expand-icon" src="/img/expand-icon.png" />
+      </button>
+    );
   }
 
   render() {
@@ -97,7 +148,6 @@ class Post extends React.Component {
     return (
       <ListGroupItem>
           <div className="post-container">
-            <div className="post-description">
               <div className="post-info">
                 <div className="post-header">
                     <div className="post-title">
@@ -112,60 +162,15 @@ class Post extends React.Component {
                   {this.buildPostLinks()}
                 </div>
               </div>
-            </div>
-          { this.getHeroImage() }
-          {this.props.Content &&
-          <div className="post-body" dangerouslySetInnerHTML={{ __html: this.props.Content}} />
-          }
+              <div className={'post-content'+ (this.state.expandComments ? '' : ' truncated-post-height')}>
+                { this.getHeroImage() }
+                {this.props.Content &&
+                  <div className="post-body" dangerouslySetInnerHTML={{ __html: this.props.Content}} />
+                }
+              </div>
           </div>
-        { (this.props.Platform == "facebook" || this.props.Platform == "hacker-news" || this.props.Platform == "reddit") &&
-          (this.state.expandComments ? (
-            <button className="toggle-comments collapse-comments" onClick={this.toggleComments}>
-              <img className="expand-icon" src="/img/collapse-icon.png" />
-            </button>
-          ) : (
-            <button className="toggle-comments expand-comments" onClick={this.toggleComments}>
-              <img className="expand-icon" src="/img/expand-icon.png" />
-            </button>
-          ))
-        }
-        { this.state.expandComments &&
-          <div className="comments-section">
-          { this.props.Platform == "facebook" &&
-            <CommentsSection
-              postId={this.props.ID}
-              postLink={this.props.PostLink}
-              platform={this.props.Platform}
-              fbId={this.props.fbId}
-              fbToken={this.props.fbToken}
-              collapsePoints={[]}
-              initialVisibleChildren={5}
-              moreButtonChildren={10}
-              rootComments={10}/>
-          }
-          { this.props.Platform == "hacker-news" &&
-            <CommentsSection
-              postId={this.props.ID}
-              postLink={this.props.PostLink}
-              platform={this.props.Platform}
-              collapsePoints={[4, 7]}
-              initialVisibleChildren={10}
-              moreButtonChildren={10}
-              rootComments={5}/>
-          }
-          { this.props.Platform == "reddit" &&
-            <CommentsSection
-              postId={this.props.ID}
-              postLink={this.props.PostLink}
-              platform={this.props.Platform}
-              subreddit={this.props.subreddit}
-              collapsePoints={[4, 7]}
-              initialVisibleChildren={10}
-              moreButtonChildren={10}
-              rootComments={5}/>
-          }
-          </div>
-        }
+        { this.buildExpandCommentsButton() }
+        { this.state.expandComments ? this.buildCommentSections() : '' }
       </ListGroupItem>
     );
   }
