@@ -251,7 +251,7 @@ footer p {
 .post-container {
   width: 100%;
   color: #444444;
-  padding: 16px;
+  padding: 16px 16px 6px 16px;
   background-color: #FFFFFF;
 }
 
@@ -369,7 +369,7 @@ footer p {
 }
 
 a.post-header-link:visited {
-  color: #24292e;
+  color: #444444;
   text-decoration: none;
 }
 
@@ -378,7 +378,8 @@ a.post-header-link:hover {
   text-decoration: underline !important;
 }
 .post-header-link {
-  color: #24292e;
+  color: #444444;
+  font-size: 16px;
 }
 
 .comment-score {
