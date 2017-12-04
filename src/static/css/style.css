@@ -82,6 +82,7 @@ div.weight-slider-container input.weight-slider:hover {
 }
 
 .slider-value {
+  width: 2em;
   margin: 0px 8px;
   font-weight: bold;
 }
@@ -99,7 +100,6 @@ div.weight-slider-container input.weight-slider:hover {
 .weight-slider-container {
   display: flex;
   margin: 4px 0px;
-  margin-right: 2%;
 }
 
 .spinner-wrapper {
@@ -166,7 +166,10 @@ div.weight-slider-container input.weight-slider:hover {
 
 .btn-weights-group {
   float: right;
-  margin-right: 2%;
+}
+
+.row {
+  margin-right: 0 !important;
 }
 
 .account-row {

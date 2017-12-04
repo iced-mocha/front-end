@@ -9,7 +9,7 @@ export class WeightSlider extends React.Component {
     this.state = {
 			title: props.title,
 			type: props.type,
-      value: props.value * 10,
+      value: props.value,
       onChange: props.onChange,
       hidden: props.hidden
 		};
@@ -21,26 +21,19 @@ export class WeightSlider extends React.Component {
 
   handleChange(event) {
     this.setState({value: event.target.value});
-    var x = 0;
-    if (this.state.value > 1) {
-      x = Math.ceil(this.state.value / 10)
-    }
-
-    this.state.onChange(this.state.type, x);
+    this.state.onChange(this.state.type, event.target.value);
   }
 
   componentWillReceiveProps(props) {
     this.state = {
       type: props.type,
       title: props.title,
-      value: props.value * 10,
+      value: props.value,
       onChange: props.onChange,
       hidden: props.hidden
     };
   }
 
-  // Note the max value is out of 100 - but we will actually use a range out of 10
-  // Putting the range to 100 allows for a smoother animation of the slider
   render() {
     var hidden = '';
     if (this.state.hidden) {
@@ -50,9 +43,15 @@ export class WeightSlider extends React.Component {
 		return (
       <div className={'weight-slider-container '+ hidden}>
           <img className="slider-img" src={this.imageForType(this.state.type)}/>
-          <div className='slider-value'>{Math.ceil(this.state.value / 10)}</div>
-          <input type="range" min="0" max="100" value={this.state.value}
-            className="weight-slider" id={this.state.type +"-slider"} onChange={this.handleChange}/>
+          <div className='slider-value'>{parseFloat(this.state.value / 10.0).toFixed(1)}</div>
+          <input 
+            type="range"
+            min="0"
+            max="100"
+            value={this.state.value}
+            className="weight-slider"
+            id={this.state.type +"-slider"}
+            onChange={this.handleChange}/>
       </div>
 		);
 	}

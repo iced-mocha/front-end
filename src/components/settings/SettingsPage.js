@@ -24,7 +24,6 @@ class LinkedAccount extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-
 		this.setState({
 			type: nextProps.type,
 			identification: nextProps.identification,
