@@ -5,21 +5,6 @@ html {
   background-color: #DDD;
 }
 
-#nav {
-  background-color: #5C9CC5;
-  border-style: none;
-  box-shadow: 0 0 5px 1px #AAA;
-  color: #FFFFFF !important;
-}
-
-.navbar-brand {
-  color: #FFFFFF !important;
-}
-
-.navbar-nav > li > a {
-  color: #FFFFFF !important;
-}
-G
 .flex {
   display: flex;
 }
@@ -40,6 +25,10 @@ a:hover {
 li.menu-header,
 div.menu-header {
   font-size: 14px;
+}
+
+.navbar-brand, .navbar-nav > li > a {
+  color: #757575 !important;
 }
 
 #nav .dropdown-menu {
@@ -261,9 +250,11 @@ footer p {
 }
 
 .post-container {
+  box-shadow: 2px 8px 4px #DDD;
+  border: 1px solid #ddd;
   width: 100%;
   color: #444444;
-  padding: 16px 16px 16px 16px;
+  padding: 16px;
   background-color: #FFFFFF;
 }
 
@@ -348,11 +339,14 @@ footer p {
 }
 
 .list-group-item {
+  display: grid !important;
+  border: none !important;
   padding: 0 !important;
+  background-color: #f3f3f3 !important;
 }
 
 .app-container {
-  background-color: #DDD;
+  background-color: #f3f3f3;
 }
 
 .post-img {
@@ -392,24 +386,31 @@ a.post-header-link:visited {
   font-size: smaller;
 }
 
+.inner-comments {
+  margin-left: 16px;
+}
+
 .toggle-comments {
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0px;
   background-color: #FFFFFF;
   display: block;
   width: 100%;
   height: 20px;
-  border-style: none;
   outline: none;
   margin-top: -16px;
 }
 
 .comments-section {
-  width: 100%;
+  margin: auto;
+  width: 99%;
   height: 100%;
   padding: 16px;
   padding-left: 0;
-  background-color: #F9F9F9;
+  background-color: white;
   display: inline-block;
-  box-shadow: inset 0 1px 5px 0 #AAA;
+  box-shadow: inset 0px 1px 4px 1px #ddd;
 }
 
 .comments-section > div > .comment {
