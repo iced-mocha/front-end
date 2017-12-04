@@ -2,7 +2,7 @@ html {
   color: #030303;
   font: caption;
   padding-bottom: 2em;
-  background-color: #DDD;
+  background-color: #E2E2E2;
 }
 
 .flex {
@@ -54,10 +54,6 @@ div.menu-header {
 
 .menu-header-value {
   color: #586069;
-}
-
-html {
- background: #DDD;
 }
 
 .small-spinner-wrapper {
@@ -344,7 +340,7 @@ footer p {
 }
 
 .list-group-item {
-  display: grid !important;
+  display: block !important;
   border: none !important;
   padding: 0 !important;
   background-color: #e2e2e2 !important;
@@ -414,7 +410,7 @@ a.post-header-link:visited {
   padding: 16px;
   padding-left: 0;
   background-color: #fbfbfb;
-  display: inline-block;
+  display: block;
   box-shadow: inset 0px 1px 4px 1px #ddd;
 }
 
