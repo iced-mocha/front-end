@@ -412,8 +412,15 @@ a.post-header-link:visited {
   box-shadow: inset 0 1px 5px 0 #AAA;
 }
 
-div:first-child > .comment {
+.comments-section > div > .comment {
+  padding-top: 8px;
+  border-top: #DDD 1px solid;
+}
+
+div > .comment:first-child {
   margin-top: 0;
+  padding-top: 0;
+  border-top-style: none;
 }
 
 .comment-author {
