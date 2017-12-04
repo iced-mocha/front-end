@@ -1,0 +1,9 @@
+FROM node:boron
+
+WORKDIR /go/src/github.com/iced-mocha/front-end
+COPY . .
+RUN rm config.json
+RUN mv config.prod.json config.json
+RUN npm install
+
+CMD [ "npm", "start" ]
