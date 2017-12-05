@@ -9,7 +9,8 @@ class RedditSection extends React.Component {
   }
 
   getLink(username) {
-		return Config["coreURL"] + "/v1/users/" + username + "/authorize/reddit"
+    //return Config["redditURL"] + "/v1/" + username + "/authorize";
+		return Config["coreURL"] + "/v1/users/" + username + "/authorize/reddit";
   }
 
   render() {

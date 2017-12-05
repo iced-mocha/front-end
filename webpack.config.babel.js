@@ -1,10 +1,14 @@
 import path from 'path';
+import fs from 'fs';
 import nodeExternals from 'webpack-node-externals';
 
 const client = {
   entry: {
     js: './src/app-client.js',
   },
+	node: {
+		fs: 'empty',
+	},
   output: {
     path: path.join(__dirname, 'src', 'static', 'js'),
     filename: 'bundle.js',
@@ -38,6 +42,12 @@ const server = {
     filename: 'server-es5.js',
     libraryTarget: 'commonjs2',
   },
+	devServer: {
+		https: {
+			key: fs.readFileSync("/etc/ssl/private/frontend.key"),
+			cert: fs.readFileSync("/etc/ssl/certs/frontend.crt"),
+		},
+	},
   module: {
     rules: [
       {

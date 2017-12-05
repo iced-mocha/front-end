@@ -9,8 +9,8 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter as Router } from 'react-router-dom';
 import { App } from './components/App';
 
-var privateKey  = fs.readFileSync('server.key', 'utf8');
-var certificate = fs.readFileSync('server.crt', 'utf8');
+var privateKey  = fs.readFileSync('/etc/ssl/private/frontend.key', 'utf8');
+var certificate = fs.readFileSync('/etc/ssl/certs/frontend.crt', 'utf8');
 
 var credentials = {key: privateKey, cert: certificate};
 
@@ -60,7 +60,7 @@ app.get('*', (req, res) => {
   return res.status(status).render('index', { markup });
 });
 
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 443;
 const env = process.env.NODE_ENV || 'production';
 server.listen(port, (err) => {
   if (err) {

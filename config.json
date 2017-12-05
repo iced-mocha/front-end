@@ -1,1 +1,4 @@
-{ "coreURL": "https://0.0.0.0:3000" }
+{ 
+	"coreURL": "https://localhost:3000" ,
+	"redditURL": "https://localhost:3001"
+}

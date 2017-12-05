@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axios from 'axios';
+import fs from 'fs';
+import https from 'https';
 import FacebookSection from '../login/FacebookSection';
 import Post from '../posts/Post';
 import util from 'util';
@@ -34,6 +36,7 @@ class HomePage extends React.Component {
   getMorePosts() {
     this.setState({loadingMorePosts: true});
     // TODO: We need to detect when there are no more pages to load
+
     var url = Config.coreURL + "/v1/posts"
     if (this.state.pageToken !== "") {
       url = url + "?page_token=" + this.state.pageToken;
