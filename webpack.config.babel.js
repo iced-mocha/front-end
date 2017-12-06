@@ -44,8 +44,8 @@ const server = {
   },
 	devServer: {
 		https: {
-			key: fs.readFileSync("/etc/ssl/private/frontend.key"),
-			cert: fs.readFileSync("/etc/ssl/certs/frontend.crt"),
+			key: fs.readFileSync("/usr/local/etc/ssl/private/frontend.key"),
+			cert: fs.readFileSync("/usr/local/etc/ssl/certs/frontend.crt"),
 		},
 	},
   module: {

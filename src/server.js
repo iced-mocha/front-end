@@ -9,8 +9,8 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter as Router } from 'react-router-dom';
 import { App } from './components/App';
 
-var privateKey  = fs.readFileSync('/etc/ssl/private/frontend.key', 'utf8');
-var certificate = fs.readFileSync('/etc/ssl/certs/frontend.crt', 'utf8');
+var privateKey  = fs.readFileSync('/usr/local/etc/ssl/private/frontend.key', 'utf8');
+var certificate = fs.readFileSync('/usr/local/etc/ssl/certs/frontend.crt', 'utf8');
 
 var credentials = {key: privateKey, cert: certificate};
 
