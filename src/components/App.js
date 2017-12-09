@@ -21,11 +21,13 @@ export class App extends React.Component {
 	  this.isLoggedIn = this.isLoggedIn.bind(this);
 	  this.updateUser = this.updateUser.bind(this);
     this.state = { loggedIn: false, user: {} };
+    this.core = this.props.core || (typeof window !== 'undefined' && window.coreURL) || Config.coreURL;
+    this.reddit = this.props.reddit || (typeof window !== 'undefined' && window.redditURL) || Config.redditURL;
 	}
 
   isLoggedIn() {
 	  var self = this;
-	  axios.get(Config.coreURL + '/v1/loggedin', {withCredentials: true})
+	  axios.get(this.core + '/v1/loggedin', {withCredentials: true})
 			.then(response => {
 				self.setState({loggedIn: response.data['logged-in']})
 	    })
@@ -36,7 +38,7 @@ export class App extends React.Component {
 
 	updateUser() {
 		var self = this;
-		axios.get(Config.coreURL + '/v1/users', {withCredentials: true})
+		axios.get(this.core + '/v1/users', {withCredentials: true})
 			.then(response => {
 				self.setState({user: response.data})
 			})
@@ -63,10 +65,14 @@ export class App extends React.Component {
 		return (
 			<Layout loggedIn={this.state.loggedIn} user={this.state.user}>
 			<Switch>
-				<Route exact path="/" component={HomePage} />
-				<Route exact path="/home" component={HomePage} />
+				<Route exact path="/" render={(props) => (
+					<HomePage {...props} core={this.core}/>
+				)}/>
+				<Route exact path="/home" render={(props) => (
+					<HomePage {...props} core={this.core} />
+				)}/>
 				<Route exact path="/settings" render={(props) => (
-					<SettingsPage {...props} user={this.state.user} />
+					<SettingsPage {...props} user={this.state.user} reddit={this.reddit} core={this.core} />
 				)}/>
 				<Route exact path='/login' render={(props) => (
 					<LoginPage {...props} updateLoginStatus={this.updateLoginStatus} />

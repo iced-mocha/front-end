@@ -26,7 +26,7 @@ class FacebookSection extends React.Component {
   postFacebookInfo(fbToken, fbName) {
     axios({
       method: 'post',
-      url: Config.coreURL + '/v1/users/' + this.state.username + '/authorize/facebook',
+      url: this.props.core + '/v1/users/' + this.state.username + '/authorize/facebook',
       withCredentials: true,
       data: {
         type: "facebook",

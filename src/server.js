@@ -41,13 +41,13 @@ app.get('/facebook/user', (req, res) => {
 app.get('*', (req, res) => {
   let markup = '';
   let status = 200;
-
   const context = {};
   markup = renderToString(
     <Router location={req.url} context={context}>
-      <App />
+      <App core={process.env.CORE_URL} reddit={process.env.REDDIT_URL} />
     </Router>,
   );
+  markup += "<script>window.coreURL="+process.env.CORE_URL+";window.redditURL="+process.env.REDDIT_URL+"</script>";
 
   if (context.url) {
     return res.redirect(302, context.url);

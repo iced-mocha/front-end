@@ -43,7 +43,7 @@ class LinkedAccount extends React.Component {
 		var self = this;
 		axios({
 			method: 'delete',
-		  url: Config.coreURL + '/v1/users/accounts/' + this.state.type,
+		  url: this.core + '/v1/users/accounts/' + this.state.type,
 			withCredentials: true
 		}).then(function(response) {
 			self.state.removeLinkFromParent(self.state.type)
@@ -83,9 +83,9 @@ class UnlinkedAccount extends React.Component {
 
   makeLink(content) {
 		if (this.state.type === "reddit") {
-			return (<RedditSection username={this.state.username} content={content} />);
+			return (<RedditSection username={this.state.username} content={content} core={this.props.core} />);
     } else if (this.state.type === "facebook") {
-			return (<FacebookSection addLinkToParent={this.state.addLinkToParent} username={this.state.username} content={content} />);
+			return (<FacebookSection addLinkToParent={this.state.addLinkToParent} username={this.state.username} content={content} core={this.props.core} />);
     }
 		return "";
   }

@@ -37,7 +37,7 @@ class HomePage extends React.Component {
     this.setState({loadingMorePosts: true});
     // TODO: We need to detect when there are no more pages to load
 
-    var url = Config.coreURL + "/v1/posts"
+    var url = this.props.core + "/v1/posts"
     if (this.state.pageToken !== "") {
       url = url + "?page_token=" + this.state.pageToken;
     }
