@@ -58,7 +58,7 @@ class SignupForm extends React.Component {
 	  // Post to backend
 	  $.ajax({
 		  type: "POST",
-		  url: Config.coreURL + "/v1/users",
+		  url: this.props.core + "/v1/users",
 		  data: JSON.stringify(preparedData),
 		  xhrFields: {
 				withCredentials: false

@@ -47,7 +47,7 @@ app.get('*', (req, res) => {
       <App core={process.env.CORE_URL} reddit={process.env.REDDIT_URL} />
     </Router>,
   );
-  markup += "<script>window.coreURL="+process.env.CORE_URL+";window.redditURL="+process.env.REDDIT_URL+"</script>";
+  markup += '<script>window.coreURL="'+process.env.CORE_URL+'";window.redditURL="'+process.env.REDDIT_URL+'"</script>';
 
   if (context.url) {
     return res.redirect(302, context.url);
