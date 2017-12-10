@@ -68,7 +68,7 @@ class SignupForm extends React.Component {
 	  // Post to backend
 	  $.ajax({
 		  type: "POST",
-		  url: this.props.core + "/v1/users",
+		  url: self.props.core + "/v1/users",
 		  data: JSON.stringify(preparedData),
 		  xhrFields: {
 				withCredentials: false
@@ -138,7 +138,7 @@ class SignupPage extends React.Component {
 						{this.state.error}
 					</div>
 	        <h1>Signup</h1>
-					<SignupForm addError={this.addError}/>
+					<SignupForm core={this.props.core} addError={this.addError}/>
 	      </div>
 			</div>
     );

@@ -77,7 +77,9 @@ export class App extends React.Component {
 				<Route exact path='/login' render={(props) => (
 					<LoginPage {...props} updateLoginStatus={this.updateLoginStatus} />
 				)}/>
-				<Route exact path="/signup" component={SignupPage} />
+				<Route exact path='/signup' render={(props) => (
+					<SignupPage {...props}  core={this.core} />
+				)}/>
 				<Route component={NotFoundPage} />
 			</Switch>
 			</Layout>
