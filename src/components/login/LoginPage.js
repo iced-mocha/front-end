@@ -120,10 +120,11 @@ class LoginPage extends React.Component {
   render() {
     return (
 			<div>
-				<div className="error-container">
-					{this.state.error}
-				</div>
+
 				<div className="login-page">
+					<div className="error-container">
+						{this.state.error}
+					</div>
 					<h1>Login</h1>
 					<LoginForm updateLoginStatus={this.props.updateLoginStatus} addError={this.addError}/>
 				</div>

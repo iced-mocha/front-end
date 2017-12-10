@@ -234,6 +234,10 @@ footer p {
   color: #333;
 }
 
+.signup-button {
+  float: right;
+}
+
 .post-score-light {
   margin-right: 4px;
 }

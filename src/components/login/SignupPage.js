@@ -3,7 +3,7 @@ import { LoginButton, SignupButton } from './Login';
 import { DismissableAlert } from '../alerts/Alerts';
 import { Redirect } from 'react-router';
 import $ from "jquery";
-import { Form, FormGroup, FormControl, Button } from 'react-bootstrap';
+import { Form, FormGroup, FormControl, Button, ControlLabel } from 'react-bootstrap';
 import Config from '../../../config.json';
 
 class SignupForm extends React.Component {
@@ -13,6 +13,7 @@ class SignupForm extends React.Component {
 	  this.prepareData = this.prepareData.bind(this);
 	  this.handleSubmit = this.handleSubmit.bind(this);
 		this.validUserPass = this.validUserPass.bind(this);
+		this.confirmPasswordMatch = this.confirmPasswordMatch.bind(this);
 		this.buildError = this.buildError.bind(this);
 	  this.state = { signupRedirect: false, addError: props.addError  };
 	}
@@ -38,7 +39,11 @@ class SignupForm extends React.Component {
 	}
 
 	validUserPass(obj) {
-		return !(obj['username'] === "" || obj['password'] === "")
+		return !(obj['username'] === "" || obj['password'] === "");
+	}
+
+	confirmPasswordMatch(obj) {
+		return obj['password'] === obj['confirmPassword'];
 	}
 
 	handleSubmit(e) {
@@ -52,6 +57,11 @@ class SignupForm extends React.Component {
 
 		if (!self.validUserPass(preparedData)) {
 			self.state.addError(self.buildError("please enter both a username and password to signup"));
+			return
+		}
+
+		if(!self.confirmPasswordMatch(preparedData)) {
+			self.state.addError(self.buildError("passwords do not match"));
 			return
 		}
 
@@ -81,20 +91,26 @@ class SignupForm extends React.Component {
 	  }
 
 	  return (
-		<div className="sign-form">
-		  <Form id="signupForm" onSubmit={this.handleSubmit} method="post">
-			<FormGroup controlId="formUsername">
-			  <FormControl type="text" name="username" placeholder="Username" />
-			</FormGroup>
-			<FormGroup controlId="formPassword">
-			  <FormControl type="password" name="password" placeholder="Password" />
-			</FormGroup>
-			<Button type="submit">
-			  Signup
-			</Button>
-		  </Form>
-		</div>
-       );
+			<div className="sign-form">
+			  <Form id="signupForm" onSubmit={this.handleSubmit} method="post">
+				<FormGroup controlId="formUsername">
+					<ControlLabel>Username</ControlLabel>
+				  <FormControl type="text" name="username"/>
+				</FormGroup>
+				<FormGroup controlId="formPassword">
+					<ControlLabel>Password</ControlLabel>
+				  <FormControl type="password" name="password"/>
+				</FormGroup>
+				<FormGroup controlId="formConfirmPassword">
+					<ControlLabel>Confirm password</ControlLabel>
+					<FormControl type="password" name="confirmPassword"/>
+				</FormGroup>
+				<Button className="signup-button" bsStyle="primary" type="submit">
+				  Signup
+				</Button>
+			  </Form>
+			</div>
+    );
 	}
 }
 
@@ -117,10 +133,10 @@ class SignupPage extends React.Component {
   render() {
     return (
 			<div>
-				<div className="error-container">
-					{this.state.error}
-				</div>
 	      <div className="signup-page">
+					<div className="error-container">
+						{this.state.error}
+					</div>
 	        <h1>Signup</h1>
 					<SignupForm addError={this.addError}/>
 	      </div>
