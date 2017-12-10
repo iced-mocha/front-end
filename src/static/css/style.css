@@ -226,6 +226,7 @@ footer p {
   max-width: 600px;
   margin: auto;
   margin-top: 60px;
+  padding: 0 4px;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
