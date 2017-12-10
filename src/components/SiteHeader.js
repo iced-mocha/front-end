@@ -70,11 +70,11 @@ class AccountAction extends React.Component {
     }
 
    return(
-     <NavDropdown eventKey="4" title="Profile" id="nav-dropdown">
+     <NavDropdown title="Profile" id="nav-dropdown">
         <LoggedInAsMenuItem username={this.state.user['username']}/>
           <MenuItem divider />
         <LinkContainer to="/settings">
-          <MenuItem eventKey="4.1">Settings</MenuItem>
+          <MenuItem >Settings</MenuItem>
         </LinkContainer>
           <MenuItem divider />
         <SignOutMenuItem stateUpdate={this.signoutStateUpdate}/>
@@ -95,19 +95,19 @@ class SiteHeader extends React.Component {
 
   render() {
     return (
-	    <Navbar id='nav' className='site-font'>
-		    <Navbar.Header>
-			    <Navbar.Brand>
-			      <a href="/">Iced-Mocha</a>
-          </Navbar.Brand>
-        </Navbar.Header>
-
-        <Navbar.Collapse>
-          <Nav pullRight>
-            <AccountAction loggedIn={this.state.loggedIn} user={this.state.user}/>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+      <Navbar fixedTop id='nav' className='site-font' collapseOnSelect>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <a href="/">Iced-Mocha</a>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+          <Navbar.Collapse>
+            <Nav pullRight>
+              <AccountAction loggedIn={this.state.loggedIn} user={this.state.user}/>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
     );
   }
 }

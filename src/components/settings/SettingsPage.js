@@ -43,7 +43,7 @@ class LinkedAccount extends React.Component {
 		var self = this;
 		axios({
 			method: 'delete',
-		  url: this.core + '/v1/users/accounts/' + this.state.type,
+		  url: self.props.core + '/v1/users/accounts/' + self.state.type,
 			withCredentials: true
 		}).then(function(response) {
 			self.state.removeLinkFromParent(self.state.type)
@@ -121,6 +121,7 @@ class SettingsPage extends React.Component {
 		this.getLinkedAccounts = this.getLinkedAccounts.bind(this);
 		this.isSliderHidden = this.isSliderHidden.bind(this);
 		this.state = {};
+		this.core = props.core;
 
 		if (props.user !== undefined && props.user !== {} &&
 			props.user['post-weights'] !== undefined) {
@@ -204,7 +205,7 @@ class SettingsPage extends React.Component {
   buildLinkedAccountsList() {
 		var i = 0;
 		var linkedAccounts = this.state.linkedAccounts.map((d) => {
-			i++; return <LinkedAccount type={d['type']} key={i} identification={d['identification']} removeLinkFromParent={this.removeLinkFromParent}/>;
+			i++; return <LinkedAccount core={this.core} type={d['type']} key={i} identification={d['identification']} removeLinkFromParent={this.removeLinkFromParent}/>;
 		});
 
 		if (i > 0) {
@@ -216,7 +217,7 @@ class SettingsPage extends React.Component {
   buildUnlinkedAccountsList() {
 		var i = 0;
 		const unlinkedAccounts = this.state.unlinkedAccounts.map((d) => {
-			i++; return <UnlinkedAccount username={this.state.user['username']}
+			i++; return <UnlinkedAccount core={this.core} username={this.state.user['username']}
 				type={d['type']} key={i} addLinkToParent={this.addLinkToParent}/>;
 		});
 
@@ -287,7 +288,7 @@ class SettingsPage extends React.Component {
 
 		axios({
 			method: 'post',
-			url: Config.coreURL + '/v1/weights',
+			url: self.core + '/v1/weights',
 			withCredentials: true,
 			data: {
 				'reddit': self.state.reddit,

@@ -179,15 +179,22 @@ div.weight-slider-container input.weight-slider:hover {
 
 .settings-page {
   overflow: auto;
-  width: 40%;
+  width: 800px;
   padding: 10px;
   border-radius: 4px;
   margin: auto;
   font-size: 14px;
   background: #f8f8f8;
+  margin-top: 60px;
 }
 
 /* End of styling for the /settings page */
+
+#main .navbar-default .navbar-nav > .open > a,
+#main .navbar-default .navbar-nav > .open > a:focus,
+#main .navbar-default .navbar-nav > .open > a:hover {
+  background-color: #7e7e7e;
+}
 
 header {
   padding: 2em;
@@ -216,8 +223,13 @@ footer p {
 /* Start of login page styling */
 
 .login-page, .signup-page {
-  max-width: 35%;
+  max-width: 600px;
   margin: auto;
+  margin-top: 60px;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+  background-color: white !important;
 }
 
 .error-container {
@@ -240,6 +252,11 @@ footer p {
 
 .post-score-light {
   margin-right: 4px;
+}
+
+.post-info-bottom,
+.post-info-top {
+  display: inline-block;
 }
 
 .post-score-bold {
@@ -324,16 +341,16 @@ footer p {
   height: 100%;
 }
 
-.post-author-info {
-  padding-left: 4px;
-}
-
 .truncated-post-height {
     max-height: 800px;
 }
 
 .post-content {
   overflow-y: hidden;
+}
+
+.home-page {
+  margin-top: 60px;
 }
 
 .post-list {
@@ -366,7 +383,43 @@ footer p {
 }
 
 .post-info-container {
-  display: flex;
+  overflow:hidden;
+}
+
+#post-info-top {
+  float: left;
+}
+
+#post-info-bottom {
+  overflow:hidden;
+}
+
+@media screen and (max-width: 400px) {
+   #post-info-top {
+    float: none;
+    margin-right:0;
+    width:auto;
+  }
+
+  .author-prefix {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .nav a,
+  .signed-in-title,
+  .signed-in-value {
+    color: white !important;
+  }
+
+  .spinner-wrapper {
+    margin-top: 60px !important;
+  }
+}
+
+.author-prefix {
+  padding-right: 4px;
 }
 
 .post-info {

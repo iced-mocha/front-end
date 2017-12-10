@@ -117,7 +117,7 @@ class Post extends React.Component {
       </a>;
     }
 
-    return <div className='post-author-info'>{authorLink ? " - " : ""}{authorLink}{subredditLink ? " - " : ""}{subredditLink}</div>;
+    return <div className='post-author-info'>{authorLink ? <span className="author-prefix">-</span> : ""}{authorLink}{subredditLink ? " - " : ""}{subredditLink}</div>;
   }
 
   shortenScore(score) {
@@ -135,13 +135,13 @@ class Post extends React.Component {
   getScore() {
     if (this.props.Platform === 'reddit' || this.props.Platform === 'hacker-news') {
       return (
-        <div>
+        <span>
           <span className='post-score-bold'>{this.shortenScore(this.props.score)}</span>
           <span className='post-score-light'>points - </span>
-        </div>
+        </span>
       );
     }
-    return <div></div>
+    return <span></span>
   }
 
   buildExpandCommentsButton() {
@@ -181,9 +181,15 @@ class Post extends React.Component {
                     <img className="post-img" src={this.props.imgUrl} alt="Reddit icon" />
                 </div>
                 <div className="post-info-container">
-                  {this.getScore()}
-                  {dateMessage}
-                  {this.buildPostLinks()}
+                  <div id="post-info-top">
+                    {this.getScore()}
+                    <span className="post-points">
+                      {dateMessage}
+                    </span>
+                  </div>
+                  <div id="post-info-bottom">
+                    {this.buildPostLinks()}
+                  </div>
                 </div>
               </div>
               <div className={'post-content'+ (this.state.expandComments ? '' : ' truncated-post-height')}>
