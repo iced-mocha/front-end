@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import RedditSection from '../login/RedditSection';
 import FacebookSection from '../login/FacebookSection';
+import TwitterSection from '../login/TwitterSection';
 import { WeightSlider } from './Slider';
 import { Jumbotron, FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
 import { Row, Col } from 'react-bootstrap';
@@ -86,6 +87,8 @@ class UnlinkedAccount extends React.Component {
 			return (<RedditSection username={this.state.username} content={content} core={this.props.core} />);
     } else if (this.state.type === "facebook") {
 			return (<FacebookSection addLinkToParent={this.state.addLinkToParent} username={this.state.username} content={content} core={this.props.core} />);
+    } else if (this.state.type === "twitter") {
+			return (<TwitterSection username={this.state.username} content={content} core={this.props.core} />);
     }
 		return "";
   }
@@ -133,6 +136,7 @@ class SettingsPage extends React.Component {
 				hasWeightsChanged: false,
 				reddit: props.user['post-weights']['reddit'],
 				facebook: props.user['post-weights']['facebook'],
+				twitter: props.user['post-weights']['twitter'],
 				hackerNews: props.user['post-weights']['hacker-news'],
 				googleNews: props.user['post-weights']['google-news']
 			};
@@ -179,6 +183,7 @@ class SettingsPage extends React.Component {
 				hasWeightsChanged: false,
 				reddit: nextProps.user['post-weights']['reddit'],
 				facebook: nextProps.user['post-weights']['facebook'],
+				twitter: nextProps.user['post-weights']['twitter'],
 				hackerNews: nextProps.user['post-weights']['hacker-news'],
 				googleNews: nextProps.user['post-weights']['google-news']
 			});
@@ -237,6 +242,13 @@ class SettingsPage extends React.Component {
 			unlinkedAccounts.push({type: 'reddit'});
     }
 
+		console.log(user["twitter-username"])
+		if (user['twitter-username'] !== "") {
+			linkedAccounts.push({type: 'twitter', identification: user['twitter-username']});
+		} else {
+			unlinkedAccounts.push({type: 'twitter'});
+		}
+
 		if (user['facebook-username'] !== "") {
 			linkedAccounts.push({type: 'facebook', identification: user['facebook-username']});
     } else {
@@ -255,6 +267,8 @@ class SettingsPage extends React.Component {
 			this.state.reddit = value;
 		} else if (type === 'facebook') {
 			this.state.facebook = value;
+		} else if (type === 'twitter') {
+			this.state.twitter = value;
 		} else if (type === 'hacker-news') {
 			this.state.hackerNews = value;
 		} else if (type === 'google-news') {
@@ -269,6 +283,7 @@ class SettingsPage extends React.Component {
 		this.setState({
 			reddit: this.state.user['post-weights']['reddit'],
 			facebook: this.state.user['post-weights']['facebook'],
+			twitter: this.state.user['post-weights']['twitter'],
 			hackerNews: this.state.user['post-weights']['hacker-news'],
 			googleNews: this.state.user['post-weights']['google-news'],
 			hasWeightsChanged: false
@@ -281,6 +296,7 @@ class SettingsPage extends React.Component {
 		var u = this.state.user;
 		u['post-weights']['reddit'] = this.state.reddit;
 		u['post-weights']['facebook'] = this.state.facebook;
+		u['post-weights']['twitter'] = this.state.twitter;
 		u['post-weights']['hacker-news'] = this.state.hackerNews;
 		u['post-weights']['google-news'] = this.state.googleNews;
 
@@ -293,6 +309,7 @@ class SettingsPage extends React.Component {
 			data: {
 				'reddit': self.state.reddit,
 				'facebook': self.state.facebook,
+				'twitter': self.state.twitter,
 				'hacker-news': self.state.hackerNews,
 				'google-news': self.state.googleNews
 			}
@@ -329,6 +346,7 @@ class SettingsPage extends React.Component {
 		return (
 				// Currently conditionally render linked accounts header: TODO: put this in a function/component}
 				<div className='settings-page'>
+					<a href="https://localhost:3000/v1/users/jack/authorize/twitter"> authorize twitter</a>
 					<div className='settings-header-top'>Logged in as</div>
 					<div className='settings-value'>{this.state.user['username']}</div>
 					{this.buildLinkedAccountsList()}
@@ -336,6 +354,7 @@ class SettingsPage extends React.Component {
 					<div className='settings-header'>Posts Weighting</div>
 					<WeightSlider value={this.state.reddit} type='reddit' onChange={this.sliderChange} />
 					<WeightSlider value={this.state.facebook} hidden={this.isSliderHidden('facebook')} type='facebook' onChange={this.sliderChange} />
+					<WeightSlider value={this.state.twitter} hidden={this.isSliderHidden('twitter')} type='twitter' onChange={this.sliderChange} />
 					<WeightSlider value={this.state.hackerNews} type='hacker-news' onChange={this.sliderChange} />
 					<WeightSlider value={this.state.googleNews} type='google-news' onChange={this.sliderChange} />
 					<div className="btn-weights-group">

@@ -62,6 +62,10 @@ class HomePage extends React.Component {
   }
 
   onScroll() {
+    if (ReactDOM.findDOMNode(this.refs["post-list"]) === undefined) {
+      return;
+    }
+
     const distToBottom = ReactDOM.findDOMNode(this.refs["post-list"]).getBoundingClientRect().bottom - window.innerHeight;
     if (distToBottom < 1000 && !this.state.loadingMorePosts) {
       this.getMorePosts();
@@ -71,6 +75,10 @@ class HomePage extends React.Component {
   componentDidMount() {
     document.addEventListener("scroll", this.onScroll);
     this.getMorePosts();
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("scroll", this.onScroll);
   }
 
   render() {
