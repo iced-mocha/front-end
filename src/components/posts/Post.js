@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ListGroupItem } from 'react-bootstrap';
 import FacebookProvider, { Comments } from 'react-facebook';
+import FontAwesome from 'react-fontawesome';
 import CommentsSection from '../CommentsSection';
 import Video from './Video';
 
@@ -14,6 +15,8 @@ class Post extends React.Component {
     this.toggleComments = this.toggleComments.bind(this);
     this.getHeroImage = this.getHeroImage.bind(this);
     this.buildPostLinks = this.buildPostLinks.bind(this);
+    this.buildTitle = this.buildTitle.bind(this);
+    this.buildTweet = this.buildTweet.bind(this);
     this.buildCommentSections = this.buildCommentSections.bind(this);
     this.supportsComments = this.supportsComments.bind(this);
   }
@@ -40,6 +43,12 @@ class Post extends React.Component {
           </div>
         );
       }
+
+      // We need to reject any images that will be loaded insecurely (i.e. http)
+      if (this.props.HeroImg.substring(0,5) !== 'https') {
+          return <div/>;
+      }
+
       return (
         <div className="hero-img-container">
           <img className="hero-img" src={this.props.HeroImg} />
@@ -50,6 +59,7 @@ class Post extends React.Component {
 
   getDateMessage(date) {
     let dateMessage = "";
+
     let postDate = new Date(this.props.Date)
     if (!isNaN(postDate)) {
       let diff = new Date() - postDate;
@@ -70,7 +80,7 @@ class Post extends React.Component {
       }
     }
 
-    return 'submitted ' + dateMessage
+    return dateMessage
   }
 
   buildCommentSections() {
@@ -107,9 +117,13 @@ class Post extends React.Component {
     var authorLink = undefined;
     var subredditLink = undefined;
 
-    // TODO: Check for each type and build appropriately
     if (this.props.Author) {
-      authorLink = <a target='blank' href={'https://reddit.com/u/' + this.props.Author}>{this.props.Author}</a>;
+      if (this.props.Platform === 'reddit') {
+        authorLink = (
+          <a target='blank' href={'https://reddit.com/u/' + this.props.Author}>
+            {this.props.Author}
+          </a>);
+      }
     }
 
     if (this.props.subreddit) {
@@ -146,7 +160,8 @@ class Post extends React.Component {
   }
 
   supportsComments() {
-    return this.props.Platform !== 'google-news' && this.props.Platform !== 'rss'
+    return this.props.Platform !== 'google-news' && this.props.Platform !== 'rss' &&
+      this.props.Platform !== 'twitter'
   }
 
   buildExpandCommentsButton() {
@@ -169,6 +184,73 @@ class Post extends React.Component {
     );
   }
 
+  // Determines if the given tweet is a retweet - retweets are in the form
+  // RT @<handle>: <Retweeted Tweet>
+  isRetweet(tweet) {
+    if (tweet.substring(0,2) === "RT") {
+      return true;
+    }
+    return false;
+  }
+
+  buildTweet(author, text) {
+    return (
+      <div className='tweet-container'>
+        <img className='twitter-profile-img' src={this.props.ProfileImg} />
+        <div className='tweet-text-container'>
+          <span>
+            <a className='inherit twitter-author-link larger-font' target='blank' href={'https://twitter.com/'+ author}>
+              {author}
+            </a>
+            <span className='tweet-time'>{'tweeted ' + this.getDateMessage(new Date(this.props.Date))}</span>
+          </span>
+          <div className='tweet-text'>{text}</div>
+        </div>
+      </div>
+    );
+  }
+
+  buildTitle() {
+    var platform = this.props.Platform;
+    var title = this.props.Title;
+    var author = this.props.Author;
+
+    if (platform !== 'twitter') {
+      return (
+        <a href={this.props.url || this.props.PostLink} target='blank' className="post-header-link">
+          {title}
+        </a>
+      );
+    }
+
+    // If tweet begins with 'RT' we want to insert a retweet logo
+    var retweet = this.isRetweet(title);
+    if (retweet) {
+      var results = /@[^:]+:/.exec(title);
+      var retweetAuthor = results['0'].substring(1, results['0'].length - 1);
+      console.log(retweetAuthor);
+      // magic!!
+      var retweetText = title.substring((retweetAuthor.length + 5), title.length);
+
+      return (
+        <div>
+          <div className='retweet-indicator'>
+            <FontAwesome name='retweet' />
+            <span className='retweet-text'>
+              <a className='inherit twitter-author-link' target='blank' href={'https://twitter.com/'+ author}>
+                {author}
+              </a>
+              {' retweeted'}
+            </span>
+          </div>
+          {this.buildTweet(retweetAuthor, retweetText)}
+        </div>
+      );
+    }
+
+    return this.buildTweet(author, title);
+  }
+
   render() {
     let postDate = new Date(this.props.Date);
     let dateMessage = this.getDateMessage(postDate);
@@ -179,17 +261,15 @@ class Post extends React.Component {
               <div className="post-info">
                 <div className="post-header">
                     <div className="post-title">
-                      <a href={this.props.url || this.props.PostLink} target='blank' className="post-header-link">
-                        {this.props.Title}
-                      </a>
+                        {this.buildTitle(this.props.Platform, this.props.Title)}
                     </div>
-                    <img className="post-img" src={this.props.imgUrl} alt="Reddit icon" />
+                    <img className="post-img" src={'img/'+(this.props.Platform).toLowerCase()+'-icon.png'} alt={this.props.Platform + " icon"} />
                 </div>
                 <div className="post-info-container">
                   <div id="post-info-top">
                     {this.getScore()}
                     <span className="post-points">
-                      {dateMessage}
+                      {(this.props.Platform === 'twitter') ? "" : 'submitted ' + dateMessage}
                     </span>
                   </div>
                   <div id="post-info-bottom">

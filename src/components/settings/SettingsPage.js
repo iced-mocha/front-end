@@ -242,7 +242,6 @@ class SettingsPage extends React.Component {
 			unlinkedAccounts.push({type: 'reddit'});
     }
 
-		console.log(user["twitter-username"])
 		if (user['twitter-username'] !== "") {
 			linkedAccounts.push({type: 'twitter', identification: user['twitter-username']});
 		} else {
@@ -307,11 +306,11 @@ class SettingsPage extends React.Component {
 			url: self.core + '/v1/weights',
 			withCredentials: true,
 			data: {
-				'reddit': self.state.reddit,
-				'facebook': self.state.facebook,
-				'twitter': self.state.twitter,
-				'hacker-news': self.state.hackerNews,
-				'google-news': self.state.googleNews
+				'reddit': parseFloat(self.state.reddit),
+				'facebook': parseFloat(self.state.facebook),
+				'twitter': parseFloat(self.state.twitter),
+				'hacker-news': parseFloat(self.state.hackerNews),
+				'google-news': parseFloat(self.state.googleNews)
 			}
 		}).then(function(response) {
 			// TODO: show loading icon as soon as this fires

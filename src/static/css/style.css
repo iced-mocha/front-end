@@ -251,6 +251,51 @@ footer p {
   float: right;
 }
 
+.larger-font {
+  font-size: larger;
+}
+
+.inherit {
+  color: inherit;
+}
+
+a.twiter-author-link:hover {
+  color: #337ab7
+}
+
+.retweet-indicator {
+  color: #777;
+  margin-bottom: 8px;
+}
+
+.tweet-time {
+  color: #777;
+  font-size: smaller;
+  font-weight: 600;
+  font-size: small;
+  margin-left: 4px;
+}
+
+.retweet-text {
+  padding-left: 4px;
+}
+
+.twitter-profile-img {
+  width: 48px;
+  height: 48px;
+  margin-right: 8px;
+  border-radius: 32px;
+  float: left;
+}
+
+.tweet-text {
+  overflow-x: auto;
+}
+
+.tweet-text-container {
+/*  float: left;*/
+}
+
 .post-score-light {
   margin-right: 4px;
 }
