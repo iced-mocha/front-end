@@ -228,8 +228,6 @@ class Post extends React.Component {
     if (retweet) {
       var results = /@[^:]+:/.exec(title);
       var retweetAuthor = results['0'].substring(1, results['0'].length - 1);
-      console.log(retweetAuthor);
-      // magic!!
       var retweetText = title.substring((retweetAuthor.length + 5), title.length);
 
       return (
