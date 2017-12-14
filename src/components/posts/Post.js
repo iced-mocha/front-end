@@ -15,6 +15,7 @@ class Post extends React.Component {
     this.getHeroImage = this.getHeroImage.bind(this);
     this.buildPostLinks = this.buildPostLinks.bind(this);
     this.buildCommentSections = this.buildCommentSections.bind(this);
+    this.supportsComments = this.supportsComments.bind(this);
   }
 
   toggleComments(e) {
@@ -144,8 +145,12 @@ class Post extends React.Component {
     return <span></span>
   }
 
+  supportsComments() {
+    return this.props.Platform !== 'google-news' && this.props.Platform !== 'rss'
+  }
+
   buildExpandCommentsButton() {
-    if (this.props.Platform === 'google-news') {
+    if (!this.supportsComments()) {
       return '';
     }
 
@@ -192,7 +197,7 @@ class Post extends React.Component {
                   </div>
                 </div>
               </div>
-              <div className={'post-content'+ (this.state.expandComments ? '' : ' truncated-post-height')}>
+              <div className={'post-content'+ ((this.state.expandComments || !this.supportsComments()) ? '' : ' truncated-post-height')}>
                 { this.getHeroImage() }
                 {this.props.Content &&
                   <div className="post-body" dangerouslySetInnerHTML={{ __html: this.props.Content}} />

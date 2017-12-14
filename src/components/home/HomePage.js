@@ -101,6 +101,8 @@ class HomePage extends React.Component {
               postData.fbToken = this.state.fbToken;
           }	else if (postData.Platform == "google-news") {
               postData.imgUrl = "/img/google-news-icon.png";
+          } else if (postData.Platform == "rss") {
+              postData.imgUrl = "/img/rss.jpg";
           }
           i++;
           // TODO: Currently postData.id is undefined resulting in an error on front-end

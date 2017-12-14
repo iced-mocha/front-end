@@ -297,6 +297,17 @@ footer p {
   padding-top: 8px;
 }
 
+.post-body img {
+    width: 100%;
+    height: auto;
+    padding-bottom: 8px;
+}
+
+.post-body :last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
 .not-found {
   margin: 0 auto;
   max-width: 800px;
