@@ -198,7 +198,7 @@ class Post extends React.Component {
     return (
       <Tweet retweets={this.props.retweets} profileImg={this.props.ProfileImg}
         data={this.props.Data} text={text} author={author} retweets={this.props.retweets}
-        favourites={this.props.favourites}/>
+        favourites={this.props.favourites} meta={this.props.meta}/>
     );
   }
 

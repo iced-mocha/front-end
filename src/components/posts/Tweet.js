@@ -5,8 +5,26 @@ import Video from './Video';
 class Tweet extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.parseTweet = this.parseTweet.bind(this);
     this.getDateMessage = this.getDateMessage.bind(this);
-    this.state = {};
+    var metaObj = JSON.parse(this.props.meta);
+    this.state = {
+      hashtags: metaObj.entities.hashtags ? metaObj.entities.hashtags : [],
+      mentions: metaObj.entities['user_mentions'] ? metaObj.entities['user_mentions'] : [],
+      urls: metaObj.entities.urls ? metaObj.entities.urls : []
+    };
+  }
+
+  parseTweet(text) {
+    console.log(this.state.hashtags);
+    for (var i = 0; i < this.state.hashtags.length; i++) {
+      var re = new RegExp(this.state.hashtags[i]['text_with_hash'],'g');
+        text = text.replace(re, "<a href='" + this.state.hashtags[i].link + "' target='blank'>" +
+        this.state.hashtags[i]['text_with_hash'] + '</a>')
+        console.log(text);
+    }
+
+    return text;
   }
 
   getDateMessage(date) {
@@ -46,7 +64,7 @@ class Tweet extends React.Component {
             </a>
             <span className='tweet-time'>{'tweeted ' + this.getDateMessage(new Date(this.props.date))}</span>
           </span>
-          <div className='tweet-text'>{this.props.text}</div>
+          <div className='tweet-text' dangerouslySetInnerHTML={{ __html: this.parseTweet(this.props.text)}}/>
           <div className='tweet-stats'>
             <span className='tweet-rts'>
               <FontAwesome className='retweet-icon' name='retweet' />
