@@ -58,6 +58,7 @@ class Post extends React.Component {
     }
   }
 
+  // TODO: Use moment JS
   getDateMessage(date) {
     let dateMessage = "";
 
@@ -197,7 +198,7 @@ class Post extends React.Component {
   buildTweet(author, text) {
     return (
       <Tweet retweets={this.props.retweets} profileImg={this.props.ProfileImg}
-        data={this.props.Data} text={text} author={author} retweets={this.props.retweets}
+        date={this.props.Date} text={text} author={author} retweets={this.props.retweets}
         favourites={this.props.favourites} meta={this.props.meta}/>
     );
   }

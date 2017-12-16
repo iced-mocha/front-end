@@ -16,12 +16,21 @@ class Tweet extends React.Component {
   }
 
   parseTweet(text) {
-    console.log(this.state.hashtags);
+    // TODO - probably shouldnt block the rest of operations to do This
+    // i.e put plain non parsed text in first - then replace everything
+
+    // Replace hashtags with links
     for (var i = 0; i < this.state.hashtags.length; i++) {
       var re = new RegExp(this.state.hashtags[i]['text_with_hash'],'g');
         text = text.replace(re, "<a href='" + this.state.hashtags[i].link + "' target='blank'>" +
-        this.state.hashtags[i]['text_with_hash'] + '</a>')
-        console.log(text);
+          this.state.hashtags[i]['text_with_hash'] + '</a>');
+    }
+
+    for (var i = 0; i < this.state.mentions.length; i++) {
+      console.log(this.state.mentions[i]);
+      var re = new RegExp('@' + this.state.mentions[i]['screen_name'],'g');
+      text = text.replace(re, "<a class='twitter-author-link' href='" + this.state.mentions[i].link + "' target='blank'> @" +
+        this.state.mentions[i]['screen_name'] + '</a>');
     }
 
     return text;
