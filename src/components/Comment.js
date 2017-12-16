@@ -12,9 +12,11 @@ class Comment extends React.Component {
       expandComments: props.collapsePoints && !props.collapsePoints.includes(props.depth),
       visibleChildren: props.initialVisibleChildren
     };
+    var id = 0;
     props.getChildren()
       .then(children => this.setState({children: children.map(comment =>
         <Comment
+          key={id++}
           {...comment}
           collapsePoints={props.collapsePoints}
           initialVisibleChildren={props.initialVisibleChildren}

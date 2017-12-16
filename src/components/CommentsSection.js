@@ -154,11 +154,13 @@ class CommentsSection extends React.Component {
     if (!this.state.comments) {
       return (<div className='small-spinner-wrapper'><FontAwesome name='spinner' spin /></div>);
     }
+    var id = 0;
 
     return (
       <div>
         { this.state.comments.slice(0, this.props.rootComments).map(comment =>
               <Comment
+                key={id++}
                 {...comment}
                 collapsePoints={this.props.collapsePoints}
                 initialVisibleChildren={this.props.initialVisibleChildren}
