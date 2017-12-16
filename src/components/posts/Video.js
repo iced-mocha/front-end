@@ -13,7 +13,7 @@ class Video extends React.Component {
   render() {
     return (
       <div className="video-comp-container">
-        <video controls='true' className="video" autoPlay={this.state.autoPlay} loop={this.state.loop} muted={this.state.muted}>
+        <video controls='true' className="video" controlsList="nodownload" autoPlay={this.state.autoPlay} loop={this.state.loop} muted={this.state.muted}>
           <source src={this.state.src} type="video/mp4"/>
         </video>
       </div>
