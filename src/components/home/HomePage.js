@@ -102,7 +102,7 @@ class HomePage extends React.Component {
           }	else if (postData.Platform == "google-news") {
               postData.imgUrl = "/img/google-news-icon.png";
           } else if (postData.Platform == "rss") {
-              postData.imgUrl = "/img/rss.jpg";
+              postData.imgUrl = "/img/rss-icon.png";
           }
           i++;
           // TODO: Currently postData.id is undefined resulting in an error on front-end
