@@ -290,10 +290,27 @@ a.twiter-author-link:hover {
 
 .tweet-text {
   overflow-x: auto;
+  font-weight: 500;
 }
 
 .tweet-text-container {
-/*  float: left;*/
+  overflow-x: auto;
+}
+
+.retweet-icon {
+  color: #18b760;
+}
+
+.retweet-count {
+  margin: 0 8px 0 4px;
+}
+
+.favourite-count {
+  margin: 0 0 0 4px;
+}
+
+.favourite-icon {
+  color: #e0245e;
 }
 
 .post-score-light {
@@ -460,6 +477,10 @@ a.twiter-author-link:hover {
 
   .author-prefix {
     display: none;
+  }
+
+  .tweet-time {
+    display: block;
   }
 }
 

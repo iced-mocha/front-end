@@ -5,6 +5,7 @@ import FacebookProvider, { Comments } from 'react-facebook';
 import FontAwesome from 'react-fontawesome';
 import CommentsSection from '../CommentsSection';
 import Video from './Video';
+import Tweet from './Tweet';
 
 class Post extends React.Component {
   constructor(props, context) {
@@ -195,18 +196,9 @@ class Post extends React.Component {
 
   buildTweet(author, text) {
     return (
-      <div className='tweet-container'>
-        <img className='twitter-profile-img' src={this.props.ProfileImg} />
-        <div className='tweet-text-container'>
-          <span>
-            <a className='inherit twitter-author-link larger-font' target='blank' href={'https://twitter.com/'+ author}>
-              {author}
-            </a>
-            <span className='tweet-time'>{'tweeted ' + this.getDateMessage(new Date(this.props.Date))}</span>
-          </span>
-          <div className='tweet-text'>{text}</div>
-        </div>
-      </div>
+      <Tweet retweets={this.props.retweets} profileImg={this.props.ProfileImg}
+        data={this.props.Data} text={text} author={author} retweets={this.props.retweets}
+        favourites={this.props.favourites}/>
     );
   }
 
@@ -246,6 +238,7 @@ class Post extends React.Component {
       );
     }
 
+    // TODO: Tweet should be its own component
     return this.buildTweet(author, title);
   }
 
