@@ -297,6 +297,10 @@ a.twiter-author-link:hover {
   overflow-x: auto;
 }
 
+.tweet-stats {
+  margin-top: 4px;
+}
+
 .retweet-icon {
   color: #18b760;
 }
@@ -400,6 +404,7 @@ a.twiter-author-link:hover {
   width: 100%;
   height: auto;
   z-index: 100;
+  border-radius: 2px;
 }
 
 .video-container {
