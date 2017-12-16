@@ -7,20 +7,18 @@ class Tweet extends React.Component {
     super(props, context);
     this.parseTweet = this.parseTweet.bind(this);
     this.getDateMessage = this.getDateMessage.bind(this);
-    var metaObj = JSON.parse(this.props.meta)['extended_entities'];
+    var mediaObj = JSON.parse(this.props.meta)['extended_entities'];
+    var metaObj = JSON.parse(this.props.meta)['entities'];
     this.state = {
       hashtags: metaObj.hashtags ? metaObj.hashtags : [],
       mentions: metaObj['user_mentions'] ? metaObj['user_mentions'] : [],
       urls: metaObj.urls ? metaObj.urls : [],
-      media: metaObj.media ? metaObj.media : [],
+      media: mediaObj.media ? mediaObj.media : [],
       displayMedia: []
     };
   }
 
   parseTweet(text) {
-    // TODO - probably shouldnt block the rest of operations to do This
-    // i.e put plain non parsed text in first - then replace everything
-    console.log(text);
     // Replace hashtags with links
     for (var i = 0; i < this.state.hashtags.length; i++) {
       var re = new RegExp(this.state.hashtags[i]['text_with_hash'],'g');
@@ -40,11 +38,17 @@ class Tweet extends React.Component {
       text = text.replace(re, "");
     }
 
+    for (var i = 0; i < this.state.urls.length; i++) {
+        console.log(this.state.urls[i]);
+        var re = new RegExp(this.state.urls[i]['url'],'g');
+        text = text.replace(re, "<a class='twitter-link' href='" + this.state.urls[i]['expanded_url'] +
+        "' target='blank'>" + this.state.urls[i]['display_url'] + '</a>');
+    }
+
     return text;
   }
 
   buildMedia(id, media) {
-    console.log(media);
     // PUT this in state 'photos'
     if (media.type === 'photo') {
       this.state.displayMedia.push(
@@ -58,7 +62,7 @@ class Tweet extends React.Component {
       for (var i = 0; i < videoInfo.length; i++) {
         if(videoInfo[i]['content_type'] === 'video/mp4') {
           this.state.displayMedia.push(
-             <Video src={videoInfo[i].url} autoPlay={true}
+             <Video key={id} src={videoInfo[i].url} autoPlay={true}
               loop={true} muted={true}/>
           )
           this.setState({ displayMedia: this.state.displayMedia});

@@ -259,7 +259,8 @@ footer p {
   color: inherit;
 }
 
-a.twiter-author-link:hover {
+a.twiter-author-link:hover,
+a.twitter-link:hover {
   color: #337ab7
 }
 
