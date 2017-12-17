@@ -303,7 +303,7 @@ class SettingsPage extends React.Component {
 
 		axios({
 			method: 'post',
-			url: self.core + '/v1/weights',
+			url: self.core + '/v1/users/'+ this.state.user +'/weights',
 			withCredentials: true,
 			data: {
 				'reddit': parseFloat(self.state.reddit),
@@ -345,7 +345,6 @@ class SettingsPage extends React.Component {
 		return (
 				// Currently conditionally render linked accounts header: TODO: put this in a function/component}
 				<div className='settings-page'>
-					<a href="https://localhost:3000/v1/users/jack/authorize/twitter"> authorize twitter</a>
 					<div className='settings-header-top'>Logged in as</div>
 					<div className='settings-value'>{this.state.user['username']}</div>
 					{this.buildLinkedAccountsList()}
