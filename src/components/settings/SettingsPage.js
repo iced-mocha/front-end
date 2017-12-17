@@ -17,6 +17,7 @@ class LinkedAccount extends React.Component {
 		this.altForType = this.altForType.bind(this);
 		this.deleteLink = this.deleteLink.bind(this);
 		this.state = {
+			username: props.username,
 			type: props.type,
 			identification: props.identification,
 			removeLinkFromParent: props.removeLinkFromParent
@@ -26,6 +27,7 @@ class LinkedAccount extends React.Component {
 
 	componentWillReceiveProps(nextProps) {
 		this.setState({
+			username: nextProps.username,
 			type: nextProps.type,
 			identification: nextProps.identification,
 			removeLinkFromParent: nextProps.removeLinkFromParent
@@ -44,7 +46,7 @@ class LinkedAccount extends React.Component {
 		var self = this;
 		axios({
 			method: 'delete',
-		  url: self.props.core + '/v1/users/accounts/' + self.state.type,
+		  url: self.props.core + '/v1/users/'+ self.state.username +'/accounts/' + self.state.type,
 			withCredentials: true
 		}).then(function(response) {
 			self.state.removeLinkFromParent(self.state.type)
@@ -210,7 +212,8 @@ class SettingsPage extends React.Component {
   buildLinkedAccountsList() {
 		var i = 0;
 		var linkedAccounts = this.state.linkedAccounts.map((d) => {
-			i++; return <LinkedAccount core={this.core} type={d['type']} key={i} identification={d['identification']} removeLinkFromParent={this.removeLinkFromParent}/>;
+			i++; return (<LinkedAccount core={this.core} type={d['type']} key={i} username={this.state.user['username']
+				identification={d['identification']} removeLinkFromParent={this.removeLinkFromParent}/>);
 		});
 
 		if (i > 0) {
