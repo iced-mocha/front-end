@@ -212,7 +212,7 @@ class SettingsPage extends React.Component {
   buildLinkedAccountsList() {
 		var i = 0;
 		var linkedAccounts = this.state.linkedAccounts.map((d) => {
-			i++; return (<LinkedAccount core={this.core} type={d['type']} key={i} username={this.state.user['username']
+			i++; return (<LinkedAccount core={this.core} type={d['type']} key={i} username={this.state.user['username']}
 				identification={d['identification']} removeLinkFromParent={this.removeLinkFromParent}/>);
 		});
 
