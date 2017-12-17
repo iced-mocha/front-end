@@ -141,6 +141,12 @@ div.weight-slider-container input.weight-slider:hover {
   margin-bottom: 4px;
 }
 
+.settings-subheader {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
 .account-img {
   max-height: 20px !important;
   max-width: 20px !important;
