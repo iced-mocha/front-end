@@ -175,6 +175,7 @@ div.weight-slider-container input.weight-slider:hover {
 .account-row {
   height: 24px;
   margin: 2px 0px;
+  display: flex;
 }
 
 .settings-page {
