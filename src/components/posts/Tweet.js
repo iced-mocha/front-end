@@ -2,6 +2,7 @@ import React from 'react';
 import FontAwesome from 'react-fontawesome';
 import Video from './Video';
 import Moment from 'react-moment';
+import PhotoGallery from './PhotoGallery';
 
 class Tweet extends React.Component {
   constructor(props, context) {
@@ -15,7 +16,8 @@ class Tweet extends React.Component {
       mentions: metaObj['user_mentions'] ? metaObj['user_mentions'] : [],
       urls: metaObj.urls ? metaObj.urls : [],
       media: mediaObj.media ? mediaObj.media : [],
-      displayMedia: []
+      displayMedia: [],
+      images: []
     };
   }
 
@@ -38,9 +40,11 @@ class Tweet extends React.Component {
       var re = new RegExp(this.state.media[i].url,'g');
       text = text.replace(re, "");
     }
+    this.state.displayMedia.push(
+      <PhotoGallery key="photogallery" images={this.state.images} />
+    )
 
     for (var i = 0; i < this.state.urls.length; i++) {
-        console.log(this.state.urls[i]);
         var re = new RegExp(this.state.urls[i]['url'],'g');
         text = text.replace(re, "<a class='twitter-link' href='" + this.state.urls[i]['expanded_url'] +
         "' target='blank'>" + this.state.urls[i]['display_url'] + '</a>');
@@ -52,12 +56,8 @@ class Tweet extends React.Component {
   buildMedia(id, media) {
     // PUT this in state 'photos'
     if (media.type === 'photo') {
-      this.state.displayMedia.push(
-        <div key={id} className="hero-img-container">
-          <img className="hero-img" src={media['media_url_https']} />
-        </div>
-      )
-      this.setState({ displayMedia: this.state.displayMedia});
+      console.log(media)
+      this.state.images.push({url: media['media_url_https']})
     } else if (media.type === 'video') {
       var videoInfo = media['video_info']['variants']
       for (var i = 0; i < videoInfo.length; i++) {

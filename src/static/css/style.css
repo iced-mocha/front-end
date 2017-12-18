@@ -329,6 +329,16 @@ a.twitter-link:hover {
   margin-right: 2px;
 }
 
+.carousel {
+  margin-top: 4px;
+  height: 500px
+  overflow: hidden;
+}
+
+.carousel img {
+  margin: auto;
+}
+
 .post-info-bottom,
 .post-info-top {
   display: inline-block;
