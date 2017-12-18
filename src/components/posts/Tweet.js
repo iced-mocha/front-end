@@ -1,6 +1,7 @@
 import React from 'react';
 import FontAwesome from 'react-fontawesome';
 import Video from './Video';
+import Moment from 'react-moment';
 
 class Tweet extends React.Component {
   constructor(props, context) {
@@ -73,29 +74,12 @@ class Tweet extends React.Component {
   }
 
   getDateMessage(date) {
-    let dateMessage = "";
-
-    let postDate = new Date(date)
-    if (!isNaN(postDate)) {
-      let diff = new Date() - postDate;
-      let minutes = Math.round(diff / (1000 * 60));
-      let hours = Math.round(diff / (1000 * 60 * 60));
-      let days = Math.round(diff / (1000 * 60 * 60 * 24));
-
-      if (minutes === 1) {
-        dateMessage = "1 minute ago";
-      } else if (hours < 1) {
-        dateMessage = minutes + " minutes ago";
-      } else if (hours === 1) {
-        dateMessage = "1 hour ago";
-      } else if (days < 2) {
-        dateMessage = hours + " hours ago";
-      } else if (days < 10000) {
-        dateMessage = days + " days ago";
-      }
-    }
-
-    return dateMessage
+    return (
+      <span>
+        {"tweeted "}
+        <Moment fromNow>{date}</Moment>
+      </span>
+    );
   }
 
   componentWillMount() {
@@ -113,7 +97,7 @@ class Tweet extends React.Component {
             <a className='inherit twitter-author-link larger-font' target='blank' href={'https://twitter.com/'+ this.props.author}>
               {this.props.author}
             </a>
-            <span className='tweet-time'>{'tweeted ' + this.getDateMessage(new Date(this.props.date))}</span>
+            <span className='tweet-time'>{this.getDateMessage(new Date(this.props.date))}</span>
           </span>
           <div className='tweet-text' dangerouslySetInnerHTML={{ __html: this.state.content}}/>
           <div className='tweet-media-container'>

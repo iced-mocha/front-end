@@ -4,6 +4,7 @@ import { ListGroupItem } from 'react-bootstrap';
 import FacebookProvider, { Comments } from 'react-facebook';
 import FontAwesome from 'react-fontawesome';
 import CommentsSection from '../CommentsSection';
+import Moment from 'react-moment';
 import Video from './Video';
 import Tweet from './Tweet';
 
@@ -58,31 +59,17 @@ class Post extends React.Component {
     }
   }
 
-  // TODO: Use moment JS
   getDateMessage(date) {
-    let dateMessage = "";
-
-    let postDate = new Date(this.props.Date)
-    if (!isNaN(postDate)) {
-      let diff = new Date() - postDate;
-      let minutes = Math.round(diff / (1000 * 60));
-      let hours = Math.round(diff / (1000 * 60 * 60));
-      let days = Math.round(diff / (1000 * 60 * 60 * 24));
-
-      if (minutes === 1) {
-        dateMessage = "1 minute ago";
-      } else if (hours < 1) {
-        dateMessage = minutes + " minutes ago";
-      } else if (hours === 1) {
-        dateMessage = "1 hour ago";
-      } else if (days < 2) {
-        dateMessage = hours + " hours ago";
-      } else if (days < 10000) {
-        dateMessage = days + " days ago";
-      }
+    if (this.props.Platform === 'twitter') {
+      return ""
     }
 
-    return dateMessage
+    return (
+      <span>
+        {"submitted "}
+        <Moment fromNow>{date}</Moment>
+      </span>
+    );
   }
 
   buildCommentSections() {
@@ -245,7 +232,6 @@ class Post extends React.Component {
 
   render() {
     let postDate = new Date(this.props.Date);
-    let dateMessage = this.getDateMessage(postDate);
 
     return (
       <ListGroupItem>
@@ -261,7 +247,7 @@ class Post extends React.Component {
                   <div id="post-info-top">
                     {this.getScore()}
                     <span className="post-points">
-                      {(this.props.Platform === 'twitter') ? "" : 'submitted ' + dateMessage}
+                      {this.getDateMessage(postDate)}
                     </span>
                   </div>
                   <div id="post-info-bottom">

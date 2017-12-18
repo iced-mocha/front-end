@@ -326,7 +326,7 @@ a.twitter-link:hover {
 }
 
 .post-score-light {
-  margin-right: 4px;
+  margin-right: 2px;
 }
 
 .post-info-bottom,
@@ -520,6 +520,7 @@ a.twitter-link:hover {
 }
 
 .author-prefix {
+  padding-left: 4px;
   padding-right: 4px;
 }
 
