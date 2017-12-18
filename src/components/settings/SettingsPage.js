@@ -190,7 +190,7 @@ class SettingsPage extends React.Component {
     });
 		axios({
 			method: 'post',
-			url: this.core + '/v1/weights',
+			url: this.core + '/v1/users/'+ this.state.user.username +'/weights',
 			withCredentials: true,
 			data: this.getUserWeights(this.state.updatedUser)
 		}).then(response => {
@@ -272,7 +272,7 @@ class SettingsPage extends React.Component {
             })
           }
 					<div className='settings-header'>RSS Feeds</div>
-          <RssSection 
+          <RssSection
             weights={this.getUpdatedWeight('rss')}
             groups={this.state.updatedUser['rss-groups']}
             updateWeight={this.updateRssWeight}
