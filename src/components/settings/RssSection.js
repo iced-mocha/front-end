@@ -16,7 +16,7 @@ class RssSection extends React.Component {
           <WeightSlider
             value={this.props.weights[name]}
             type='rss'
-            onChange={this.sliderChange}
+            onChange={(t, val) => this.props.updateWeight(name, val)}
           />
           { this.props.groups[name].map(url => (
             <div>{url}</div>

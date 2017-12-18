@@ -28,6 +28,8 @@ class SettingsPage extends React.Component {
 		this.getLinkedAccounts = this.getLinkedAccounts.bind(this);
 		this.isSliderHidden = this.isSliderHidden.bind(this);
     this.getUpdatedWeight = this.getUpdatedWeight.bind(this);
+    this.updateRssGroups = this.updateRssGroups.bind(this);
+    this.updateRssWeight = this.updateRssWeight.bind(this);
 		this.state = {};
 		this.core = props.core;
 
@@ -170,19 +172,27 @@ class SettingsPage extends React.Component {
 		});
 	}
 
+  getUserWeights(user) {
+    let weights = {};
+    types.forEach(type => {
+      weights[type] = parseFloat(user['post-weights'][type]);
+    });
+    weights['rss'] = {};
+    Object.keys(user['post-weights']['rss']).map(group => {
+      weights['rss'][group] = parseFloat(user['post-weights']['rss'][group]);
+    });
+    return weights;
+  }
+
 	submitWeights() {
     this.setState({
       user: this.deepCopy(this.state.updatedUser)
-    });
-    let data = {};
-    types.forEach(type => {
-      data[type] = parseFloat(this.getUpdatedWeight(type));
     });
 		axios({
 			method: 'post',
 			url: this.core + '/v1/weights',
 			withCredentials: true,
-			data: data
+			data: this.getUserWeights(this.state.updatedUser)
 		}).then(response => {
 			// TODO: show loading icon as soon as this fires
 			this.setState({
@@ -210,6 +220,25 @@ class SettingsPage extends React.Component {
       return this.state.updatedUser['post-weights'][type];
     }
     return 0;
+  }
+
+  updateRssGroups(groups) {
+    // TODO: Actually send updated data
+    let updatedUser = this.state.updatedUser;
+    updatedUser['rss-groups'] = groups;
+    this.setState({
+      updatedUser: updatedUser
+    });
+  }
+
+  updateRssWeight(group, weight) {
+    // TODO: Actually send updated data
+    let updatedUser = this.state.updatedUser;
+    updatedUser['post-weights']['rss'][group] = weight;
+    this.setState({
+      updatedUser: updatedUser,
+			hasWeightsChanged: true
+    });
   }
 
   render() {
@@ -241,9 +270,10 @@ class SettingsPage extends React.Component {
           }
 					<div className='settings-header'>RSS Feeds</div>
           <RssSection 
-            weights={this.state.user['post-weights']['rss']}
-            groups={this.state.user['rss-groups']}
-            onUpdate={function() {}}
+            weights={this.getUpdatedWeight('rss')}
+            groups={this.state.updatedUser['rss-groups']}
+            updateWeight={this.updateRssWeight}
+            updateGroups={this.updateRssGroups}
           />
 					<div className="btn-weights-group">
 						<Button className='btn-w-reset' onClick={this.resetWeights} disabled={!this.state.hasWeightsChanged}>Reset</Button>
