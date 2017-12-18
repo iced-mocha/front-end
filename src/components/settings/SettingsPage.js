@@ -11,6 +11,8 @@ import { Row, Col } from 'react-bootstrap';
 import FontAwesome from 'react-fontawesome';
 import Config from '../../../config.json';
 
+const types = ['reddit', 'facebook', 'twitter', 'hacker-news', 'google-news'];
+
 // Set loading: true in componentWillMount of App getUser
 class SettingsPage extends React.Component {
   constructor(props) {
@@ -35,7 +37,6 @@ class SettingsPage extends React.Component {
 			this.state = {
 				user: this.deepCopy(props.user),
         updatedUser: props.user,
-        types: ['reddit', 'facebook', 'twitter', 'hacker-news', 'google-news'],
 				linkedAccounts: accounts.linkedAccounts,
 				unlinkedAccounts: accounts.unlinkedAccounts,
 				hasWeightsChanged: false,
@@ -73,6 +74,9 @@ class SettingsPage extends React.Component {
 
   componentWillReceiveProps(nextProps) {
 		var accounts = this.getLinkedAccounts(nextProps.user);
+    if (Object.keys(nextProps.user).length == 0) {
+      return;
+    }
     this.setState({
       isLoading: false,
       user: this.deepCopy(nextProps.user),
@@ -171,7 +175,7 @@ class SettingsPage extends React.Component {
       user: this.deepCopy(this.state.updatedUser)
     });
     let data = {};
-    this.state.types.forEach(type => {
+    types.forEach(type => {
       data[type] = parseFloat(this.getUpdatedWeight(type));
     });
 		axios({
@@ -223,7 +227,7 @@ class SettingsPage extends React.Component {
 					{this.buildLinkedAccountsList()}
 					{this.buildUnlinkedAccountsList()}
 					<div className='settings-header'>Posts Weighting</div>
-          { this.state.types.map(type => {
+          { types.map(type => {
               if (!this.isSliderHidden(type)) {
                 return (
                   <WeightSlider
