@@ -205,6 +205,9 @@ class SettingsPage extends React.Component {
 	}
 
 	isSliderHidden(type) {
+    if (type == 'reddit' || type == 'hacker-news' || type == 'google-news') {
+      return false
+    }
 		var unlinked = this.state.unlinkedAccounts;
 		for (var i = 0; i < unlinked.length; i++) {
 			if (unlinked[i].type === type) {
