@@ -167,6 +167,7 @@ class SettingsPage extends React.Component {
 	resetWeights() {
     let updatedUser = this.state.updatedUser;
     updatedUser['post-weights'] = this.deepCopy(this.state.user['post-weights']);
+    updatedUser['rss-groups'] = this.deepCopy(this.state.user['rss-groups']);
 		// Force the sliders to reset to the state contained in user
 		this.setState({
       updatedUser: updatedUser,
@@ -203,6 +204,18 @@ class SettingsPage extends React.Component {
 		}).catch(error => {
 			// TODO: show banner saying unable to update weights
 			this.resetWeights();
+		});
+		axios({
+			method: 'post',
+			url: this.core + '/v1/users/'+ this.state.user.username +'/rss',
+			withCredentials: true,
+			data: this.state.updatedUser['rss-groups']
+		}).then(response => {
+			// TODO: show loading icon as soon as this fires
+			this.setState({
+				hasWeightsChanged: false
+			});
+		}).catch(error => {
 		});
 	}
 
@@ -247,16 +260,21 @@ class SettingsPage extends React.Component {
   }
 
   removeRssUrl(name, i) {
-    console.log("removing " + i);
     let updatedUser = this.state.updatedUser;
     updatedUser['rss-groups'][name].splice(i, 1);
-    this.setState({updatedUser: updatedUser});
+    this.setState({
+      updatedUser: updatedUser,
+      hasWeightsChanged: true
+    });
   }
 
   addRssUrl(name, tag) {
     let updatedUser = this.state.updatedUser;
     updatedUser['rss-groups'][name].push(tag);
-    this.setState({updatedUser: updatedUser});
+    this.setState({
+      updatedUser: updatedUser,
+      hasWeightsChanged: true
+    });
   }
 
   render() {
