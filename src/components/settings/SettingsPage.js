@@ -30,6 +30,8 @@ class SettingsPage extends React.Component {
     this.getUpdatedWeight = this.getUpdatedWeight.bind(this);
     this.updateRssGroups = this.updateRssGroups.bind(this);
     this.updateRssWeight = this.updateRssWeight.bind(this);
+    this.addRssUrl = this.addRssUrl.bind(this);
+    this.removeRssUrl = this.removeRssUrl.bind(this);
 		this.state = {};
 		this.core = props.core;
 
@@ -244,6 +246,19 @@ class SettingsPage extends React.Component {
     });
   }
 
+  removeRssUrl(name, i) {
+    console.log("removing " + i);
+    let updatedUser = this.state.updatedUser;
+    updatedUser['rss-groups'][name].splice(i, 1);
+    this.setState({updatedUser: updatedUser});
+  }
+
+  addRssUrl(name, tag) {
+    let updatedUser = this.state.updatedUser;
+    updatedUser['rss-groups'][name].push(tag);
+    this.setState({updatedUser: updatedUser});
+  }
+
   render() {
 		// If we haven't received our user yet lets show a loading icon
 		if (this.state.user === undefined || this.state.user === {} ||
@@ -277,6 +292,9 @@ class SettingsPage extends React.Component {
             groups={this.state.updatedUser['rss-groups']}
             updateWeight={this.updateRssWeight}
             updateGroups={this.updateRssGroups}
+            removeUrl={this.removeRssUrl}
+            addUrl={this.addRssUrl}
+            moveUrl={this.moveUrl}
           />
 					<div className="btn-weights-group">
 						<Button className='btn-w-reset' onClick={this.resetWeights} disabled={!this.state.hasWeightsChanged}>Reset</Button>
