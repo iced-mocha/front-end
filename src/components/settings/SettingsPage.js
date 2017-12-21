@@ -24,7 +24,7 @@ class SettingsPage extends React.Component {
 		this.addLinkToParent = this.addLinkToParent.bind(this);
 		this.sliderChange = this.sliderChange.bind(this);
 		this.resetWeights = this.resetWeights.bind(this);
-		this.submitWeights = this.submitWeights.bind(this);
+		this.submitChanges = this.submitChanges.bind(this);
 		this.getLinkedAccounts = this.getLinkedAccounts.bind(this);
 		this.isSliderHidden = this.isSliderHidden.bind(this);
     this.getUpdatedWeight = this.getUpdatedWeight.bind(this);
@@ -32,6 +32,8 @@ class SettingsPage extends React.Component {
     this.updateRssWeight = this.updateRssWeight.bind(this);
     this.addRssUrl = this.addRssUrl.bind(this);
     this.removeRssUrl = this.removeRssUrl.bind(this);
+    this.weightsChanged = this.weightsChanged.bind(this);
+    this.rssFeedsChanged = this.rssFeedsChanged.bind(this);
 		this.state = {};
 		this.core = props.core;
 
@@ -42,8 +44,7 @@ class SettingsPage extends React.Component {
 				user: this.deepCopy(props.user),
         updatedUser: props.user,
 				linkedAccounts: accounts.linkedAccounts,
-				unlinkedAccounts: accounts.unlinkedAccounts,
-				hasWeightsChanged: false,
+				unlinkedAccounts: accounts.unlinkedAccounts
 			};
 		}
   }
@@ -86,13 +87,16 @@ class SettingsPage extends React.Component {
       user: this.deepCopy(nextProps.user),
       updatedUser: nextProps.user,
       linkedAccounts: accounts.linkedAccounts,
-      unlinkedAccounts: accounts.unlinkedAccounts,
-      hasWeightsChanged: false,
+      unlinkedAccounts: accounts.unlinkedAccounts
     });
   }
 
   deepCopy(obj) {
     return JSON.parse(JSON.stringify(obj));
+  }
+
+  deepEqual(a, b) {
+    return JSON.stringify(a) === JSON.stringify(b);
   }
 
   wrapInSettingsHeader(title, content) {
@@ -159,7 +163,6 @@ class SettingsPage extends React.Component {
     let updatedUser = this.state.updatedUser;
     updatedUser['post-weights'][type] = value;
 		this.setState({
-      hasWeightsChanged: true,
       updatedUser: updatedUser
     });
 	}
@@ -170,8 +173,7 @@ class SettingsPage extends React.Component {
     updatedUser['rss-groups'] = this.deepCopy(this.state.user['rss-groups']);
 		// Force the sliders to reset to the state contained in user
 		this.setState({
-      updatedUser: updatedUser,
-			hasWeightsChanged: false
+      updatedUser: updatedUser
 		});
 	}
 
@@ -187,36 +189,31 @@ class SettingsPage extends React.Component {
     return weights;
   }
 
-	submitWeights() {
+	submitChanges() {
+    if (this.weightsChanged()) {
+      axios({
+        method: 'post',
+        url: this.core + '/v1/users/'+ this.state.user.username +'/weights',
+        withCredentials: true,
+        data: this.getUserWeights(this.state.updatedUser)
+      }).catch(error => {
+        // TODO: show banner saying unable to update weights
+        this.resetWeights();
+      });
+    }
+    if (this.rssFeedsChanged()) {
+      axios({
+        method: 'post',
+        url: this.core + '/v1/users/'+ this.state.user.username +'/rss',
+        withCredentials: true,
+        data: this.state.updatedUser['rss-groups']
+      }).catch(error => {
+        this.resetWeights();
+      });
+    }
     this.setState({
       user: this.deepCopy(this.state.updatedUser)
     });
-		axios({
-			method: 'post',
-			url: this.core + '/v1/users/'+ this.state.user.username +'/weights',
-			withCredentials: true,
-			data: this.getUserWeights(this.state.updatedUser)
-		}).then(response => {
-			// TODO: show loading icon as soon as this fires
-			this.setState({
-				hasWeightsChanged: false
-			});
-		}).catch(error => {
-			// TODO: show banner saying unable to update weights
-			this.resetWeights();
-		});
-		axios({
-			method: 'post',
-			url: this.core + '/v1/users/'+ this.state.user.username +'/rss',
-			withCredentials: true,
-			data: this.state.updatedUser['rss-groups']
-		}).then(response => {
-			// TODO: show loading icon as soon as this fires
-			this.setState({
-				hasWeightsChanged: false
-			});
-		}).catch(error => {
-		});
 	}
 
 	isSliderHidden(type) {
@@ -254,8 +251,7 @@ class SettingsPage extends React.Component {
     let updatedUser = this.state.updatedUser;
     updatedUser['post-weights']['rss'][group] = weight;
     this.setState({
-      updatedUser: updatedUser,
-			hasWeightsChanged: true
+      updatedUser: updatedUser
     });
   }
 
@@ -263,8 +259,7 @@ class SettingsPage extends React.Component {
     let updatedUser = this.state.updatedUser;
     updatedUser['rss-groups'][name].splice(i, 1);
     this.setState({
-      updatedUser: updatedUser,
-      hasWeightsChanged: true
+      updatedUser: updatedUser
     });
   }
 
@@ -272,9 +267,16 @@ class SettingsPage extends React.Component {
     let updatedUser = this.state.updatedUser;
     updatedUser['rss-groups'][name].push(tag);
     this.setState({
-      updatedUser: updatedUser,
-      hasWeightsChanged: true
+      updatedUser: updatedUser
     });
+  }
+
+  weightsChanged() {
+    return !this.deepEqual(this.state.user['post-weights'], this.state.updatedUser['post-weights']);
+  }
+
+  rssFeedsChanged() {
+    return !this.deepEqual(this.state.user['rss-groups'], this.state.updatedUser['rss-groups']);
   }
 
   render() {
@@ -315,8 +317,8 @@ class SettingsPage extends React.Component {
             moveUrl={this.moveUrl}
           />
 					<div className="btn-weights-group">
-						<Button className='btn-w-reset' onClick={this.resetWeights} disabled={!this.state.hasWeightsChanged}>Reset</Button>
-						<Button className='btn-w-submit' bsStyle='primary' onClick={this.submitWeights} disabled={!this.state.hasWeightsChanged}>Save</Button>
+						<Button className='btn-w-reset' onClick={this.resetWeights} disabled={!(this.weightsChanged() || this.rssFeedsChanged())}>Reset</Button>
+						<Button className='btn-w-submit' bsStyle='primary' onClick={this.submitChanges} disabled={!(this.weightsChanged() || this.rssFeedsChanged())}>Save</Button>
 					</div>
 			</div>
 		);
