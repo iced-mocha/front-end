@@ -7,6 +7,7 @@ import CommentsSection from '../CommentsSection';
 import Moment from 'react-moment';
 import Video from './Video';
 import Tweet from './Tweet';
+import Score from './Score';
 
 class Post extends React.Component {
   constructor(props, context) {
@@ -124,23 +125,11 @@ class Post extends React.Component {
     return <div className='post-author-info'>{authorLink ? <span className="author-prefix">-</span> : ""}{authorLink}{subredditLink ? " - " : ""}{subredditLink}</div>;
   }
 
-  shortenScore(score) {
-    var first;
-    var second;
-    if(score >= 10000) {
-      first = score / 1000;
-      second = Math.round((score - (parseInt(first, 10) * 1000))/100);
-      return parseInt(first, 10) + '.' + second + 'K';
-    } else {
-      return score;
-    }
-  }
-
   getScore() {
     if (this.props.Platform === 'reddit' || this.props.Platform === 'hacker-news') {
       return (
         <span>
-          <span className='post-score-bold'>{this.shortenScore(this.props.score)}</span>
+          <Score score={this.props.score} />
           <span className='post-score-light'>points - </span>
         </span>
       );

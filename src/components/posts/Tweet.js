@@ -3,6 +3,7 @@ import FontAwesome from 'react-fontawesome';
 import Video from './Video';
 import Moment from 'react-moment';
 import PhotoGallery from './PhotoGallery';
+import Score from './Score';
 
 class Tweet extends React.Component {
   constructor(props, context) {
@@ -107,13 +108,13 @@ class Tweet extends React.Component {
             <span className='tweet-rts'>
               <FontAwesome className='retweet-icon' name='retweet' />
               <span className='retweet-count'>
-                {this.props.retweets}
+                <Score score={this.props.retweets} />
               </span>
             </span>
             <span className='tweet-favs'>
               <FontAwesome className='favourite-icon' name='heart' />
               <span className='favourite-count'>
-                {this.props.favourites}
+                <Score score={this.props.favourites} />
               </span>
             </span>
           </div>
