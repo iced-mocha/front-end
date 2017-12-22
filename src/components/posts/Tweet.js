@@ -57,7 +57,6 @@ class Tweet extends React.Component {
   buildMedia(id, media) {
     // PUT this in state 'photos'
     if (media.type === 'photo') {
-      console.log(media)
       this.state.images.push({url: media['media_url_https']})
     } else if (media.type === 'video') {
       var videoInfo = media['video_info']['variants']

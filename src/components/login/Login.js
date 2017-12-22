@@ -10,7 +10,6 @@ export class LoginButton extends React.Component {
   }
 
   login(e) {
-	console.log("Test")
   }
 
   render() {
@@ -23,21 +22,21 @@ export class LoginButton extends React.Component {
 export class SignupButton extends React.Component {
   constructor(props) {
     super(props);
-	this.signupRedirect = this.signupRedirect.bind(this);
+	   this.signupRedirect = this.signupRedirect.bind(this);
     this.state = { redirect: false};
   }
 
   signupRedirect() {
-	this.setState({ redirect: true });
+	   this.setState({ redirect: true });
   }
-  
+
   render() {
     if (this.state.redirect) {
       return <Redirect push to="/signup" />;
-	}
+    }
+
     return (
-	  <Button onClick={this.signupRedirect}>Signup</Button>
+	     <Button onClick={this.signupRedirect}>Signup</Button>
     );
   }
 }
-
