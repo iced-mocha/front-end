@@ -1,5 +1,5 @@
 import React from 'react';
-import {Carousel} from 'react-bootstrap';
+import ImageGallery from 'react-image-gallery';
 
 class PhotoGallery extends React.Component {
   constructor(props) {
@@ -16,26 +16,25 @@ class PhotoGallery extends React.Component {
   buildGallery(images) {
     var gallery = [];
     for (var i = 0; i < images.length; i++) {
-      gallery.push(
-        <Carousel.Item key={Math.random().toString(36).substring(7)}>
-          <img src={images[i].url} />
-        </Carousel.Item>
-      );
+      gallery.push({
+          original: images[i].url,
+          thumbnail: images[i].url
+      });
     }
 
     return gallery;
   }
 
   render() {
+    // No images so return empty div
     if (this.state.images.length === 0) {
-      return <div />;
+      return <div/>;
     }
 
     return (
-      <Carousel interval={null} controls={!(this.state.images.length === 1)}
-        indicators={!(this.state.images.length === 1)} wrap={false}>
-        {this.buildGallery(this.state.images)}
-      </Carousel>
+      <ImageGallery infinite={false} items={this.buildGallery(this.state.images)}
+        showThumbnails={false} showPlayButton={false} showBullets={true} lazyLoad={true}>
+      </ImageGallery>
     );
   }
 }
