@@ -18,6 +18,7 @@ class HomePage extends React.Component {
       fbId: "",
       fbToken: "",
       pageToken: "",
+      type: props.match.params.type ? props.match.params.type : "all",
       loadingMorePosts: false
     };
     this.getMorePosts = this.getMorePosts.bind(this);
@@ -38,6 +39,11 @@ class HomePage extends React.Component {
     // TODO: We need to detect when there are no more pages to load
 
     var url = this.props.core + "/v1/posts"
+    if (this.state.type !== "all") {
+      // If a type was specified we want to request only those posts from core
+      url = url + "/" + this.state.type
+    }
+
     if (this.state.pageToken !== "") {
       url = url + "?page_token=" + this.state.pageToken;
     }

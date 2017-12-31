@@ -230,7 +230,7 @@ class Post extends React.Component {
                     <div className="post-title">
                         {this.buildTitle(this.props.Platform, this.props.Title)}
                     </div>
-                    <img className="post-img" src={'img/'+(this.props.Platform).toLowerCase()+'-icon.png'} alt={this.props.Platform + " icon"} />
+                    <img className="post-img" src={'/img/'+(this.props.Platform).toLowerCase()+'-icon.png'} alt={this.props.Platform + " icon"} />
                 </div>
                 <div className="post-info-container">
                   <div id="post-info-top">

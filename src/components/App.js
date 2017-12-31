@@ -71,6 +71,9 @@ export class App extends React.Component {
 				<Route exact path="/home" render={(props) => (
 					<HomePage {...props} core={this.core} />
 				)}/>
+				<Route exact path="/posts/:type" render={(props) => (
+					<HomePage {...props} core={this.core} />
+				)}/>
 				<Route exact path="/settings" render={(props) => (
 					<SettingsPage {...props} user={this.state.user} reddit={this.reddit} core={this.core} />
 				)}/>
