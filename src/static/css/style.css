@@ -147,6 +147,12 @@ div.weight-slider-container input.weight-slider:hover {
   margin-bottom: 4px;
 }
 
+.settings-subtitle {
+  display: inline-block;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
 .account-img {
   max-height: 20px !important;
   max-width: 20px !important;
@@ -672,6 +678,23 @@ li.tag.item {
 }
 
 button.tag-remove {
+  float: right;
   background: none;
   border: none;
+}
+
+button.group-remove {
+  float: right;
+  background: none;
+  border: none;
+  font-size: 16px;
+  padding: 8px;
+}
+
+button.group-new {
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
+  width: 100%;
 }

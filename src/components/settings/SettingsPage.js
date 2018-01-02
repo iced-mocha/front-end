@@ -30,8 +30,7 @@ class SettingsPage extends React.Component {
     this.getUpdatedWeight = this.getUpdatedWeight.bind(this);
     this.updateRssGroups = this.updateRssGroups.bind(this);
     this.updateRssWeight = this.updateRssWeight.bind(this);
-    this.addRssUrl = this.addRssUrl.bind(this);
-    this.removeRssUrl = this.removeRssUrl.bind(this);
+    this.updateRssGroups = this.updateRssGroups.bind(this);
     this.weightsChanged = this.weightsChanged.bind(this);
     this.rssFeedsChanged = this.rssFeedsChanged.bind(this);
 		this.state = {};
@@ -190,17 +189,8 @@ class SettingsPage extends React.Component {
   }
 
 	submitChanges() {
-    if (this.weightsChanged()) {
-      axios({
-        method: 'post',
-        url: this.core + '/v1/users/'+ this.state.user.username +'/weights',
-        withCredentials: true,
-        data: this.getUserWeights(this.state.updatedUser)
-      }).catch(error => {
-        // TODO: show banner saying unable to update weights
-        this.resetWeights();
-      });
-    }
+    // RSS groups must be updated before weights, since the group must be 
+    // created before it's weight is changed
     if (this.rssFeedsChanged()) {
       axios({
         method: 'post',
@@ -214,6 +204,17 @@ class SettingsPage extends React.Component {
     this.setState({
       user: this.deepCopy(this.state.updatedUser)
     });
+    if (this.weightsChanged()) {
+      axios({
+        method: 'post',
+        url: this.core + '/v1/users/'+ this.state.user.username +'/weights',
+        withCredentials: true,
+        data: this.getUserWeights(this.state.updatedUser)
+      }).catch(error => {
+        // TODO: show banner saying unable to update weights
+        this.resetWeights();
+      });
+    }
 	}
 
 	isSliderHidden(type) {
@@ -238,7 +239,6 @@ class SettingsPage extends React.Component {
   }
 
   updateRssGroups(groups) {
-    // TODO: Actually send updated data
     let updatedUser = this.state.updatedUser;
     updatedUser['rss-groups'] = groups;
     this.setState({
@@ -247,7 +247,6 @@ class SettingsPage extends React.Component {
   }
 
   updateRssWeight(group, weight) {
-    // TODO: Actually send updated data
     let updatedUser = this.state.updatedUser;
     updatedUser['post-weights']['rss'][group] = weight;
     this.setState({
@@ -255,17 +254,9 @@ class SettingsPage extends React.Component {
     });
   }
 
-  removeRssUrl(name, i) {
+  updateRssGroups(groups) {
     let updatedUser = this.state.updatedUser;
-    updatedUser['rss-groups'][name].splice(i, 1);
-    this.setState({
-      updatedUser: updatedUser
-    });
-  }
-
-  addRssUrl(name, tag) {
-    let updatedUser = this.state.updatedUser;
-    updatedUser['rss-groups'][name].push(tag);
+    updatedUser['rss-groups'] = this.deepCopy(groups);
     this.setState({
       updatedUser: updatedUser
     });
@@ -312,9 +303,6 @@ class SettingsPage extends React.Component {
             groups={this.state.updatedUser['rss-groups']}
             updateWeight={this.updateRssWeight}
             updateGroups={this.updateRssGroups}
-            removeUrl={this.removeRssUrl}
-            addUrl={this.addRssUrl}
-            moveUrl={this.moveUrl}
           />
 					<div className="btn-weights-group">
 						<Button className='btn-w-reset' onClick={this.resetWeights} disabled={!(this.weightsChanged() || this.rssFeedsChanged())}>Reset</Button>
