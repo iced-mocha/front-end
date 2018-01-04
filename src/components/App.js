@@ -81,7 +81,7 @@ export class App extends React.Component {
 					<LoginPage {...props} updateLoginStatus={this.updateLoginStatus} />
 				)}/>
 				<Route exact path='/signup' render={(props) => (
-					<SignupPage {...props}  core={this.core} />
+					<SignupPage {...props} updateLoginStatus={this.updateLoginStatus} core={this.core} />
 				)}/>
 				<Route component={NotFoundPage} />
 			</Switch>

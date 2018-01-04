@@ -74,8 +74,25 @@ class SignupForm extends React.Component {
 				withCredentials: false
 		  },
 	    success: function(json) {
-		    // Probably want to do something different
-				self.setState({signupRedirect: true});
+        $.ajax({
+          type: "POST",
+          url: Config.coreURL + "/v1/login",
+          data: JSON.stringify(preparedData),
+          xhrFields: {
+            withCredentials: true
+          },
+          success: function(json) {
+            console.log(JSON.stringify(self.props));
+            // Cause a rerender of our global components
+            self.props.updateLoginStatus(true);
+            self.setState({signupRedirect: true});
+          },
+          error: function (xhr) {
+            //TODO: ensure responseText is JSON;
+            var data = JSON.parse(xhr.responseText);
+            self.state.addError(self.buildError(data['error']));
+          }
+        });
 	    },
       error: function (xhr) {
 				var data = JSON.parse(xhr.responseText);
@@ -87,7 +104,7 @@ class SignupForm extends React.Component {
 
 	render() {
 	  if (this.state.signupRedirect) {
-	    return <Redirect push to="/login" />;
+	    return <Redirect push to="/" />;
 	  }
 
 	  return (
@@ -135,7 +152,7 @@ class SignupPage extends React.Component {
 						{this.state.error}
 					</div>
 	        <h1>Signup</h1>
-					<SignupForm core={this.props.core} addError={this.addError}/>
+					<SignupForm updateLoginStatus={this.props.updateLoginStatus} core={this.props.core} addError={this.addError}/>
 	      </div>
 			</div>
     );
