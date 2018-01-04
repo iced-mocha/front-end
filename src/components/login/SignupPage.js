@@ -94,16 +94,13 @@ class SignupForm extends React.Component {
 			<div className="sign-form">
 			  <Form id="signupForm" onSubmit={this.handleSubmit} method="post">
 				<FormGroup controlId="formUsername">
-					<ControlLabel>Username</ControlLabel>
-				  <FormControl type="text" name="username"/>
+				  <FormControl type="text" name="username" placeholder="Username" />
 				</FormGroup>
 				<FormGroup controlId="formPassword">
-					<ControlLabel>Password</ControlLabel>
-				  <FormControl type="password" name="password"/>
+				  <FormControl type="password" name="password" placeholder="Password" />
 				</FormGroup>
 				<FormGroup controlId="formConfirmPassword">
-					<ControlLabel>Confirm password</ControlLabel>
-					<FormControl type="password" name="confirmPassword"/>
+					<FormControl type="password" name="confirmPassword" placeholder="Confirm Password" />
 				</FormGroup>
 				<Button className="signup-button" bsStyle="primary" type="submit">
 				  Signup
